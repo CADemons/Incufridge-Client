@@ -38,19 +38,19 @@ public class SerialComm implements SerialPortEventListener {
 	private static final int DATA_RATE = 9600;
 
 	public void initialize() {
-		Set<String> without = new HashSet<String>(Arrays.asList(Serial.list()));
-		try {
-			Thread.sleep(5000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		Set<String> with = new HashSet<String>(Arrays.asList(Serial.list()));
-		with.removeAll(without);
-		String[] newports = with.toArray(new String[0]);
-		for(int a=0; a<newports.length;a++){
-			System.out.println(newports[a]);
-		}
-		PORT_NAMES[0] = newports[0];
+//		Set<String> without = new HashSet<String>(Arrays.asList(Serial.list()));
+//		try {
+//			Thread.sleep(5000);
+//		} catch (InterruptedException e) {
+//			e.printStackTrace();
+//		}
+//		Set<String> with = new HashSet<String>(Arrays.asList(Serial.list()));
+//		with.removeAll(without);
+//		String[] newports = with.toArray(new String[0]);
+//		for(int a=0; a<newports.length;a++){
+//			System.out.println(newports[a]);
+//		}
+//		PORT_NAMES[0] = newports[0];
 		CommPortIdentifier portId = null;
 		Enumeration portEnum = CommPortIdentifier.getPortIdentifiers();
 
@@ -140,5 +140,11 @@ public class SerialComm implements SerialPortEventListener {
 		// Ignore all the other eventTypes, but you should consider the other ones.
 	}
 
-	
+	public String getPort(String[] arrWithout, String[] arrWith){
+		Set<String> without = new HashSet<String>(Arrays.asList(arrWithout));
+		Set<String> with = new HashSet<String>(Arrays.asList(arrWith));
+		with.removeAll(without);
+		String[] newports = with.toArray(new String[0]);
+		return newports[0];
+	}
 }

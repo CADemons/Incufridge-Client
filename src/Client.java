@@ -1,7 +1,13 @@
+import processing.core.*;
+
 
 public class Client {
-	
+
 	public static void main(String[] args){
+		PApplet.main(new String[] {"Client"});
+	}
+
+	public void setup(){
 		SerialComm main = new SerialComm();
 		main.initialize();
 		Thread t=new Thread() {
