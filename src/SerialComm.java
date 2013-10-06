@@ -17,7 +17,8 @@ import processing.serial.*;
 public class SerialComm implements SerialPortEventListener {
 	int bytes = 0;
 	SerialPort serialPort;
-	byte[] temps = {1,2,1,2,1,2,1,2,1,2,1,2};
+	//byte[] temps = {1,2,1,2,1,2,1,2,1,2,1,2};
+	byte[] temps = new byte[12];
 	/** The port we're normally going to use. */
 	private static final String PORT_NAMES[] = { 
 		"tagfdndf;lkmssdf", // Mac OS X
@@ -37,20 +38,20 @@ public class SerialComm implements SerialPortEventListener {
 	/** Default bits per second for COM port. */
 	private static final int DATA_RATE = 9600;
 
-	public void initialize() {
-//		Set<String> without = new HashSet<String>(Arrays.asList(Serial.list()));
-//		try {
-//			Thread.sleep(5000);
-//		} catch (InterruptedException e) {
-//			e.printStackTrace();
-//		}
-//		Set<String> with = new HashSet<String>(Arrays.asList(Serial.list()));
-//		with.removeAll(without);
-//		String[] newports = with.toArray(new String[0]);
-//		for(int a=0; a<newports.length;a++){
-//			System.out.println(newports[a]);
-//		}
-//		PORT_NAMES[0] = newports[0];
+	public void initialize(String port) {
+		//		Set<String> without = new HashSet<String>(Arrays.asList(Serial.list()));
+		//		try {
+		//			Thread.sleep(5000);
+		//		} catch (InterruptedException e) {
+		//			e.printStackTrace();
+		//		}
+		//		Set<String> with = new HashSet<String>(Arrays.asList(Serial.list()));
+		//		with.removeAll(without);
+		//		String[] newports = with.toArray(new String[0]);
+		//		for(int a=0; a<newports.length;a++){
+		//			System.out.println(newports[a]);
+		//		}
+		PORT_NAMES[0] = port;
 		CommPortIdentifier portId = null;
 		Enumeration portEnum = CommPortIdentifier.getPortIdentifiers();
 
@@ -133,9 +134,9 @@ public class SerialComm implements SerialPortEventListener {
 					e.printStackTrace();
 				}
 			}
-//			if(bytes==5){
-//				close();
-//			}
+			//			if(bytes==5){
+			//				close();
+			//			}
 		}
 		// Ignore all the other eventTypes, but you should consider the other ones.
 	}
@@ -144,7 +145,15 @@ public class SerialComm implements SerialPortEventListener {
 		Set<String> without = new HashSet<String>(Arrays.asList(arrWithout));
 		Set<String> with = new HashSet<String>(Arrays.asList(arrWith));
 		with.removeAll(without);
-		String[] newports = with.toArray(new String[0]);
-		return newports[0];
+		try{
+			String[] newports = with.toArray(new String[0]);
+			return newports[0];
+		}catch(ArrayIndexOutOfBoundsException e){
+			return "Could not find port.";
+		}
+	}
+	
+	public void setTemps(byte[] intemps){
+		temps = intemps;
 	}
 }
