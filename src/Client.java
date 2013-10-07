@@ -4,14 +4,14 @@ import processing.serial.*;
 public class Client extends PApplet{
 
 	int state;
-	//String port;
 	String[] without;
 	/**
 	 * Array of inputs for detecting clicks.
 	 */
 	IBox[] inputs = new IBox[12];
 	PFont f;
-
+	
+	
 	public static void main(String[] args){
 		PApplet.main(new String[] {"Client"});
 	}
@@ -37,7 +37,10 @@ public class Client extends PApplet{
 		text("Detach the Incufridge, then click here.",20,100);
 		redraw();
 	}
-
+	
+	/**
+	 * Called by redraw(), runs continuously once setup() finishes.
+	 */
 	public void draw(){
 		/*if(state == 1){
 			text("Detach the Incufridge, then click here.",20,100);
@@ -49,7 +52,10 @@ public class Client extends PApplet{
 			text(port,20,100);
 		}*/
 	}
-
+	
+	/**
+	 * Called by Processing when app window is clicked.
+	 */
 	public void mousePressed(){
 		if(state == 1){
 			without = Serial.list();
@@ -71,12 +77,17 @@ public class Client extends PApplet{
 				state = 3;
 			}
 		}else if(state == 3){
-			
+			for(int c=0; c<inputs.length; c++){
+				if(mouseX >= inputs[c].x && mouseX <= inputs[c].x+inputs[c].w && mouseY >= inputs[c].y && mouseY <= inputs[c].y+inputs[c].h){
+					inputs[c].onClick();
+				}
+			}
 		}
 	}
 	
 	/**
 	 * Create initial GUI layout.
+	 * @param port Port name.
 	 */
 	public void initGui(String port) {
 		background(255);
