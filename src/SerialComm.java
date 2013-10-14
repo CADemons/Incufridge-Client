@@ -20,11 +20,12 @@ public class SerialComm implements SerialPortEventListener {
 	//byte[] temps = {1,2,1,2,1,2,1,2,1,2,1,2};
 	byte[] temps = new byte[12];
 	/** The port we're normally going to use. */
-	private static final String PORT_NAMES[] = { 
-		"tagfdndf;lkmssdf", // Mac OS X
-		"/dev/ttyUSB0", // Linux
-		"COM3", // Windows
-	};
+	private static final String PORT_NAMES[] = new String[1];
+//	private static final String PORT_NAMES[] = { 
+//		"tagfdndf;lkmssdf", // Mac OS X
+//		"/dev/ttyUSB0", // Linux
+//		"COM3", // Windows
+//	};
 	/**
 	 * A BufferedReader which will be fed by a InputStreamReader 
 	 * converting the bytes into characters 

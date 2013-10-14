@@ -7,11 +7,17 @@ public class IBox {
 	
 	public IBox(PApplet parent, int x, int y, int w, int h){
 		app = parent;
+		app.stroke(0);
+		app.fill(255);
 		app.rect(x,y,w,h);
+		app.fill(0);
 		this.x=x;
 		this.y=y;
 		this.w=w;
 		this.h=h;
 	}
 	
+	public void onClick(){
+		
+	}
 }

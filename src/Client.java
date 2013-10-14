@@ -5,14 +5,20 @@ public class Client extends PApplet{
 
 	int state;
 	String[] without;
-	/**
-	 * Array of inputs for detecting clicks.
-	 */
+	/**Array of inputs for detecting clicks.*/
 	IBox[] inputs = new IBox[12];
 	PFont f;
-	
-	
+	/**Whether to force GUI to open for testing.*/
+	static boolean forceGui = false;
+
+
 	public static void main(String[] args){
+		if(args.length > 0 && args[0].equals("forcegui")){
+			forceGui = true;
+			System.out.println("Forcing GUI...");
+		}else{
+			System.out.println("Not forcing GUI.");
+		}
 		PApplet.main(new String[] {"Client"});
 	}
 
@@ -21,7 +27,9 @@ public class Client extends PApplet{
 		size(500,200);
 		background(255);
 		f = createFont("Helectiva",16,true);
-		textFont(f,16);
+		//textFont(f,16);
+		textSize(16);
+		
 		fill(0);
 		state = 1;
 		/*main.initialize(port);
@@ -37,7 +45,7 @@ public class Client extends PApplet{
 		text("Detach the Incufridge, then click here.",20,100);
 		redraw();
 	}
-	
+
 	/**
 	 * Called by redraw(), runs continuously once setup() finishes.
 	 */
@@ -52,7 +60,7 @@ public class Client extends PApplet{
 			text(port,20,100);
 		}*/
 	}
-	
+
 	/**
 	 * Called by Processing when app window is clicked.
 	 */
@@ -68,9 +76,13 @@ public class Client extends PApplet{
 			SerialComm portFinder = new SerialComm();
 			String port = portFinder.getPort(without,with);
 			if(port == "Could not find port."){
-				background(255);
-				text("Could not find port.",20,100);
-				redraw();
+				if(forceGui){
+					initGui("invalid-forced");
+				}else{
+					background(255);
+					text("Could not find port.",20,100);
+					redraw();
+				}
 			}else{
 				startSerial(port);
 				initGui(port);
@@ -84,20 +96,29 @@ public class Client extends PApplet{
 			}
 		}
 	}
-	
+
 	/**
 	 * Create initial GUI layout.
 	 * @param port Port name.
 	 */
 	public void initGui(String port) {
+		//Layout vars
+		int startx;
+		int textwidth;
+		int bufferheight;
+		int boxw;
+		int boxh;
 		background(255);
-		textFont(f,10);
+		textSize(10);
+		//textFont(f,10);
 		text("Incufridge on " + port,10,190);
-		textFont(f,16);
-		text("Incufridge Connect",175,20);
+		textSize(16);
+		//textFont(f,16);
+		text("Incufridge Client",175,20);
+		new IButton(this, 200, 100, "TestTest2Test3");
 		redraw();
 	}
-	
+
 	/**
 	 * Initialize serial communication class. See playground.arduino.cc/Interfacing/Java
 	 * @param port Port name.
