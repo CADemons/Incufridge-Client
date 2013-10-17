@@ -7,6 +7,8 @@ public class Client extends PApplet{
 	String[] without;
 	/**Array of inputs for detecting clicks.*/
 	IBox[] inputs = new IBox[12];
+	/**Where to enter text.*/
+	public static IBox selected;
 	PFont f;
 	/**Whether to force GUI to open for testing.*/
 	static boolean forceGui = false;
@@ -29,7 +31,7 @@ public class Client extends PApplet{
 		f = createFont("Helectiva",16,true);
 		//textFont(f,16);
 		textSize(16);
-		
+
 		fill(0);
 		state = 1;
 		/*main.initialize(port);
@@ -78,6 +80,7 @@ public class Client extends PApplet{
 			if(port == "Could not find port."){
 				if(forceGui){
 					initGui("invalid-forced");
+					state = 3;
 				}else{
 					background(255);
 					text("Could not find port.",20,100);
@@ -97,17 +100,35 @@ public class Client extends PApplet{
 		}
 	}
 
+	public void keyPressed(){
+		if(state == 3){
+			int num = Character.getNumericValue(key);
+			if(num>=0 && num<=9){
+				System.out.println("num: " + num);
+				selected.write(num);
+			}else if(key == BACKSPACE){
+				selected.backspace();
+				System.out.println("backspace");
+			}else{
+				System.out.println("not num:" + key);
+			}
+		}
+	}
+
 	/**
 	 * Create initial GUI layout.
 	 * @param port Port name.
 	 */
 	public void initGui(String port) {
 		//Layout vars
-		int startx;
-		int textwidth;
-		int bufferheight;
-		int boxw;
-		int boxh;
+		int startx = 20;
+		int starty = 40;
+		int textwidth = 25;
+		int bufferh = 15;
+		int boxw = 40;
+		int boxh = 20;
+		int boxx = startx;
+		int boxy = starty;
 		background(255);
 		textSize(10);
 		//textFont(f,10);
@@ -115,7 +136,19 @@ public class Client extends PApplet{
 		textSize(16);
 		//textFont(f,16);
 		text("Incufridge Client",175,20);
-		new IButton(this, 200, 100, "TestTest2Test3");
+		new IButton(this, 410, 160, "Upload", 20);
+		textSize(16);
+		for(int c=0; c<12; c++){
+			text(Integer.toString(c+1) + ".", boxx, boxy + 20);
+			boxx += textwidth;
+			inputs[c] = new IBox(this,boxx,boxy,boxw,boxh);
+			boxx += (boxw + 15);
+			if(c==5){
+				boxx = startx;
+				boxy = starty + boxh + bufferh;
+			}
+			
+		}
 		redraw();
 	}
 
