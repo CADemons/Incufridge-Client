@@ -8,10 +8,12 @@ public class Client extends PApplet{
 	/**Array of inputs for detecting clicks.*/
 	IBox[] inputs = new IBox[12];
 	/**Where to enter text.*/
-	public static IBox selected;
+	public IBox selected;
 	PFont f;
 	/**Whether to force GUI to open for testing.*/
 	static boolean forceGui = false;
+	String port;
+	IButton upload;
 
 
 	public static void main(String[] args){
@@ -76,10 +78,11 @@ public class Client extends PApplet{
 		}else if(state == 2){
 			String[] with = Serial.list();
 			SerialComm portFinder = new SerialComm();
-			String port = portFinder.getPort(without,with);
+			this.port = portFinder.getPort(without,with);
 			if(port == "Could not find port."){
 				if(forceGui){
-					initGui("invalid-forced");
+					port = "invalid-forced";
+					initGui();
 					state = 3;
 				}else{
 					background(255);
@@ -87,8 +90,8 @@ public class Client extends PApplet{
 					redraw();
 				}
 			}else{
-				startSerial(port);
-				initGui(port);
+				startSerial();
+				initGui();
 				state = 3;
 			}
 		}else if(state == 3){
@@ -116,10 +119,9 @@ public class Client extends PApplet{
 	}
 
 	/**
-	 * Create initial GUI layout.
-	 * @param port Port name.
+	 * Refresh GUI.
 	 */
-	public void initGui(String port) {
+	public void rewrite() {
 		//Layout vars
 		int startx = 20;
 		int starty = 40;
@@ -131,14 +133,43 @@ public class Client extends PApplet{
 		int boxy = starty;
 		background(255);
 		textSize(10);
-		//textFont(f,10);
 		text("Incufridge on " + port,10,190);
 		textSize(16);
-		//textFont(f,16);
 		text("Incufridge Client",175,20);
-		new IButton(this, 410, 160, "Upload", 20);
+		//		IButton upload = new IButton(this, 410, 160, "Upload", 20);
+		//		textSize(16);
+		upload.render();
+		for(int c=0; c<12; c++){
+			inputs[c].render();
+			text(Integer.toString(c+1) + ".", boxx, boxy + 20);
+			boxx += textwidth;
+			//			inputs[c] = new IBox(this,boxx,boxy,boxw,boxh);
+			boxx += (boxw + 15);
+			if(c==5){
+				boxx = startx;
+				boxy = starty + boxh + bufferh;
+			}
+
+		}
+		redraw();
+		println("Rewritten");
+	}
+
+	public void initGui(){
+		//Layout vars
+		int startx = 20;
+		int starty = 40;
+		int textwidth = 25;
+		int bufferh = 15;
+		int boxw = 40;
+		int boxh = 20;
+		int boxx = startx;
+		int boxy = starty;
+		upload = new IButton(this, 410, 160, "Upload", 20);
 		textSize(16);
 		for(int c=0; c<12; c++){
+			fill(0);
+			stroke(0);
 			text(Integer.toString(c+1) + ".", boxx, boxy + 20);
 			boxx += textwidth;
 			inputs[c] = new IBox(this,boxx,boxy,boxw,boxh);
@@ -147,16 +178,16 @@ public class Client extends PApplet{
 				boxx = startx;
 				boxy = starty + boxh + bufferh;
 			}
-			
+
 		}
-		redraw();
+		rewrite();
 	}
 
 	/**
 	 * Initialize serial communication class. See playground.arduino.cc/Interfacing/Java
 	 * @param port Port name.
 	 */
-	public void startSerial(String port){
+	public void startSerial(){
 		SerialComm main = new SerialComm();
 		main.initialize(port);
 		Thread t=new Thread() {

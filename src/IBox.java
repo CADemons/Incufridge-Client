@@ -2,7 +2,7 @@ import processing.core.PApplet;
 
 public class IBox {
 
-	PApplet app;
+	Client app;
 	int x=0,y=0,w=0,h=0;
 	String intext = "";
 
@@ -14,12 +14,12 @@ public class IBox {
 	 * @param w
 	 * @param h
 	 */
-	public IBox(PApplet parent, int x, int y, int w, int h){
+	public IBox(Client parent, int x, int y, int w, int h){
 		app = parent;
-		app.stroke(0);
-		app.fill(255);
-		app.rect(x,y,w,h);
-		app.fill(0);
+		//		app.stroke(0);
+		//		app.fill(255);
+		//		app.rect(x,y,w,h);
+		//		app.fill(0);
 		this.x=x;
 		this.y=y;
 		this.w=w;
@@ -27,22 +27,37 @@ public class IBox {
 	}
 
 	public void onClick(){
-		Client.selected = this;
+		app.selected = this;
 	}
 
 	public void write(int digit){
-		intext += Integer.toString(digit);
-		app.textSize(16);
-		app.text(intext, x+5, y+18);
-		app.redraw();
+		if(intext.getBytes().length < 3){
+			intext += Integer.toString(digit);
+		}else{
+			System.out.println("Too long!");
+		}
+		app.rewrite();
+		//		app.textSize(16);
+		//		app.text(intext, x+5, y+18);
+		//		app.redraw();
 	}
 
 	public void backspace() {
 		if(!intext.isEmpty()){
 			System.out.println("doing backspace...");
-			intext = intext.substring(0, intext.length());
-			app.text(intext, x+5, y+18);
-			app.redraw();
+			intext = intext.substring(0, intext.length()-1);
+			app.rewrite();
+			//			app.text(intext, x+5, y+18);
+			//			app.redraw();
 		}
+	}
+
+	public void render(){
+		app.stroke(0);
+		app.fill(255);
+		app.rect(x,y,w,h);
+		app.fill(0);
+		app.textSize(16);
+		app.text(intext, x+5, y+18);
 	}
 }
