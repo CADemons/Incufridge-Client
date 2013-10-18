@@ -13,7 +13,7 @@ public class Client extends PApplet{
 	/**Whether to force GUI to open for testing.*/
 	static boolean forceGui = false;
 	String port;
-	IButton upload;
+	IButton[] buttons = new IButton[1];
 
 
 	public static void main(String[] args){
@@ -100,6 +100,11 @@ public class Client extends PApplet{
 					inputs[c].onClick();
 				}
 			}
+			for(int c=0; c<buttons.length; c++){
+				if(mouseX >= buttons[c].x && mouseX <= buttons[c].x+buttons[c].w && mouseY >= buttons[c].y && mouseY <= buttons[c].y+buttons[c].h){
+					buttons[c].onClick();
+				}
+			}
 		}
 	}
 
@@ -138,7 +143,7 @@ public class Client extends PApplet{
 		text("Incufridge Client",175,20);
 		//		IButton upload = new IButton(this, 410, 160, "Upload", 20);
 		//		textSize(16);
-		upload.render();
+		buttons[0].render();
 		for(int c=0; c<12; c++){
 			inputs[c].render();
 			text(Integer.toString(c+1) + ".", boxx, boxy + 20);
@@ -165,7 +170,7 @@ public class Client extends PApplet{
 		int boxh = 20;
 		int boxx = startx;
 		int boxy = starty;
-		upload = new IButton(this, 410, 160, "Upload", 20);
+		buttons[0] = new IButton(this, 410, 160, "Upload", 20);
 		textSize(16);
 		for(int c=0; c<12; c++){
 			fill(0);

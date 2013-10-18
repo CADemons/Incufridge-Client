@@ -1,7 +1,7 @@
 import processing.core.PApplet;
 
 public class IButton {
-	
+
 	int xpad = 5;
 	int ypad = 5;
 	int x;
@@ -11,7 +11,7 @@ public class IButton {
 	int textSize;
 	Client app;
 	String label;
-	
+
 	/**
 	 * Create a new button, automatically scales to text.
 	 * @param parent PApplet to act on, this when called from Client.
@@ -31,9 +31,9 @@ public class IButton {
 		this.y = y;
 		this.textSize = textSize;
 		this.label = label;
-		
+
 	}
-	
+
 	public void render(){
 		app.textSize(textSize);
 		app.stroke(0);
@@ -41,5 +41,17 @@ public class IButton {
 		app.rect(x, y, w, h);
 		app.fill(0);
 		app.text(label, x+xpad, y+ypad+textSize);
+	}
+
+	public void onClick(){
+		for(int c=0; c<app.inputs.length; c++){
+			try{
+				SerialComm.temps[c] = Byte.parseByte(app.inputs[c].intext);
+			}catch(Exception e){
+				SerialComm.temps[c]=0;
+			}
+		}
+		SerialComm.ready = true;
+		System.out.println("Button clicked");
 	}
 }
