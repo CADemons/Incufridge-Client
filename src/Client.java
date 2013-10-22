@@ -1,9 +1,11 @@
+import java.io.PrintStream;
 import processing.core.*;
 import processing.serial.*;
 
 public class Client extends PApplet{
 
-	int state;
+	static Client app = null;
+	static int state;
 	String[] without;
 	/**Array of inputs for detecting clicks.*/
 	IBox[] inputs = new IBox[12];
@@ -17,6 +19,8 @@ public class Client extends PApplet{
 
 
 	public static void main(String[] args){
+		ConsoleWriter.origout = System.out;
+		System.setOut(new PrintStream(new ConsoleWriter()));
 		if(args.length > 0 && args[0].equals("forcegui")){
 			forceGui = true;
 			System.out.println("Forcing GUI...");
@@ -27,8 +31,9 @@ public class Client extends PApplet{
 	}
 
 	public void setup(){
+		app = this;
 		//SerialComm main = new SerialComm();
-		size(500,200);
+		size(500,350);
 		background(255);
 		f = createFont("Helectiva",16,true);
 		//textFont(f,16);
@@ -113,9 +118,9 @@ public class Client extends PApplet{
 			int num = Character.getNumericValue(key);
 			if(num>=0 && num<=9){
 				System.out.println("num: " + num);
-				selected.write(num);
+				if(selected != null){selected.write(num);}
 			}else if(key == BACKSPACE){
-				selected.backspace();
+				if(selected != null){selected.backspace();}
 				System.out.println("backspace");
 			}else{
 				System.out.println("not num:" + key);
@@ -144,6 +149,8 @@ public class Client extends PApplet{
 		//		IButton upload = new IButton(this, 410, 160, "Upload", 20);
 		//		textSize(16);
 		buttons[0].render();
+		ConsoleWriter.render();
+		textSize(16);
 		for(int c=0; c<12; c++){
 			inputs[c].render();
 			text(Integer.toString(c+1) + ".", boxx, boxy + 20);
@@ -156,8 +163,8 @@ public class Client extends PApplet{
 			}
 
 		}
+		line(0,200,500,200);
 		redraw();
-		println("Rewritten");
 	}
 
 	public void initGui(){
