@@ -47,16 +47,15 @@ public class IButton {
 	}
 
 	public void onClick() {
-		SerialComm sComm = new SerialComm();
 		for(int c = 0; c < app.inputs.length; c++){
 			if(app.inputs[c].intext != ""){
-				sComm.temps[c] = Byte.parseByte(app.inputs[c].intext);
+				SerialComm.temps[c] = Byte.parseByte(app.inputs[c].intext);
 			} else {
-				sComm.temps[c]=0;
+				SerialComm.temps[c]=0;
 			}
 		}
 		
-		sComm.ready = true;
+		SerialComm.ready = true;
 		System.out.println("Button clicked");
 	}
 }

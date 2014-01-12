@@ -16,8 +16,8 @@ import java.util.Set;
 public class SerialComm implements SerialPortEventListener {
 	int bytes = 0;
 	SerialPort serialPort;
-	public byte[] temps = new byte[12];
-	public boolean ready = false;
+	static byte[] temps = new byte[12];
+	static boolean ready = false;
 	/** The port we're normally going to use. */
 	private static final String PORT_NAMES[] = new String[1];
 	/**
