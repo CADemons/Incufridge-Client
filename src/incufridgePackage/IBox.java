@@ -1,4 +1,5 @@
-import processing.core.PApplet;
+package incufridgePackage;
+
 
 public class IBox {
 

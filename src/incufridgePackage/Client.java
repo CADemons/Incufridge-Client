@@ -1,6 +1,10 @@
+package incufridgePackage;
+
 import java.io.PrintStream;
-import processing.core.*;
-import processing.serial.*;
+
+import processing.core.PApplet;
+import processing.core.PFont;
+import processing.serial.Serial;
 
 public class Client extends PApplet{
 
