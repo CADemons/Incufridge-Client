@@ -121,6 +121,7 @@ public class SerialComm implements SerialPortEventListener {
 			}
 			if(ready){
 				try {
+					System.out.println("Sending data");
 					output.write('B');
 					for(int c=0; c!=12; c++){
 						output.write(temps[c]);
