@@ -26,8 +26,9 @@ public class IBox {
 		this.h=h;
 	}
 
-	public void onClick(){
+	public void onClick() {
 		app.selected = this;
+		app.rewrite();
 	}
 
 	public void write(int digit){
@@ -52,12 +53,16 @@ public class IBox {
 		}
 	}
 
-	public void render(){
-		app.stroke(0);
+	public void render(int r, int g, int b) {
+		app.stroke(r, g, b);
 		app.fill(255);
 		app.rect(x,y,w,h);
 		app.fill(0);
 		app.textSize(16);
 		app.text(intext, x+5, y+18);
+	}
+	
+	public void render(){
+		render(0,0,0);
 	}
 }

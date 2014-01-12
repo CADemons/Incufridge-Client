@@ -17,7 +17,7 @@ import processing.serial.*;
 public class SerialComm implements SerialPortEventListener {
 	int bytes = 0;
 	SerialPort serialPort;
-	static byte[] temps = new byte[12];
+	public byte[] temps = new byte[12];
 	static boolean ready = false;
 	/** The port we're normally going to use. */
 	private static final String PORT_NAMES[] = new String[1];
