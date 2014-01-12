@@ -49,10 +49,9 @@ public class IButton {
 	public void onClick() {
 		SerialComm sComm = new SerialComm();
 		for(int c = 0; c < app.inputs.length; c++){
-			try{
+			if(app.inputs[c].intext != ""){
 				sComm.temps[c] = Byte.parseByte(app.inputs[c].intext);
-			} catch (Exception e) {
-				//System.out.println(e);
+			} else {
 				sComm.temps[c]=0;
 			}
 		}
