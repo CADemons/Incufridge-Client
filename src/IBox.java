@@ -46,7 +46,7 @@ public class IBox {
 	public void backspace() {
 		if(!intext.isEmpty()){
 			System.out.println("doing backspace...");
-			intext = intext.substring(0, intext.length()-1);
+			intext = intext.substring(0, intext.length() - 1);
 			app.rewrite();
 			//			app.text(intext, x+5, y+18);
 			//			app.redraw();
@@ -56,10 +56,10 @@ public class IBox {
 	public void render(int r, int g, int b) {
 		app.stroke(r, g, b);
 		app.fill(255);
-		app.rect(x,y,w,h);
+		app.rect(x, y, w, h);
 		app.fill(0);
 		app.textSize(16);
-		app.text(intext, x+5, y+18);
+		app.text(intext, x + 5, y + 18);
 	}
 	
 	public void render(){

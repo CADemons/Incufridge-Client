@@ -33,22 +33,26 @@ public class IButton {
 
 	}
 
-	public void render(){
+	public void render(int r, int g, int b){
 		app.textSize(textSize);
-		app.stroke(0);
+		app.stroke(r, g, b);
 		app.fill(255);
 		app.rect(x, y, w, h);
 		app.fill(0);
-		app.text(label, x+xpad, y+ypad+textSize);
+		app.text(label, x + xpad, y + ypad + textSize);
+	}
+	
+	public void render() {
+		render(0, 0, 0);
 	}
 
-	public void onClick(){
+	public void onClick() {
 		SerialComm sComm = new SerialComm();
 		for(int c = 0; c < app.inputs.length; c++){
 			try{
 				sComm.temps[c] = Byte.parseByte(app.inputs[c].intext);
 			} catch (Exception e) {
-				System.out.println(e);
+				//System.out.println(e);
 				sComm.temps[c]=0;
 			}
 		}
