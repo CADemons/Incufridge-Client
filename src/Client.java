@@ -1,7 +1,9 @@
 import java.io.PrintStream;
+
 import processing.core.*;
 import processing.serial.*;
 
+@SuppressWarnings("serial")
 public class Client extends PApplet{
 
 	static Client app = null;
@@ -16,7 +18,6 @@ public class Client extends PApplet{
 	static boolean forceGui = false;
 	String port;
 	IButton[] buttons = new IButton[1];
-
 
 	public static void main (String[] args) {
 		ConsoleWriter.origout = System.out;

@@ -8,28 +8,28 @@ public class ConsoleWriter extends OutputStream {
 	static String[] lines = new String[10];
 	String fullstring = "";
 
-	public ConsoleWriter(){
-		for(int c=0; c<10; c++){
+	public ConsoleWriter() {
+		for (int c = 0; c < 10; c++) {
 			lines[c] = "";
 		}
 	}
 
-	public void write(int arg) throws IOException {
+	public void write (int arg) throws IOException {
 		int[] parsearr = {arg};
 		String outstring = new String(parsearr,0,1);
 		origout.print(outstring);
 		fullstring += outstring;
 		if(arg == 10){
-			for(int c=0; c<9; c++){
+			for(int c = 0; c < 9; c++) {
 				lines[c] = lines[c+1];
 			}
 			lines[9] = fullstring;
 			fullstring = "";
-			if(Client.state == 3){Client.app.rewrite();}
+			if (Client.state == 3) {Client.app.rewrite();}
 		}
 	}
 
-	public static void render(){
+	public static void render () {
 		int x = 15;
 		int y = 210;
 		int changey = 15;
