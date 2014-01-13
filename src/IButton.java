@@ -48,8 +48,9 @@ public class IButton {
 
 	public void onClick() {		
 		for(int c = 0; c < app.inputs.length; c++){
-			if(app.inputs[c].intext != ""){
+			if(app.inputs[c].intext != "" && Integer.parseInt(app.inputs[c].intext) < 128) {
 				SerialComm.temps[c] = Byte.parseByte(app.inputs[c].intext);
+				System.out.println("Uploaded: " + app.inputs[c].intext);
 			} else {
 				SerialComm.temps[c]=0;
 			}
