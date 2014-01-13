@@ -52,7 +52,7 @@ public class IButton {
 				SerialComm.temps[c] = Byte.parseByte(app.inputs[c].intext);
 				System.out.println("Uploaded: " + app.inputs[c].intext);
 			} else {
-				SerialComm.temps[c]=0;
+				SerialComm.temps[c] = 0;
 			}
 		}
 		

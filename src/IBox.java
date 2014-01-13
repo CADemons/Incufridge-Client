@@ -56,9 +56,10 @@ public class IBox {
 		app.stroke(r, g, b);
 		app.fill(255);
 		app.rect(x, y, w, h);
-		app.fill(0);
+		app.fill(r, g, b);
 		app.textSize(16);
 		app.text(intext, x + 5, y + 18);
+		app.fill(0);
 	}
 	
 	public void render(){
