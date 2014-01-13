@@ -38,7 +38,7 @@ public class IButton {
 		app.stroke(r, g, b);
 		app.fill(255);
 		app.rect(x, y, w, h);
-		app.fill(0);
+		app.fill(r, g, b);
 		app.text(label, x + xpad, y + ypad + textSize);
 	}
 	
@@ -46,7 +46,7 @@ public class IButton {
 		render(0, 0, 0);
 	}
 
-	public void onClick() {
+	public void onClick() {		
 		for(int c = 0; c < app.inputs.length; c++){
 			if(app.inputs[c].intext != ""){
 				SerialComm.temps[c] = Byte.parseByte(app.inputs[c].intext);

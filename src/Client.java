@@ -107,11 +107,24 @@ public class Client extends PApplet{
 					inputs[c].onClick();
 				}
 			}
-			for (int c=0; c<buttons.length; c++) {
+			for (int c = 0; c < buttons.length; c++) {
 				if (mouseX >= buttons[c].x && mouseX <= buttons[c].x+buttons[c].w && mouseY >= buttons[c].y 
 						&& mouseY <= buttons[c].y+buttons[c].h) {
 					buttons[c].onClick();
+					buttons[c].render(255, 0, 0);
+					redraw();
+				} else {
+					
 				}
+			}
+		}
+	}
+	
+	public void mouseReleased() {
+		for (int c = 0; c < buttons.length; c++) {
+			if (buttons[c] != null) {
+				buttons[c].render();
+				redraw();
 			}
 		}
 	}
