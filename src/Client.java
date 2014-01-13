@@ -4,7 +4,7 @@ import processing.core.*;
 import processing.serial.*;
 
 @SuppressWarnings("serial")
-public class Client extends PApplet{
+public class Client extends PApplet {
 
 	static Client app = null;
 	static int state;
@@ -19,7 +19,7 @@ public class Client extends PApplet{
 	String port;
 	IButton[] buttons = new IButton[1];
 
-	public static void main (String[] args) {
+	public static void main(String[] args) {
 		ConsoleWriter.origout = System.out;
 		System.setOut(new PrintStream(new ConsoleWriter()));
 		if (args.length > 0 && args[0].equals("forcegui")) {
@@ -31,12 +31,12 @@ public class Client extends PApplet{
 		PApplet.main(new String[] {"Client"});
 	}
 
-	public void setup(){
+	public void setup() {
 		app = this;
 		//SerialComm main = new SerialComm();
-		size(500,350);
+		size(500, 350);
 		background(255);
-		f = createFont("Helectiva",16,true);
+		f = createFont("Helectiva", 16, true);
 		//textFont(f,16);
 		textSize(16);
 
@@ -52,14 +52,14 @@ public class Client extends PApplet{
 		};
 		t.start();
 		System.out.println("Started");*/
-		text("Detach the Incufridge, then click here.",20,100);
+		text("Detach the Incufridge, then click here.", 20, 100);
 		redraw();
 	}
 
 	/**
 	 * Called by redraw(), runs continuously once setup() finishes.
 	 */
-	public void draw(){
+	public void draw() {
 		/*if(state == 1){
 			text("Detach the Incufridge, then click here.",20,100);
 		}else if(state == 2){
@@ -74,14 +74,14 @@ public class Client extends PApplet{
 	/**
 	 * Called by Processing when app window is clicked.
 	 */
-	public void mousePressed(){
-		if(state == 1){
+	public void mousePressed() {
+		if (state == 1) {
 			without = Serial.list();
 			state = 2;
 			background(255);
 			text("Reattach the Incufridge, then click here.",20,100);
 			redraw();
-		}else if(state == 2){
+		} else if (state == 2) {
 			String[] with = Serial.list();
 			SerialComm portFinder = new SerialComm();
 			this.port = portFinder.getPort(without,with);
@@ -95,7 +95,7 @@ public class Client extends PApplet{
 					text("Could not find port.",20,100);
 					redraw();
 				}
-			}else {
+			} else {
 				startSerial();
 				initGui();
 				state = 3;
@@ -132,13 +132,13 @@ public class Client extends PApplet{
 	public void keyPressed() {
 		if(state == 3){
 			int num = Character.getNumericValue(key);
-			if(num>=0 && num<=9){
+			if (num >= 0 && num <= 9) {
 				System.out.println("num: " + num);
 				if(selected != null){selected.write(num);}
-			}else if(key == BACKSPACE){
-				if(selected != null){selected.backspace();}
+			} else if (key == BACKSPACE) {
+				if (selected != null) {selected.backspace();}
 				System.out.println("backspace");
-			}else{
+			} else {
 				System.out.println("not num:" + key);
 			}
 		}
@@ -167,27 +167,27 @@ public class Client extends PApplet{
 		buttons[0].render();
 		ConsoleWriter.render();
 		textSize(16);
-		for(int c=0; c<12; c++){
+		for (int c = 0; c < 12; c++) {
 			inputs[c].render();
 			text(Integer.toString(c+1) + ".", boxx, boxy + 20);
 			boxx += textwidth;
 			//			inputs[c] = new IBox(this,boxx,boxy,boxw,boxh);
 			boxx += (boxw + 15);
-			if(c==5){
+			if ( c== 5) {
 				boxx = startx;
 				boxy = starty + boxh + bufferh;
 			}
 
 		}
-		if(selected != null){
-			selected.render(255,0,0);
+		if (selected != null) {
+			selected.render(255, 0, 0);
 		}
 		stroke(0);
-		line(0,200,500,200);
+		line(0, 200, 500, 200);
 		redraw();
 	}
 
-	public void initGui(){
+	public void initGui() {
 		//Layout vars
 		int startx = 20;
 		int starty = 40;
@@ -199,14 +199,14 @@ public class Client extends PApplet{
 		int boxy = starty;
 		buttons[0] = new IButton(this, 410, 160, "Upload", 20);
 		textSize(16);
-		for(int c=0; c<12; c++){
+		for (int c = 0; c < 12; c++) {
 			fill(0);
 			stroke(0);
 			text(Integer.toString(c+1) + ".", boxx, boxy + 20);
 			boxx += textwidth;
 			inputs[c] = new IBox(this,boxx,boxy,boxw,boxh);
 			boxx += (boxw + 15);
-			if(c==5){
+			if (c == 5) {
 				boxx = startx;
 				boxy = starty + boxh + bufferh;
 			}
@@ -219,7 +219,7 @@ public class Client extends PApplet{
 	 * Initialize serial communication class. See playground.arduino.cc/Interfacing/Java
 	 * @param port Port name.
 	 */
-	public void startSerial(){
+	public void startSerial() {
 		SerialComm main = new SerialComm();
 		main.initialize(port);
 		Thread t=new Thread() {

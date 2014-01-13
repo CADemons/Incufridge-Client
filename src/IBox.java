@@ -2,7 +2,7 @@
 public class IBox {
 
 	Client app;
-	int x=0,y=0,w=0,h=0;
+	int x = 0, y = 0, w = 0, h = 0;
 	String intext = "";
 
 	/**
@@ -13,7 +13,7 @@ public class IBox {
 	 * @param w
 	 * @param h
 	 */
-	public IBox(Client parent, int x, int y, int w, int h){
+	public IBox(Client parent, int x, int y, int w, int h) {
 		app = parent;
 		//		app.stroke(0);
 		//		app.fill(255);
@@ -30,10 +30,10 @@ public class IBox {
 		app.rewrite();
 	}
 
-	public void write(int digit){
-		if(intext.getBytes().length < 3){
+	public void write(int digit) {
+		if (intext.getBytes().length < 3) {
 			intext += Integer.toString(digit);
-		}else{
+		} else {
 			System.out.println("Too long!");
 		}
 		app.rewrite();
@@ -43,7 +43,7 @@ public class IBox {
 	}
 
 	public void backspace() {
-		if(!intext.isEmpty()){
+		if (!intext.isEmpty()) {
 			System.out.println("doing backspace...");
 			intext = intext.substring(0, intext.length() - 1);
 			app.rewrite();
@@ -62,7 +62,7 @@ public class IBox {
 		app.fill(0);
 	}
 	
-	public void render(){
-		render(0,0,0);
+	public void render() {
+		render(0, 0, 0);
 	}
 }

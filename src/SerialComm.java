@@ -119,11 +119,11 @@ public class SerialComm implements SerialPortEventListener {
 			} catch (Exception e) {
 				System.err.println(e.toString());
 			}
-			if(ready){
+			if (ready) {
 				try {
 					System.out.println("Sending data");
 					output.write('B');
-					for(int c=0; c!=12; c++){
+					for (int c = 0; c != 12; c++) {
 						output.write(temps[c]);
 					}
 					output.write('D');
@@ -132,26 +132,26 @@ public class SerialComm implements SerialPortEventListener {
 				}
 				ready = false;
 			}
-			//			if(bytes==5){
+			//			if (bytes == 5) {
 			//				close();
 			//			}
 		}
 		// Ignore all the other eventTypes, but you should consider the other ones.
 	}
 
-	public String getPort(String[] arrWithout, String[] arrWith){
+	public String getPort(String[] arrWithout, String[] arrWith) {
 		Set<String> without = new HashSet<String>(Arrays.asList(arrWithout));
 		Set<String> with = new HashSet<String>(Arrays.asList(arrWith));
 		with.removeAll(without);
-		try{
+		try {
 			String[] newports = with.toArray(new String[0]);
 			return newports[0];
-		}catch(ArrayIndexOutOfBoundsException e){
+		} catch(ArrayIndexOutOfBoundsException e) {
 			return "Could not find port.";
 		}
 	}
 
-	public void setTemps(byte[] intemps){
+	public void setTemps(byte[] intemps) {
 		temps = intemps;
 	}
 }
