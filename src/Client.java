@@ -19,6 +19,7 @@ public class Client extends PApplet {
 	String port;
 	IButton[] buttons = new IButton[1];
 	IBox commandInputBox;
+	IButton commandSend;
 
 	public static void main(String[] args) {
 		ConsoleWriter.origout = System.out;
@@ -152,7 +153,7 @@ public class Client extends PApplet {
 				System.out.println("not num:" + key);
 			}
 			
-			if (selected == commandInputBox && key>='A' && key<='z') {selected.write(key);}
+			if (selected == commandInputBox && ((key>='A' && key<='z') || key == ' ')) {selected.write(key);}
 		}
 	}
 
