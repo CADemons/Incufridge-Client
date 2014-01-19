@@ -25,7 +25,7 @@ public class ConsoleWriter extends OutputStream {
 			}
 			lines[9] = fullstring;
 			fullstring = "";
-			if (Client.state == 3) {Client.app.rewrite();}
+			if (Client.state == 3) {Client.app.redraw();}
 		}
 	}
 
