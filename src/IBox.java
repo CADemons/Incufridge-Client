@@ -4,6 +4,7 @@ public class IBox {
 	Client app;
 	int x = 0, y = 0, w = 0, h = 0;
 	String intext = "";
+	int maxLength;
 
 	/**
 	 * Create a new IBox.
@@ -13,7 +14,7 @@ public class IBox {
 	 * @param w
 	 * @param h
 	 */
-	public IBox(Client parent, int x, int y, int w, int h) {
+	public IBox(Client parent, int x, int y, int w, int h, int maxLength) {
 		app = parent;
 		//		app.stroke(0);
 		//		app.fill(255);
@@ -23,6 +24,7 @@ public class IBox {
 		this.y=y;
 		this.w=w;
 		this.h=h;
+		this.maxLength = maxLength;
 	}
 
 	public void onClick() {
@@ -31,7 +33,7 @@ public class IBox {
 	}
 
 	public void write(int digit) {
-		if (intext.getBytes().length < 3) {
+		if (intext.getBytes().length < maxLength) {
 			intext += Integer.toString(digit);
 		} else {
 			System.out.println("Too long!");
@@ -40,6 +42,15 @@ public class IBox {
 		//		app.textSize(16);
 		//		app.text(intext, x+5, y+18);
 		//		app.redraw();
+	}
+	
+	public void write(char text) {
+		if (intext.getBytes().length < maxLength) {
+			intext += text;
+		} else {
+			System.out.println("Too long!");
+		}
+		app.rewrite();
 	}
 
 	public void backspace() {

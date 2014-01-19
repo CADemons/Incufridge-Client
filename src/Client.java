@@ -18,6 +18,7 @@ public class Client extends PApplet {
 	static boolean forceGui = false;
 	String port;
 	IButton[] buttons = new IButton[1];
+	IBox commandInputBox;
 
 	public static void main(String[] args) {
 		ConsoleWriter.origout = System.out;
@@ -52,7 +53,7 @@ public class Client extends PApplet {
 		};
 		t.start();
 		System.out.println("Started");*/
-		text("Detach the Incufridge, then click here.", 20, 100);
+		text("Detach the Incufridge, then click here.", 100, 100);
 		redraw();
 	}
 
@@ -79,12 +80,13 @@ public class Client extends PApplet {
 			without = Serial.list();
 			state = 2;
 			background(255);
-			text("Reattach the Incufridge, then click here.",20,100);
+			text("Reattach the Incufridge, then click here.", 100, 100);
 			redraw();
 		} else if (state == 2) {
 			String[] with = Serial.list();
 			SerialComm portFinder = new SerialComm();
 			this.port = portFinder.getPort(without,with);
+			
 			if(port == "Could not find port."){
 				if (forceGui) {
 					port = "invalid-forced";
@@ -106,7 +108,13 @@ public class Client extends PApplet {
 						&& mouseY <= inputs[c].y+inputs[c].h) {
 					inputs[c].onClick();
 				}
+				
+				if (mouseX >= commandInputBox.x && mouseX <= commandInputBox.x + commandInputBox.w 
+						&& mouseY >= commandInputBox.y && mouseY <= commandInputBox.y + commandInputBox.h) {
+					commandInputBox.onClick();
+				}
 			}
+			
 			for (int c = 0; c < buttons.length; c++) {
 				if (mouseX >= buttons[c].x && mouseX <= buttons[c].x+buttons[c].w && mouseY >= buttons[c].y 
 						&& mouseY <= buttons[c].y+buttons[c].h) {
@@ -132,15 +140,19 @@ public class Client extends PApplet {
 	public void keyPressed() {
 		if(state == 3){
 			int num = Character.getNumericValue(key);
+			
+			
 			if (num >= 0 && num <= 9) {
 				System.out.println("num: " + num);
-				if(selected != null){selected.write(num);}
+				if(selected != null) {selected.write(num);}
 			} else if (key == BACKSPACE) {
 				if (selected != null) {selected.backspace();}
 				System.out.println("backspace");
 			} else {
 				System.out.println("not num:" + key);
 			}
+			
+			if (selected == commandInputBox && key != BACKSPACE) {selected.write(key);}
 		}
 	}
 
@@ -167,6 +179,9 @@ public class Client extends PApplet {
 		buttons[0].render();
 		ConsoleWriter.render();
 		textSize(16);
+		
+		commandInputBox.render();
+		
 		for (int c = 0; c < 12; c++) {
 			inputs[c].render();
 			text(Integer.toString(c+1) + ".", boxx, boxy + 20);
@@ -177,11 +192,12 @@ public class Client extends PApplet {
 				boxx = startx;
 				boxy = starty + boxh + bufferh;
 			}
-
 		}
+		
 		if (selected != null) {
 			selected.render(255, 0, 0);
 		}
+		
 		stroke(0);
 		line(0, 200, 500, 200);
 		redraw();
@@ -199,12 +215,15 @@ public class Client extends PApplet {
 		int boxy = starty;
 		buttons[0] = new IButton(this, 410, 160, "Upload", 20);
 		textSize(16);
+		
+		commandInputBox = new IBox(this, 100, 160, boxw + 20, boxh, 5);
+		
 		for (int c = 0; c < 12; c++) {
 			fill(0);
 			stroke(0);
 			text(Integer.toString(c+1) + ".", boxx, boxy + 20);
 			boxx += textwidth;
-			inputs[c] = new IBox(this,boxx,boxy,boxw,boxh);
+			inputs[c] = new IBox(this, boxx, boxy, boxw, boxh, 3);
 			boxx += (boxw + 15);
 			if (c == 5) {
 				boxx = startx;
@@ -222,7 +241,7 @@ public class Client extends PApplet {
 	public void startSerial() {
 		SerialComm main = new SerialComm();
 		main.initialize(port);
-		Thread t=new Thread() {
+		Thread t = new Thread() {
 			public void run() {
 				//the following line will keep this app alive for 1000 seconds,
 				//waiting for events to occur and responding to them (printing incoming messages to console).
