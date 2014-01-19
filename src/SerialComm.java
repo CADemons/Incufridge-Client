@@ -27,7 +27,7 @@ public class SerialComm implements SerialPortEventListener {
 	 */
 	private BufferedReader input;
 	/** The output stream to the port */
-	private OutputStream output;
+	public OutputStream output;
 	/** Milliseconds to block while waiting for port open */
 	private static final int TIME_OUT = 2000;
 	/** Default bits per second for COM port. */

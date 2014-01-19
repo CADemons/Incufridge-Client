@@ -1,3 +1,5 @@
+import java.io.IOException;
+
 
 public class IButton {
 
@@ -42,22 +44,36 @@ public class IButton {
 		app.text(label, x + xpad, y + ypad + textSize);
 		app.fill(0);
 	}
-	
+
 	public void render() {
 		render(0, 0, 0);
 	}
 
-	public void onClick() {		
-		for(int c = 0; c < app.inputs.length; c++) {
-			if(app.inputs[c].intext != "" && Integer.parseInt(app.inputs[c].intext) < 128) {
-				SerialComm.temps[c] = Byte.parseByte(app.inputs[c].intext);
-				System.out.println("Uploaded: " + app.inputs[c].intext + " at slot " + c);
-			} else {
-				SerialComm.temps[c] = 0;
+	public void onClick() {
+		if(label == "Upload"){
+			for(int c = 0; c < app.inputs.length; c++) {
+				int number;
+				try{
+					number = Integer.parseInt(app.inputs[c].intext);
+				}catch(NumberFormatException e){
+					number = 0;
+				}
+				if(app.inputs[c].intext != "" && number < 128) {
+					SerialComm.temps[c] = Byte.parseByte(app.inputs[c].intext);
+					System.out.println("Uploaded: " + app.inputs[c].intext + " at slot " + c);
+				} else {
+					SerialComm.temps[c] = 0;
+				}
+			}
+
+			SerialComm.ready = true;
+			System.out.println("Button clicked");
+		}else if(label == "Send"){
+			try {
+				app.main.output.write(app.commandInputBox.intext.getBytes());
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
 		}
-		
-		SerialComm.ready = true;
-		System.out.println("Button clicked");
 	}
 }

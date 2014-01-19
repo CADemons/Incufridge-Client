@@ -17,9 +17,9 @@ public class Client extends PApplet {
 	/**Whether to force GUI to open for testing.*/
 	static boolean forceGui = false;
 	String port;
-	IButton[] buttons = new IButton[1];
+	IButton[] buttons = new IButton[2];
 	IBox commandInputBox;
-	IButton commandSend;
+	public SerialComm main;
 
 	public static void main(String[] args) {
 		ConsoleWriter.origout = System.out;
@@ -109,18 +109,17 @@ public class Client extends PApplet {
 						&& mouseY <= inputs[c].y+inputs[c].h) {
 					inputs[c].onClick();
 				}
-
-				if (mouseX >= commandInputBox.x && mouseX <= commandInputBox.x + commandInputBox.w 
-						&& mouseY >= commandInputBox.y && mouseY <= commandInputBox.y + commandInputBox.h) {
-					commandInputBox.onClick();
-				}
 			}
-
-			for (int c = 0; c < buttons.length; c++) {
-				if (mouseX >= buttons[c].x && mouseX <= buttons[c].x+buttons[c].w && mouseY >= buttons[c].y 
-						&& mouseY <= buttons[c].y+buttons[c].h) {
-					buttons[c].onClick();
-					buttons[c].render(255, 0, 0);
+			
+			if (mouseX >= commandInputBox.x && mouseX <= commandInputBox.x + commandInputBox.w && mouseY >= commandInputBox.y && mouseY <= commandInputBox.y + commandInputBox.h) {
+				commandInputBox.onClick();
+			}
+			
+			for (int b = 0; b < buttons.length; b++) {
+				if (mouseX >= buttons[b].x && mouseX <= buttons[b].x+buttons[b].w && mouseY >= buttons[b].y 
+						&& mouseY <= buttons[b].y+buttons[b].h) {
+					buttons[b].onClick();
+					buttons[b].render(255, 0, 0);
 					redraw();
 				} else {
 
@@ -155,114 +154,113 @@ public class Client extends PApplet {
 
 
 			if (selected == commandInputBox && ((key>='A' && key<='z') || key == ' ')) {
-				selected.backspace();
 				selected.write(key);
-				selected.write('|');
 			}
 		}
 
 	}
-}
 
-/**
- * Refresh GUI.
- */
-public void redraw() {
-	//Layout vars
-	int startx = 20;
-	int starty = 40;
-	int textwidth = 25;
-	int bufferh = 15;
-	int boxw = 40;
-	int boxh = 20;
-	int boxx = startx;
-	int boxy = starty;
-	background(255);
-	textSize(10);
-	text("Incufridge on " + port,10,190);
-	textSize(16);
-	text("Incufridge Client",175,20);
-	//		IButton upload = new IButton(this, 410, 160, "Upload", 20);
-	//		textSize(16);
-	buttons[0].render();
-	ConsoleWriter.render();
-	textSize(16);
+	/**
+	 * Refresh GUI.
+	 */
+	public void redraw() {
+		//Layout vars
+		int startx = 20;
+		int starty = 40;
+		int textwidth = 25;
+		int bufferh = 15;
+		int boxw = 40;
+		int boxh = 20;
+		int boxx = startx;
+		int boxy = starty;
+		background(255);
+		textSize(10);
+		text("Incufridge on " + port,10,190);
+		textSize(16);
+		text("Incufridge Client",175,20);
+		//		IButton upload = new IButton(this, 410, 160, "Upload", 20);
+		//		textSize(16);
+		buttons[0].render();
+		ConsoleWriter.render();
+		textSize(16);
 
-	text("Commands:", commandInputBox.x, commandInputBox.y - 5);
-	commandInputBox.render();
+		text("Commands:", commandInputBox.x, commandInputBox.y - 5);
+		commandInputBox.render();
+		buttons[1].render();
 
-	for (int c = 0; c < 12; c++) {
-		inputs[c].render();
-		text(Integer.toString(c+1) + ".", boxx, boxy + 20);
-		boxx += textwidth;
-		//			inputs[c] = new IBox(this,boxx,boxy,boxw,boxh);
-		boxx += (boxw + 15);
-		if ( c== 5) {
-			boxx = startx;
-			boxy = starty + boxh + bufferh;
+		for (int c = 0; c < 12; c++) {
+			inputs[c].render();
+			text(Integer.toString(c+1) + ".", boxx, boxy + 20);
+			boxx += textwidth;
+			//			inputs[c] = new IBox(this,boxx,boxy,boxw,boxh);
+			boxx += (boxw + 15);
+			if ( c== 5) {
+				boxx = startx;
+				boxy = starty + boxh + bufferh;
+			}
 		}
-	}
 
-	if (selected != null) {
-		selected.render(255, 0, 0);
-	}
+		if (selected != null) {
+			selected.render(255, 0, 0);
+		}
 
-	stroke(0);
-	line(0, 200, 500, 200);
-	super.redraw();
-}
-
-public void initGui() {
-	//Layout vars
-	int startx = 20;
-	int starty = 40;
-	int textwidth = 25;
-	int bufferh = 15;
-	int boxw = 40;
-	int boxh = 20;
-	int boxx = startx;
-	int boxy = starty;
-	buttons[0] = new IButton(this, 410, 160, "Upload", 20);
-	textSize(16);
-
-
-	commandInputBox = new IBox(this, 10
-			, 155, boxw + 100, boxh, 15);
-
-	text("Commands:", commandInputBox.x, commandInputBox.y - 5
-			);
-
-	for (int c = 0; c < 12; c++) {
-		fill(0);
 		stroke(0);
-		text(Integer.toString(c+1) + ".", boxx, boxy + 20);
-		boxx += textwidth;
-		inputs[c] = new IBox(this, boxx, boxy, boxw, boxh, 3);
-		boxx += (boxw + 15);
-		if (c == 5) {
-			boxx = startx;
-			boxy = starty + boxh + bufferh;
-		}
-
+		line(0, 200, 500, 200);
+		super.redraw();
 	}
-	redraw();
-}
 
-/**
- * Initialize serial communication class. See playground.arduino.cc/Interfacing/Java
- * @param port Port name.
- */
-public void startSerial() {
-	SerialComm main = new SerialComm();
-	main.initialize(port);
-	Thread t = new Thread() {
-		public void run() {
-			//the following line will keep this app alive for 1000 seconds,
-			//waiting for events to occur and responding to them (printing incoming messages to console).
-			try {Thread.sleep(1000000);} catch (InterruptedException ie) {}
+	public void initGui() {
+		//Layout vars
+		int startx = 20;
+		int starty = 40;
+		int textwidth = 25;
+		int bufferh = 15;
+		int boxw = 40;
+		int boxh = 20;
+		int boxx = startx;
+		int boxy = starty;
+		buttons[0] = new IButton(this, 410, 160, "Upload", 20);
+		textSize(16);
+
+
+		commandInputBox = new IBox(this, 10
+				, 155, boxw + 100, boxh, 15);
+
+		text("Commands:", commandInputBox.x, commandInputBox.y - 5
+				);
+		buttons[1] = new IButton(this, 160, 155, "Send", 12);
+
+		for (int c = 0; c < 12; c++) {
+			fill(0);
+			stroke(0);
+			text(Integer.toString(c+1) + ".", boxx, boxy + 20);
+			boxx += textwidth;
+			inputs[c] = new IBox(this, boxx, boxy, boxw, boxh, 3);
+			boxx += (boxw + 15);
+			if (c == 5) {
+				boxx = startx;
+				boxy = starty + boxh + bufferh;
+			}
+
 		}
-	};
-	t.start();
-	System.out.println("Started");
-}
+		redraw();
+	}
+
+	/**
+	 * Initialize serial communication class. See playground.arduino.cc/Interfacing/Java
+	 * @param port Port name.
+	 */
+	public void startSerial() {
+		main = new SerialComm();
+		main.initialize(port);
+		Thread t = new Thread() {
+			public void run() {
+				//the following line will keep this app alive for 1000 seconds,
+				//waiting for events to occur and responding to them (printing incoming messages to console).
+				try {Thread.sleep(1000000);} catch (InterruptedException ie) {}
+			}
+		};
+		t.start();
+		System.out.println("Started");
+	}
 }
