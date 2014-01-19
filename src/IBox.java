@@ -29,7 +29,7 @@ public class IBox {
 
 	public void onClick() {
 		app.selected = this;
-		app.rewrite();
+		app.redraw();
 	}
 
 	public void write(int digit) {
@@ -38,7 +38,7 @@ public class IBox {
 		} else {
 			System.out.println("Too long!");
 		}
-		app.rewrite();
+		app.redraw();
 		//		app.textSize(16);
 		//		app.text(intext, x+5, y+18);
 		//		app.redraw();
@@ -57,7 +57,7 @@ public class IBox {
 		if (!intext.isEmpty()) {
 			System.out.println("doing backspace...");
 			intext = intext.substring(0, intext.length() - 1);
-			app.rewrite();
+			app.redraw();
 			//			app.text(intext, x+5, y+18);
 			//			app.redraw();
 		}

@@ -53,8 +53,8 @@ public class Client extends PApplet {
 		};
 		t.start();
 		System.out.println("Started");*/
-		text("Detach the Incufridge, then click here.", 100, 100);
-		redraw();
+		text("Detach the Incufridge, then click here.", 20, 100);
+		super.redraw();
 	}
 
 	/**
@@ -80,8 +80,8 @@ public class Client extends PApplet {
 			without = Serial.list();
 			state = 2;
 			background(255);
-			text("Reattach the Incufridge, then click here.", 100, 100);
-			redraw();
+			text("Reattach the Incufridge, then click here.",20,100);
+			super.redraw();
 		} else if (state == 2) {
 			String[] with = Serial.list();
 			SerialComm portFinder = new SerialComm();
@@ -159,7 +159,7 @@ public class Client extends PApplet {
 	/**
 	 * Refresh GUI.
 	 */
-	public void rewrite() {
+	public void redraw() {
 		//Layout vars
 		int startx = 20;
 		int starty = 40;
@@ -200,7 +200,7 @@ public class Client extends PApplet {
 		
 		stroke(0);
 		line(0, 200, 500, 200);
-		redraw();
+		super.redraw();
 	}
 
 	public void initGui() {
@@ -231,7 +231,7 @@ public class Client extends PApplet {
 			}
 
 		}
-		rewrite();
+		redraw();
 	}
 
 	/**
