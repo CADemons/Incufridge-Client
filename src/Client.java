@@ -152,7 +152,7 @@ public class Client extends PApplet {
 				System.out.println("not num:" + key);
 			}
 			
-			if (selected == commandInputBox && key != BACKSPACE) {selected.write(key);}
+			if (selected == commandInputBox && key>='A' && key<='z') {selected.write(key);}
 		}
 	}
 
@@ -180,6 +180,7 @@ public class Client extends PApplet {
 		ConsoleWriter.render();
 		textSize(16);
 		
+		text("Commands:", commandInputBox.x, commandInputBox.y - 5);
 		commandInputBox.render();
 		
 		for (int c = 0; c < 12; c++) {
@@ -216,7 +217,12 @@ public class Client extends PApplet {
 		buttons[0] = new IButton(this, 410, 160, "Upload", 20);
 		textSize(16);
 		
-		commandInputBox = new IBox(this, 100, 160, boxw + 20, boxh, 5);
+		
+		commandInputBox = new IBox(this, 10
+				, 155, boxw + 100, boxh, 15);
+		
+		text("Commands:", commandInputBox.x, commandInputBox.y - 5
+				);
 		
 		for (int c = 0; c < 12; c++) {
 			fill(0);

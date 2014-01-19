@@ -40,6 +40,7 @@ public class IButton {
 		app.rect(x, y, w, h);
 		app.fill(r, g, b);
 		app.text(label, x + xpad, y + ypad + textSize);
+		app.fill(0);
 	}
 	
 	public void render() {
