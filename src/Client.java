@@ -152,7 +152,11 @@ public class Client extends PApplet {
 				System.out.println("not num:" + key);
 			}
 			
-			if (selected == commandInputBox && key>='A' && key<='z') {selected.write(key);}
+			if (selected == commandInputBox && key>='A' && key<='z') {
+				selected.backspace();
+				selected.write(key);
+				selected.write('|');
+			}
 		}
 	}
 
