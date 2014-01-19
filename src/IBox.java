@@ -50,7 +50,7 @@ public class IBox {
 		} else {
 			System.out.println("Too long!");
 		}
-		app.rewrite();
+		app.redraw();
 	}
 
 	public void backspace() {
