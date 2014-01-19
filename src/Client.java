@@ -19,6 +19,7 @@ public class Client extends PApplet {
 	String port;
 	IButton[] buttons = new IButton[1];
 	IBox commandInputBox;
+	IButton commandSend;
 
 	public static void main(String[] args) {
 		ConsoleWriter.origout = System.out;
@@ -86,7 +87,7 @@ public class Client extends PApplet {
 			String[] with = Serial.list();
 			SerialComm portFinder = new SerialComm();
 			this.port = portFinder.getPort(without,with);
-			
+
 			if(port == "Could not find port."){
 				if (forceGui) {
 					port = "invalid-forced";
@@ -108,13 +109,13 @@ public class Client extends PApplet {
 						&& mouseY <= inputs[c].y+inputs[c].h) {
 					inputs[c].onClick();
 				}
-				
+
 				if (mouseX >= commandInputBox.x && mouseX <= commandInputBox.x + commandInputBox.w 
 						&& mouseY >= commandInputBox.y && mouseY <= commandInputBox.y + commandInputBox.h) {
 					commandInputBox.onClick();
 				}
 			}
-			
+
 			for (int c = 0; c < buttons.length; c++) {
 				if (mouseX >= buttons[c].x && mouseX <= buttons[c].x+buttons[c].w && mouseY >= buttons[c].y 
 						&& mouseY <= buttons[c].y+buttons[c].h) {
@@ -122,12 +123,12 @@ public class Client extends PApplet {
 					buttons[c].render(255, 0, 0);
 					redraw();
 				} else {
-					
+
 				}
 			}
 		}
 	}
-	
+
 	public void mouseReleased() {
 		for (int c = 0; c < buttons.length; c++) {
 			if (buttons[c] != null) {
@@ -140,8 +141,8 @@ public class Client extends PApplet {
 	public void keyPressed() {
 		if(state == 3){
 			int num = Character.getNumericValue(key);
-			
-			
+
+
 			if (num >= 0 && num <= 9) {
 				System.out.println("num: " + num);
 				if(selected != null) {selected.write(num);}
@@ -151,114 +152,117 @@ public class Client extends PApplet {
 			} else {
 				System.out.println("not num:" + key);
 			}
-			
-			if (selected == commandInputBox && key>='A' && key<='z') {
+
+
+			if (selected == commandInputBox && ((key>='A' && key<='z') || key == ' ')) {
 				selected.backspace();
 				selected.write(key);
 				selected.write('|');
 			}
 		}
+
+	}
+}
+
+/**
+ * Refresh GUI.
+ */
+public void redraw() {
+	//Layout vars
+	int startx = 20;
+	int starty = 40;
+	int textwidth = 25;
+	int bufferh = 15;
+	int boxw = 40;
+	int boxh = 20;
+	int boxx = startx;
+	int boxy = starty;
+	background(255);
+	textSize(10);
+	text("Incufridge on " + port,10,190);
+	textSize(16);
+	text("Incufridge Client",175,20);
+	//		IButton upload = new IButton(this, 410, 160, "Upload", 20);
+	//		textSize(16);
+	buttons[0].render();
+	ConsoleWriter.render();
+	textSize(16);
+
+	text("Commands:", commandInputBox.x, commandInputBox.y - 5);
+	commandInputBox.render();
+
+	for (int c = 0; c < 12; c++) {
+		inputs[c].render();
+		text(Integer.toString(c+1) + ".", boxx, boxy + 20);
+		boxx += textwidth;
+		//			inputs[c] = new IBox(this,boxx,boxy,boxw,boxh);
+		boxx += (boxw + 15);
+		if ( c== 5) {
+			boxx = startx;
+			boxy = starty + boxh + bufferh;
+		}
 	}
 
-	/**
-	 * Refresh GUI.
-	 */
-	public void redraw() {
-		//Layout vars
-		int startx = 20;
-		int starty = 40;
-		int textwidth = 25;
-		int bufferh = 15;
-		int boxw = 40;
-		int boxh = 20;
-		int boxx = startx;
-		int boxy = starty;
-		background(255);
-		textSize(10);
-		text("Incufridge on " + port,10,190);
-		textSize(16);
-		text("Incufridge Client",175,20);
-		//		IButton upload = new IButton(this, 410, 160, "Upload", 20);
-		//		textSize(16);
-		buttons[0].render();
-		ConsoleWriter.render();
-		textSize(16);
-		
-		text("Commands:", commandInputBox.x, commandInputBox.y - 5);
-		commandInputBox.render();
-		
-		for (int c = 0; c < 12; c++) {
-			inputs[c].render();
-			text(Integer.toString(c+1) + ".", boxx, boxy + 20);
-			boxx += textwidth;
-			//			inputs[c] = new IBox(this,boxx,boxy,boxw,boxh);
-			boxx += (boxw + 15);
-			if ( c== 5) {
-				boxx = startx;
-				boxy = starty + boxh + bufferh;
-			}
-		}
-		
-		if (selected != null) {
-			selected.render(255, 0, 0);
-		}
-		
+	if (selected != null) {
+		selected.render(255, 0, 0);
+	}
+
+	stroke(0);
+	line(0, 200, 500, 200);
+	super.redraw();
+}
+
+public void initGui() {
+	//Layout vars
+	int startx = 20;
+	int starty = 40;
+	int textwidth = 25;
+	int bufferh = 15;
+	int boxw = 40;
+	int boxh = 20;
+	int boxx = startx;
+	int boxy = starty;
+	buttons[0] = new IButton(this, 410, 160, "Upload", 20);
+	textSize(16);
+
+
+	commandInputBox = new IBox(this, 10
+			, 155, boxw + 100, boxh, 15);
+
+	text("Commands:", commandInputBox.x, commandInputBox.y - 5
+			);
+
+	for (int c = 0; c < 12; c++) {
+		fill(0);
 		stroke(0);
-		line(0, 200, 500, 200);
-		super.redraw();
-	}
-
-	public void initGui() {
-		//Layout vars
-		int startx = 20;
-		int starty = 40;
-		int textwidth = 25;
-		int bufferh = 15;
-		int boxw = 40;
-		int boxh = 20;
-		int boxx = startx;
-		int boxy = starty;
-		buttons[0] = new IButton(this, 410, 160, "Upload", 20);
-		textSize(16);
-		
-		
-		commandInputBox = new IBox(this, 10
-				, 155, boxw + 100, boxh, 15);
-		
-		text("Commands:", commandInputBox.x, commandInputBox.y - 5
-				);
-		
-		for (int c = 0; c < 12; c++) {
-			fill(0);
-			stroke(0);
-			text(Integer.toString(c+1) + ".", boxx, boxy + 20);
-			boxx += textwidth;
-			inputs[c] = new IBox(this, boxx, boxy, boxw, boxh, 3);
-			boxx += (boxw + 15);
-			if (c == 5) {
-				boxx = startx;
-				boxy = starty + boxh + bufferh;
-			}
-
+		text(Integer.toString(c+1) + ".", boxx, boxy + 20);
+		boxx += textwidth;
+		inputs[c] = new IBox(this, boxx, boxy, boxw, boxh, 3);
+		boxx += (boxw + 15);
+		if (c == 5) {
+			boxx = startx;
+			boxy = starty + boxh + bufferh;
 		}
-		redraw();
-	}
 
-	/**
-	 * Initialize serial communication class. See playground.arduino.cc/Interfacing/Java
-	 * @param port Port name.
-	 */
-	public void startSerial() {
-		SerialComm main = new SerialComm();
-		main.initialize(port);
-		Thread t = new Thread() {
-			public void run() {
-				//the following line will keep this app alive for 1000 seconds,
-				//waiting for events to occur and responding to them (printing incoming messages to console).
-				try {Thread.sleep(1000000);} catch (InterruptedException ie) {}
-			}
-		};
-		t.start();
-		System.out.println("Started");
 	}
+	redraw();
+}
+
+/**
+ * Initialize serial communication class. See playground.arduino.cc/Interfacing/Java
+ * @param port Port name.
+ */
+public void startSerial() {
+	SerialComm main = new SerialComm();
+	main.initialize(port);
+	Thread t = new Thread() {
+		public void run() {
+			//the following line will keep this app alive for 1000 seconds,
+			//waiting for events to occur and responding to them (printing incoming messages to console).
+			try {Thread.sleep(1000000);} catch (InterruptedException ie) {}
+		}
+	};
+	t.start();
+	System.out.println("Started");
+}
 }
