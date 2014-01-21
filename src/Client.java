@@ -10,7 +10,7 @@ public class Client extends PApplet {
 	static int state;
 	String[] without;
 	/**Array of inputs for detecting clicks.*/
-	IBox[] inputs = new IBox[12];
+	IBox[] inputs;
 	/**Where to enter text.*/
 	public IBox selected;
 	PFont f;
@@ -20,20 +20,25 @@ public class Client extends PApplet {
 	IButton[] buttons = new IButton[2];
 	IBox commandInputBox;
 	public SerialComm main;
+	int numIBoxes;
 
 	public static void main(String[] args) {
 		ConsoleWriter.origout = System.out;
 		System.setOut(new PrintStream(new ConsoleWriter()));
+		
 		if (args.length > 0 && args[0].equals("forcegui")) {
 			forceGui = true;
 			System.out.println("Forcing GUI...");
 		} else {
 			System.out.println("Not forcing GUI.");
 		}
+		
 		PApplet.main(new String[] {"Client"});
 	}
 
 	public void setup() {
+		numIBoxes = 10;
+		inputs = new IBox[numIBoxes];
 		app = this;
 		//SerialComm main = new SerialComm();
 		size(500, 350);
@@ -188,7 +193,7 @@ public class Client extends PApplet {
 		commandInputBox.render();
 		buttons[1].render();
 
-		for (int c = 0; c < 12; c++) {
+		for (int c = 0; c < numIBoxes; c++) {
 			inputs[c].render();
 			text(Integer.toString(c+1) + ".", boxx, boxy + 20);
 			boxx += textwidth;
@@ -230,7 +235,7 @@ public class Client extends PApplet {
 				);
 		buttons[1] = new IButton(this, 160, 155, "Send", 12);
 
-		for (int c = 0; c < 12; c++) {
+		for (int c = 0; c < numIBoxes; c++) {
 			fill(0);
 			stroke(0);
 			text(Integer.toString(c+1) + ".", boxx, boxy + 20);
