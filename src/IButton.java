@@ -51,6 +51,7 @@ public class IButton {
 
 	public void onClick() {
 		if(label == "Upload"){
+			app.main.writeByte((byte)'~');
 			for(int c = 0; c < app.inputs.length; c++) {
 				int number;
 				try{
@@ -59,21 +60,18 @@ public class IButton {
 					number = 0;
 				}
 				if(app.inputs[c].intext != "" && number < 128) {
-					SerialComm.temps[c] = Byte.parseByte(app.inputs[c].intext);
+					app.main.writeByte(Byte.parseByte(app.inputs[c].intext));
 					System.out.println("Uploaded: " + app.inputs[c].intext + " at slot " + c);
 				} else {
-					SerialComm.temps[c] = 0;
+					app.main.writeByte((byte)0);
 				}
 			}
-
-			SerialComm.ready = true;
+			app.main.writeByte((byte)'D');
 			System.out.println("Button clicked");
 		}else if(label == "Send"){
-			try {
-				app.main.output.write(app.commandInputBox.intext.getBytes());
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			app.main.writeBytes(app.commandInputBox.intext.getBytes());
+			System.out.println("Sent command: " + app.commandInputBox.intext);
 		}
 	}
 }
+

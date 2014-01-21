@@ -8,6 +8,7 @@ import gnu.io.SerialPort;
 import gnu.io.SerialPortEvent; 
 import gnu.io.SerialPortEventListener; 
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashSet;
@@ -16,8 +17,8 @@ import java.util.Set;
 public class SerialComm implements SerialPortEventListener {
 	int bytes = 0;
 	SerialPort serialPort;
-	static byte[] temps = new byte[12];
-	static boolean ready = false;
+	//static byte[] temps = new byte[12];
+	private ArrayList<Byte> outBytes = new ArrayList<Byte>();
 	/** The port we're normally going to use. */
 	private static final String PORT_NAMES[] = new String[1];
 	/**
@@ -119,18 +120,21 @@ public class SerialComm implements SerialPortEventListener {
 			} catch (Exception e) {
 				System.err.println(e.toString());
 			}
-			if (ready) {
+			if (outBytes.size() > 0) {
 				try {
 					System.out.println("Sending data");
-					output.write('~');
-					for (int c = 0; c != 12; c++) {
-						output.write(temps[c]);
+//					output.write('~');
+//					for (int c = 0; c != 12; c++) {
+//						output.write(temps[c]);
+//					}
+//					output.write('D');
+					for(int i = 0; i < outBytes.size(); i++){
+						output.write(outBytes.get(i));
 					}
-					output.write('D');
+					outBytes.clear();
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-				ready = false;
 			}
 			//			if (bytes == 5) {
 			//				close();
@@ -150,8 +154,14 @@ public class SerialComm implements SerialPortEventListener {
 			return "Could not find port.";
 		}
 	}
-
-	public void setTemps(byte[] intemps) {
-		temps = intemps;
+	
+	public void writeByte(byte in){
+		outBytes.add(in);
+	}
+	
+	public void writeBytes(byte[] in){
+		for(int i = 0; i < in.length; i++){
+			writeByte(in[i]);
+		}
 	}
 }

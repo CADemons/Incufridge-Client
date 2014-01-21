@@ -153,7 +153,7 @@ public class Client extends PApplet {
 			}
 
 
-			if (selected == commandInputBox && ((key>='A' && key<='z') || key == ' ')) {
+			if (selected == commandInputBox && ((key>='A' && key<='z') || key == ' ' || key == ';')) {
 				selected.write(key);
 			}
 		}
