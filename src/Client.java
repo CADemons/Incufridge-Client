@@ -21,6 +21,7 @@ public class Client extends PApplet {
 	IBox commandInputBox;
 	public SerialComm main;
 	int numIBoxes;
+	IBox numIBoxChoice;
 
 	public static void main(String[] args) {
 		ConsoleWriter.origout = System.out;
@@ -37,8 +38,8 @@ public class Client extends PApplet {
 	}
 
 	public void setup() {
-		numIBoxes = 10;
-		inputs = new IBox[numIBoxes];
+		
+		inputs = new IBox[0];
 		app = this;
 		//SerialComm main = new SerialComm();
 		size(500, 350);
@@ -86,14 +87,19 @@ public class Client extends PApplet {
 			without = Serial.list();
 			state = 2;
 			background(255);
-			text("Reattach the Incufridge, then click here.",20,100);
+			numIBoxChoice = new IBox(app, 20, 150, 50, 20, 2);
+			numIBoxChoice.render();
+			numIBoxChoice.write(1);;
+			text("Reattach the Incufridge, then click here.", 20, 100);
 			super.redraw();
 		} else if (state == 2) {
+			numIBoxes = Integer.parseInt(numIBoxChoice.intext);
+			inputs = new IBox[numIBoxes];
 			String[] with = Serial.list();
 			SerialComm portFinder = new SerialComm();
 			this.port = portFinder.getPort(without,with);
 
-			if(port == "Could not find port."){
+			if (port == "Could not find port.") {
 				if (forceGui) {
 					port = "invalid-forced";
 					initGui();
@@ -143,6 +149,20 @@ public class Client extends PApplet {
 	}
 
 	public void keyPressed() {
+		if (state == 2) {
+			System.out.println("State 2");
+			int num = Character.getNumericValue(key);
+			
+			if (num >= 0 && num <= 9) {
+				System.out.println("num: " + num);
+				if (numIBoxChoice != null) numIBoxChoice.write(num);
+			} else if (key == BACKSPACE) {
+				if (numIBoxChoice != null) numIBoxChoice.backspace();
+				System.out.println("backspace");
+			} else {
+				System.out.println("not num:" + key);
+			}
+		}
 		if(state == 3){
 			int num = Character.getNumericValue(key);
 
@@ -180,33 +200,41 @@ public class Client extends PApplet {
 		int boxy = starty;
 		background(255);
 		textSize(10);
-		text("Incufridge on " + port,10,190);
+		text("Incufridge on " + port, 10, 190);
 		textSize(16);
-		text("Incufridge Client",175,20);
+		text("Incufridge Client", 175, 20);
 		//		IButton upload = new IButton(this, 410, 160, "Upload", 20);
 		//		textSize(16);
-		buttons[0].render();
-		ConsoleWriter.render();
-		textSize(16);
-
-		text("Commands:", commandInputBox.x, commandInputBox.y - 5);
-		commandInputBox.render();
-		buttons[1].render();
-
-		for (int c = 0; c < numIBoxes; c++) {
-			inputs[c].render();
-			text(Integer.toString(c+1) + ".", boxx, boxy + 20);
-			boxx += textwidth;
-			//			inputs[c] = new IBox(this,boxx,boxy,boxw,boxh);
-			boxx += (boxw + 15);
-			if ( c== 5) {
-				boxx = startx;
-				boxy = starty + boxh + bufferh;
+		
+		if (state == 2) {
+			System.out.println("Redrawing in state 2");
+			text("Reattach the Incufridge, then click here.", 20, 100);
+			numIBoxChoice.render();
+		} else {
+		
+			buttons[0].render();
+			ConsoleWriter.render();
+			textSize(16);
+			
+			text("Commands:", commandInputBox.x, commandInputBox.y - 5);
+			commandInputBox.render();
+			buttons[1].render();
+			
+			for (int c = 0; c < numIBoxes; c++) {
+				inputs[c].render();
+				text(Integer.toString(c+1) + ".", boxx, boxy + 20);
+				boxx += textwidth;
+				//			inputs[c] = new IBox(this,boxx,boxy,boxw,boxh);
+				boxx += (boxw + 15);
+				if ( c== 5) {
+					boxx = startx;
+					boxy = starty + boxh + bufferh;
+				}
 			}
-		}
-
-		if (selected != null) {
-			selected.render(255, 0, 0);
+	
+			if (selected != null) {
+				selected.render(255, 0, 0);
+			}
 		}
 
 		stroke(0);
