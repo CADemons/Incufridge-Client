@@ -49,26 +49,36 @@ public class IButton {
 
 	public void onClick() {
 		if (label == "Upload") {
-			app.main.writeByte((byte)'~');
-			for (int c = 0; c < app.inputs.length; c++) {
-				int number;
-				try {
-					number = Integer.parseInt(app.inputs[c].intext);
-				} catch(NumberFormatException e){
-					number = 0;
+			if(app.main != null){
+				app.main.writeByte((byte)'~');
+				for (int c = 0; c < app.inputs.length; c++) {
+					int number;
+					try {
+						number = Integer.parseInt(app.inputs[c].intext);
+					} catch(NumberFormatException e){
+						number = 0;
+					}
+					if (app.inputs[c].intext != "" && number < 128) {
+						app.main.writeByte(Byte.parseByte(app.inputs[c].intext));
+						System.out.println("Uploaded: " + app.inputs[c].intext + " at slot " + c);
+					} else {
+						app.main.writeByte((byte)0);
+					}
 				}
-				if (app.inputs[c].intext != "" && number < 128) {
-					app.main.writeByte(Byte.parseByte(app.inputs[c].intext));
-					System.out.println("Uploaded: " + app.inputs[c].intext + " at slot " + c);
-				} else {
-					app.main.writeByte((byte)0);
-				}
+				app.main.writeByte((byte)'D');
+				System.out.println("Button clicked");
+			}else{
+				System.out.println("No connnection to transmit data");
 			}
-			app.main.writeByte((byte)'D');
-			System.out.println("Button clicked");
 		} else if (label == "Send") {
-			app.main.writeBytes(app.commandInputBox.intext.getBytes());
-			System.out.println("Sent command: " + app.commandInputBox.intext);
+			if(app.main != null){
+				app.main.writeBytes(app.commandInputBox.intext.getBytes());
+				System.out.println("Sent command: " + app.commandInputBox.intext);
+			}else{
+				System.out.println("No connnection to transmit command");
+			}
+			app.commandInputBox.intext = "";
+			app.redraw();
 		}
 	}
 }
