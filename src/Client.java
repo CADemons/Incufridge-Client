@@ -1,6 +1,7 @@
 import java.io.PrintStream;
 
 import processing.core.*;
+import processing.event.MouseEvent;
 import processing.serial.*;
 
 @SuppressWarnings("serial")
@@ -22,6 +23,8 @@ public class Client extends PApplet {
 	public SerialComm main;
 	int numIBoxes;
 	IBox numIBoxChoice;
+	
+	int mouseWheelChange = 15;
 
 	public static void main(String[] args) {
 		ConsoleWriter.origout = System.out;
@@ -147,6 +150,15 @@ public class Client extends PApplet {
 			}
 		}
 	}
+	
+	/*public void mouseWheel(MouseEvent e) {
+		if ((int) e.getAmount() < 0) {
+			mouseWheelChange = -15;
+		} else {
+			mouseWheelChange = 15;
+		}
+		redraw();
+	}*/
 
 	public void keyPressed() {
 		if (state == 2) {
@@ -213,7 +225,7 @@ public class Client extends PApplet {
 		} else {
 		
 			buttons[0].render();
-			ConsoleWriter.render();
+			ConsoleWriter.render(mouseWheelChange);
 			textSize(16);
 			
 			text("Commands:", commandInputBox.x, commandInputBox.y - 5);

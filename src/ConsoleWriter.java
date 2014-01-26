@@ -28,11 +28,15 @@ public class ConsoleWriter extends OutputStream {
 			if (Client.state == 3) {Client.app.redraw();}
 		}
 	}
-
+	
 	public static void render() {
+		render(15);
+	}
+	
+	public static void render(int changeyArg) {
 		int x = 15;
 		int y = 210;
-		int changey = 15;
+		int changey = changeyArg;
 		Client.app.textSize(10);
 		for(int c=0; c<10; c++){
 			Client.app.text(lines[c], x, y);
