@@ -1,8 +1,8 @@
 import java.io.PrintStream;
 
-import processing.core.*;
-import processing.event.MouseEvent;
-import processing.serial.*;
+import processing.core.PApplet;
+import processing.core.PFont;
+import processing.serial.Serial;
 
 @SuppressWarnings("serial")
 public class Client extends PApplet {
@@ -22,6 +22,10 @@ public class Client extends PApplet {
 	IBox commandInputBox;
 	public SerialComm main;
 	int numIBoxes;
+	
+	// Vertical length of the screen
+	protected static int myYSize = 350; // Default is 350
+	
 	IBox numIBoxChoice;
 	
 	int mouseWheelChange = 15;
@@ -45,7 +49,7 @@ public class Client extends PApplet {
 		inputs = new IBox[0];
 		app = this;
 		//SerialComm main = new SerialComm();
-		size(500, 350);
+		size(500, myYSize);
 		background(255);
 		f = createFont("Helectiva", 16, true);
 		//textFont(f,16);
@@ -87,13 +91,14 @@ public class Client extends PApplet {
 	 */
 	public void mousePressed() {
 		if (state == 1) {
+			double scaleSize = myYSize / 350;
 			without = Serial.list();
 			state = 2;
 			background(255);
-			numIBoxChoice = new IBox(app, 20, 150, 50, 20, 2);
+			numIBoxChoice = new IBox(app, 20, (int) (150 * scaleSize), 50, (int) (20 * scaleSize), 2);
 			numIBoxChoice.render();
 			numIBoxChoice.write(1);;
-			text("Reattach the Incufridge, then click here.", 20, 100);
+			text("Reattach the Incufridge, then click here.", 20, (float) (100 * scaleSize));
 			super.redraw();
 		} else if (state == 2) {
 			numIBoxes = Integer.parseInt(numIBoxChoice.intext);
@@ -125,7 +130,8 @@ public class Client extends PApplet {
 				}
 			}
 			
-			if (mouseX >= commandInputBox.x && mouseX <= commandInputBox.x + commandInputBox.w && mouseY >= commandInputBox.y && mouseY <= commandInputBox.y + commandInputBox.h) {
+			if (mouseX >= commandInputBox.x && mouseX <= commandInputBox.x + commandInputBox.w &&
+					mouseY >= commandInputBox.y && mouseY <= commandInputBox.y + commandInputBox.h) {
 				commandInputBox.onClick();
 			}
 			
@@ -170,7 +176,6 @@ public class Client extends PApplet {
 				if (numIBoxChoice != null) numIBoxChoice.write(num);
 			} else if (key == BACKSPACE) {
 				if (numIBoxChoice != null) numIBoxChoice.backspace();
-				System.out.println("backspace");
 			} else {
 				System.out.println("not num:" + key);
 			}
@@ -184,7 +189,6 @@ public class Client extends PApplet {
 				if(selected != null) {selected.write(num);}
 			} else if (key == BACKSPACE) {
 				if (selected != null) {selected.backspace();}
-				System.out.println("backspace");
 			} else {
 				System.out.println("not num:" + key);
 			}
@@ -201,26 +205,28 @@ public class Client extends PApplet {
 	 * Refresh GUI.
 	 */
 	public void redraw() {
+		double scaleSize = myYSize / 350.0;
+		
 		//Layout vars
 		int startx = 20;
-		int starty = 40;
+		int starty = (int) (40 * 1);
 		int textwidth = 25;
-		int bufferh = 15;
+		int bufferh = (int) (15 * 1);
 		int boxw = 40;
-		int boxh = 20;
+		int boxh = (int) (20 * 1);
 		int boxx = startx;
-		int boxy = starty;
+		int boxy = (int) (starty * 1);
 		background(255);
 		textSize(10);
-		text("Incufridge on " + port, 10, 190);
+		text("Incufridge on " + port, 10, (float) (190 * scaleSize));
 		textSize(16);
-		text("Incufridge Client", 175, 20);
+		text("Incufridge Client", 175, (float) (20 * scaleSize));
 		//		IButton upload = new IButton(this, 410, 160, "Upload", 20);
 		//		textSize(16);
 		
 		if (state == 2) {
 			System.out.println("Redrawing in state 2");
-			text("Reattach the Incufridge, then click here.", 20, 100);
+			text("Reattach the Incufridge, then click here.", 20, (float) (100.0 * scaleSize));
 			numIBoxChoice.render();
 		} else {
 		
@@ -228,19 +234,30 @@ public class Client extends PApplet {
 			ConsoleWriter.render(mouseWheelChange);
 			textSize(16);
 			
-			text("Commands:", commandInputBox.x, commandInputBox.y - 5);
+			text("Commands:", commandInputBox.x, (float) ((commandInputBox.y - 5) * scaleSize));
 			commandInputBox.render();
 			buttons[1].render();
 			
 			for (int c = 0; c < numIBoxes; c++) {
-				inputs[c].render();
-				text(Integer.toString(c+1) + ".", boxx, boxy + 20);
+				//System.out.println("C: " + c);
+				
+				fill(0);
+				stroke(0);
+				
 				boxx += textwidth;
-				//			inputs[c] = new IBox(this,boxx,boxy,boxw,boxh);
+				inputs[c].render();
 				boxx += (boxw + 15);
-				if ( c== 5) {
-					boxx = startx;
-					boxy = starty + boxh + bufferh;
+				
+				text(Integer.toString(c+1) + ".", boxx - boxw * 2, boxy + 20);
+				if (boxy < 110 * scaleSize /*boxes should not spawn beyond this point*/) {
+				//	System.out.println(boxy + " < " + 110.0 * scaleSize);
+					for (int i = 1; i < 25; i++) {
+						if (c == i * 6 - 1) {
+							//System.out.println(c + " == " + (i * 12 - 1));
+							boxx = startx;
+							boxy += boxh + bufferh;
+						}
+					}
 				}
 			}
 	
@@ -250,44 +267,67 @@ public class Client extends PApplet {
 		}
 
 		stroke(0);
-		line(0, 200, 500, 200);
+		line((float) 0, (float) (200 * scaleSize), (float) 500, (float) (200 * scaleSize));
+		
 		super.redraw();
 	}
 
+	// Initialize all the elements of the GUI
 	public void initGui() {
+		double scaleSize = myYSize / 350.0; // Need to scale everything based on the size of the screen
+		
+		System.out.println(scaleSize);
+		
 		//Layout vars
 		int startx = 20;
-		int starty = 40;
+		int starty = (int) (40 * 1);
 		int textwidth = 25;
-		int bufferh = 15;
+		int bufferh = (int) (15 * 1);
 		int boxw = 40;
-		int boxh = 20;
+		int boxh = (int) (20 * 1);
 		int boxx = startx;
-		int boxy = starty;
-		buttons[0] = new IButton(this, 410, 160, "Upload", 20);
+		int boxy = (int) (starty * 1);
+		buttons[0] = new IButton(this, 410, (int) (160 * scaleSize), "Upload", 20);
 		textSize(16);
 
-
+		// Make the box for sending commands
 		commandInputBox = new IBox(this, 10
-				, 155, boxw + 100, boxh, 15);
+				, (int) (155 * scaleSize), boxw + 100, boxh, 15);
 
-		text("Commands:", commandInputBox.x, commandInputBox.y - 5
+		text("Commands:", commandInputBox.x, (float) ((commandInputBox.y - 5) * scaleSize)
 				);
-		buttons[1] = new IButton(this, 160, 155, "Send", 12);
+		buttons[1] = new IButton(this, 160, (int) (155 * scaleSize), "Send", 12);
 
+		
+		
 		for (int c = 0; c < numIBoxes; c++) {
+			
+			System.out.println("C: " + c);
+			
 			fill(0);
 			stroke(0);
-			text(Integer.toString(c+1) + ".", boxx, boxy + 20);
+			
 			boxx += textwidth;
+			text(Integer.toString(c+1) + ".", boxx, boxy + 200);
 			inputs[c] = new IBox(this, boxx, boxy, boxw, boxh, 3);
 			boxx += (boxw + 15);
-			if (c == 5) {
-				boxx = startx;
-				boxy = starty + boxh + bufferh;
+			if (boxy < 110 * scaleSize /*boxes should not spawn beyond this point*/) {
+				System.out.println(boxy + " < " + 110.0 * scaleSize);
+				for (int i = 1; i < 25; i++) {
+					if (c == i * 6 - 1) {
+						System.out.println(c + "==" + (i * 12 - 1));
+						boxx = startx;
+						boxy += boxh + bufferh;
+					}
+				}
+				
+				text(Integer.toString(c+1) + ".", boxx, boxy + 20);
+			} else {
+				System.out.println(boxy + " > " + 110.0 * scaleSize);
 			}
-
 		}
+		
+		// Refresh the screen
 		redraw();
 	}
 

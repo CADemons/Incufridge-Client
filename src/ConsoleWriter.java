@@ -34,8 +34,9 @@ public class ConsoleWriter extends OutputStream {
 	}
 	
 	public static void render(int changeyArg) {
-		int x = 15;
-		int y = 210;
+		int x = (int) (15 * (Client.myYSize / 350.0));
+		int y = (int) (210 * (Client.myYSize / 350.0));
+		
 		int changey = changeyArg;
 		Client.app.textSize(10);
 		for(int c=0; c<10; c++){
