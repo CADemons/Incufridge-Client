@@ -141,8 +141,6 @@ public class Client extends PApplet {
 					buttons[b].onClick();
 					buttons[b].render(255, 0, 0);
 					redraw();
-				} else {
-
 				}
 			}
 		}
@@ -321,7 +319,7 @@ public class Client extends PApplet {
 					}
 				}
 				
-				text(Integer.toString(c+1) + ".", boxx, boxy + 20);
+				text(Integer.toString(c + 1) + ".", boxx, boxy + 20);
 			} else {
 				System.out.println(boxy + " > " + 110.0 * scaleSize);
 			}
