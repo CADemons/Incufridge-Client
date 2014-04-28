@@ -1,9 +1,11 @@
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-
+import java.io.InputStream;
 
 public class TextFileReader {
 	public static String readLineFromFile(String filePath, int lineNumber) {
@@ -73,5 +75,62 @@ public class TextFileReader {
 		}
 		
 		return entireFile;
+	}
+	
+	public static int countLines(String filePath) {
+		InputStream is = null;
+		try {
+			is = new BufferedInputStream(new FileInputStream(filePath));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	    try {
+	        byte[] c = new byte[1024];
+	        int count = 0;
+	        int readChars = 0;
+	        boolean empty = true;
+	        while ((readChars = is.read(c)) != -1) {
+	            empty = false;
+	            for (int i = 0; i < readChars; ++i) {
+	                if (c[i] == '\n') {
+	                    ++count;
+	                }
+	            }
+	        }
+	        return (count == 0 && !empty) ? 1 : count;
+	    } catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+	        try {
+				is.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	    }
+	    
+	    return 0;
+	}
+	
+	public static String[] readCommandsFromFile(String filePath) {
+		LineParser lp = new LineParser();
+		
+		String[] commands = new String[TextFileReader.countLines("Commands") + 1];
+		
+		for (int i = 0; i < commands.length; i++) {
+			commands[i] = TextFileReader.readLineFromFile("Commands", i + 1);
+			
+			commands[i] = lp.parseCommand(commands[i]);
+		}
+		
+		return commands;
+	}
+	
+	public static void main(String[] args) {
+		for (int i = 0; i < TextFileReader.readCommandsFromFile("Commands").length; i++) {
+			System.out.println(TextFileReader.readCommandsFromFile("Commands")[i]);
+		}
 	}
 }
