@@ -183,16 +183,16 @@ public class Client extends PApplet {
 
 
 			if (num >= 0 && num <= 9) {
-				System.out.println("num: " + num);
+				System.out.println("good: " + num);
 				if(selected != null) {selected.write(num);}
 			} else if (key == BACKSPACE) {
 				if (selected != null) {selected.backspace();}
 			} else {
-				System.out.println("not num:" + key);
+				System.out.println("bad:" + key);
 			}
 
 
-			if (selected == commandInputBox && ((key>='A' && key<='z') || key == ' ' || key == ';')) {
+			if (selected == commandInputBox && ((key >= ' ' && key <= '/') || (key >= ':' && key <= '~'))) {
 				selected.write(key);
 			}
 		}
