@@ -5,6 +5,7 @@ public class LineParser {
 			"LIGHT_OFF", "READ_DISPLAY", "SET_TEMP"};
 
 	String[] wordsToIgnore = new String[] {"the", "degrees", "celsius", "farenheit", "in", "about", "turn", "and"};	
+	String[] importantWords = new String[] {"light", "on", "off", "display", "set", "temp", "read", "fan", "go", "pwm"};
 	
 	public String parseName(String s) {
 		String parsed = "";
@@ -35,6 +36,16 @@ public class LineParser {
 
 		return parsed;
 	}
+	
+	public boolean isInteger(String s) {
+		try {
+			Integer.parseInt(s);
+		} catch (NumberFormatException e) {
+			return false;
+		}
+		
+		return true;
+	}
 
 	public String parseCommand(String s) {
 		String parsed = "";
@@ -53,6 +64,22 @@ public class LineParser {
 			}
 			
 		}
+		
+		/*for (int a = 0; a < spaceSplit.length; a++) {
+			if (spaceSplit[a].equals("temperature")) {
+				spaceSplit[a] = "temp";
+			}
+			
+			for (int b = 0; b < importantWords.length; b++) {
+				System.out.println(spaceSplit[a] + ", " + importantWords[b]);
+				
+				if (!spaceSplit[a].equals(importantWords[b])) {
+					if (!isInteger(spaceSplit[a])) {
+						spaceSplit[a] = "";
+					}
+				}
+			}
+		}*/
 
 		s = combine(spaceSplit, " ");
 		

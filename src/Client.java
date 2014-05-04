@@ -292,8 +292,7 @@ public class Client extends PApplet {
 		commandInputBox = new IBox(this, 10
 				, (int) (155 * scaleSize), boxw + 100, boxh, 15);
 
-		text("Commands:", commandInputBox.x, (float) ((commandInputBox.y - 5) * scaleSize)
-				);
+		text("Commands:", commandInputBox.x, (float) ((commandInputBox.y - 5) * scaleSize));
 		buttons[1] = new IButton(this, 160, (int) (155 * scaleSize), "Send", 12);
 
 		
