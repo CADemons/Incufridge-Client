@@ -32,7 +32,7 @@ public class Client extends PApplet {
 
 	public static void main(String[] args) {
 		ConsoleWriter.origout = System.out;
-		System.setOut(new PrintStream(new ConsoleWriter()));
+		System.setOut(new PrintStream(new ConsoleWriter(true)));
 		
 		if (args.length > 0 && args[0].equals("forcegui")) {
 			forceGui = true;

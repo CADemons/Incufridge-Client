@@ -2,7 +2,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
-
 @SuppressWarnings("serial")
 public class GUI extends JFrame {
 	
@@ -29,7 +28,7 @@ public class GUI extends JFrame {
 
 	public void addTab(String name, JPanel panel) {
 		
-		tabbed.setBounds(20,20, 360, 360);
+		tabbed.setBounds(20, 20, 360, 360);
 		getContentPane().add(tabbed);
 
 		tabbed.addTab(name, null, panel, "Does nothing");
@@ -37,7 +36,7 @@ public class GUI extends JFrame {
 	
 	public static void main(String[] args) {
 		GUI gui = new GUI();
-		gui.addTab("Commands", new CommandsPanel());
-		gui.addTab("Test");
+		gui.addTab("Recipe", new CommandsPanel());
+		gui.addTab("Console", new ConsolePanel());
 	}
 }

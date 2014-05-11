@@ -7,11 +7,20 @@ public class ConsoleWriter extends OutputStream {
 	static PrintStream origout;
 	static String[] lines = new String[10];
 	String fullstring = "";
+	private ConsolePanel cp;
+	private boolean usingClientGUI;
 
-	public ConsoleWriter() {
+	public ConsoleWriter(boolean clientGUI) {
 		for (int c = 0; c < 10; c++) {
 			lines[c] = "";
 		}
+		
+		usingClientGUI = clientGUI;
+	}
+	
+	public ConsoleWriter(ConsolePanel cpArg) {
+		this(false);
+		cp = cpArg;
 	}
 
 	public void write(int arg) throws IOException {
@@ -24,6 +33,10 @@ public class ConsoleWriter extends OutputStream {
 				lines[c] = lines[c+1];
 			}
 			lines[9] = fullstring;
+			if (!usingClientGUI) {
+				cp.console.append(fullstring);
+			}
+			
 			fullstring = "";
 			if (Client.state == 3) {Client.app.redraw();}
 		}
