@@ -25,7 +25,7 @@ public class ConsolePanel extends JPanel {
 		console.setEditable(false);
 		
 		scroll = new JScrollPane(console);
-		inputField = new JTextField("Commands", 30);
+		inputField = new JTextField("Commands", 20);
 		sendButton = new JButton("Send");
 		
 		scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);

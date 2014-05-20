@@ -13,6 +13,7 @@ public class GUI extends JFrame {
 		this.setSize(512, 512);
 		this.setVisible(true);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		this.setResizable(false);
 	}
 	
 	public JPanel addTab(String name) {
@@ -36,6 +37,7 @@ public class GUI extends JFrame {
 	
 	public static void main(String[] args) {
 		GUI gui = new GUI();
+		gui.addTab("Data", new DataDisplayPanel());
 		gui.addTab("Recipe", new CommandsPanel());
 		gui.addTab("Console", new ConsolePanel());
 	}
