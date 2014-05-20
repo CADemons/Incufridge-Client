@@ -1,14 +1,16 @@
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.util.ArrayList;
 
 public class ConsoleWriter extends OutputStream {
 
 	static PrintStream origout;
 	static String[] lines = new String[10];
 	String fullstring = "";
-	private ConsolePanel cp;
 	private boolean usingClientGUI;
+	
+	private ArrayList<ConsolePanel> cps = new ArrayList<ConsolePanel>();
 
 	public ConsoleWriter(boolean clientGUI) {
 		for (int c = 0; c < 10; c++) {
@@ -18,9 +20,8 @@ public class ConsoleWriter extends OutputStream {
 		usingClientGUI = clientGUI;
 	}
 	
-	public ConsoleWriter(ConsolePanel cpArg) {
-		this(false);
-		cp = cpArg;
+	public void addCp(ConsolePanel cpArg) {
+		cps.add(cpArg);
 	}
 
 	public void write(int arg) throws IOException {
@@ -34,7 +35,9 @@ public class ConsoleWriter extends OutputStream {
 			}
 			lines[9] = fullstring;
 			if (!usingClientGUI) {
-				cp.console.append(fullstring);
+				for (ConsolePanel console : cps) {
+					console.console.append(fullstring);
+				}
 			}
 			
 			fullstring = "";

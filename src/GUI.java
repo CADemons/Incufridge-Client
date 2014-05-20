@@ -5,10 +5,13 @@ import javax.swing.JTabbedPane;
 @SuppressWarnings("serial")
 public class GUI extends JFrame {
 	
-	JTabbedPane tabbed = new JTabbedPane(JTabbedPane.TOP);
+	private JTabbedPane tabbed = new JTabbedPane(JTabbedPane.TOP);
+	public Serial serial = new Serial();
 	
 	public GUI() {
 		super("Incu-Fridge");
+		
+		ConsoleWriter.origout = System.out;
 		
 		this.setSize(512, 512);
 		this.setVisible(true);
@@ -35,10 +38,15 @@ public class GUI extends JFrame {
 		tabbed.addTab(name, null, panel, "Does nothing");
 	}
 	
+	public void removeTab(int index) {
+		tabbed.removeTabAt(index);
+	}
+	
 	public static void main(String[] args) {
 		GUI gui = new GUI();
 		gui.addTab("Data", new DataDisplayPanel());
 		gui.addTab("Recipe", new CommandsPanel());
-		gui.addTab("Console", new ConsolePanel());
+		gui.addTab("Console", new ConsolePanel(new ConsoleWriter(false), gui.serial));
+		gui.addTab("Connection Data", new ConnectionPanel(gui.serial));
 	}
 }
