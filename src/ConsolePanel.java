@@ -10,7 +10,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 
-
+/* This class contains the code for the JPanel used to display the console */
 @SuppressWarnings("serial")
 public class ConsolePanel extends JPanel {
 	public JTextArea console;
@@ -19,9 +19,10 @@ public class ConsolePanel extends JPanel {
 	private JButton sendButton;
 	private JButton newWindowButton;
 	private ConsoleWriter consoleWriter;
-	private Serial serial;
+	private SerialConnector serial;
 	
-	public ConsolePanel(ConsoleWriter consoleWriter, Serial serial) {
+	// Pass in the GUI's consoleWriter and main SerialConnector
+	public ConsolePanel(ConsoleWriter consoleWriter, SerialConnector serial) {
 		this.consoleWriter = consoleWriter;
 		this.serial = serial;
 		
@@ -43,15 +44,18 @@ public class ConsolePanel extends JPanel {
 		inputField.addActionListener(AL);
 		newWindowButton.addActionListener(AL);
 		
+		// Add the components to the panel
 		this.add(inputField);
 		this.add(sendButton);
 		this.add(scroll);
 		this.add(newWindowButton);
 		
+		// Create the consoleWriter and add this panel to its list of panels to update
 		System.setOut(new PrintStream(consoleWriter));
 		consoleWriter.addCp(this);
 	}
 	
+	// Make a new ConsolePanel in a new window
 	public void addInNewWindow() {
 		JFrame frame = new JFrame("Incu-Fridge - Console");
 		frame.setSize(512, 512);
@@ -77,6 +81,7 @@ public class ConsolePanel extends JPanel {
 			}
 		}
 		
+		// Send the command to the incu-fridge
 		private void sendCommand() {
 			if (serial.main != null) {
 				serial.main.writeBytes(inputField.getText().getBytes());

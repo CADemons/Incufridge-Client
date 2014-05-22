@@ -1,9 +1,10 @@
 
-public class Serial {
+/* This class manages serial operations using the SerialComm class */
+public class SerialConnector {
 	public SerialComm main;
 	public String port = "Could not find COM port.";
 	
-	public Serial() {
+	public SerialConnector() {
 		port = findPort();
 		
 		if (tryConnect()) {
@@ -12,7 +13,7 @@ public class Serial {
 		}
 	}
 	
-	public String findPort() {
+	public String findPort() {		
 		return "Could not find COM port.";
 	}
 	

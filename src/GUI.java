@@ -2,11 +2,14 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
+/* This class runs the GUI of the incu-fridge */
 @SuppressWarnings("serial")
 public class GUI extends JFrame {
 	
-	private JTabbedPane tabbed = new JTabbedPane(JTabbedPane.TOP);
-	public Serial serial = new Serial();
+	// Manage the various tabs of the GUI
+	private JTabbedPane tabManager = new JTabbedPane(JTabbedPane.TOP);
+	// The main object to make serial connections
+	public SerialConnector serial = new SerialConnector();
 	
 	public GUI() {
 		super("Incu-Fridge");
@@ -19,31 +22,34 @@ public class GUI extends JFrame {
 		this.setResizable(false);
 	}
 	
+	// Add a tab to the GUI
 	public JPanel addTab(String name) {
 		JPanel panel = new JPanel();
 
-		tabbed.setBounds(20, 20, 360, 360);
-		getContentPane().add(tabbed);
+		tabManager.setBounds(20, 20, 360, 360);
+		getContentPane().add(tabManager);
 
-		tabbed.addTab(name, null, panel, "Does nothing");
+		tabManager.addTab(name, null, panel, "Does nothing");
 
 		return panel;
 	}
 
 	public void addTab(String name, JPanel panel) {
 		
-		tabbed.setBounds(20, 20, 360, 360);
-		getContentPane().add(tabbed);
+		tabManager.setBounds(20, 20, 360, 360);
+		getContentPane().add(tabManager);
 
-		tabbed.addTab(name, null, panel, "Does nothing");
+		tabManager.addTab(name, null, panel, "Does nothing");
 	}
 	
+	// Remove a tab from the GUI
 	public void removeTab(int index) {
-		tabbed.removeTabAt(index);
+		tabManager.removeTabAt(index);
 	}
 	
 	public static void main(String[] args) {
 		GUI gui = new GUI();
+		// Add all the various tabs
 		gui.addTab("Data", new DataDisplayPanel());
 		gui.addTab("Recipe", new CommandsPanel());
 		gui.addTab("Console", new ConsolePanel(new ConsoleWriter(false), gui.serial));
