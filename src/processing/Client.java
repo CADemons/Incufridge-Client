@@ -1,5 +1,8 @@
+package processing;
 import java.io.PrintStream;
 
+import common.ConsoleWriter;
+import common.SerialComm;
 import processing.core.PApplet;
 import processing.core.PFont;
 import processing.serial.Serial;
@@ -7,8 +10,8 @@ import processing.serial.Serial;
 @SuppressWarnings("serial")
 public class Client extends PApplet {
 
-	static Client app = null;
-	static int state;
+	public static Client app = null;
+	public static int state;
 	String[] without;
 	/**Array of inputs for detecting clicks.*/
 	IBox[] inputs;
@@ -24,7 +27,7 @@ public class Client extends PApplet {
 	int numIBoxes;
 	
 	// Vertical length of the screen
-	protected static int myYSize = 350; // Default is 350
+	public static int myYSize = 350; // Default is 350
 	
 	IBox numIBoxChoice;
 	
@@ -41,7 +44,7 @@ public class Client extends PApplet {
 			System.out.println("Not forcing GUI.");
 		}
 		
-		PApplet.main(new String[] {"Client"});
+		PApplet.main(new String[] {"processing.Client"});
 	}
 
 	public void setup() {

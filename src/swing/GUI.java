@@ -1,6 +1,9 @@
+package swing;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+
+import common.ConsoleWriter;
 
 /* This class runs the GUI of the incu-fridge */
 @SuppressWarnings("serial")

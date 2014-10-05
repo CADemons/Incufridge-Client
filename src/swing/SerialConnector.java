@@ -1,3 +1,6 @@
+package swing;
+import common.SerialComm;
+
 
 /* This class manages serial operations using the SerialComm class */
 public class SerialConnector {

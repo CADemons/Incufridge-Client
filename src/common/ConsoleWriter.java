@@ -1,11 +1,15 @@
+package common;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
 
+import processing.Client;
+import swing.ConsolePanel;
+
 public class ConsoleWriter extends OutputStream {
 
-	static PrintStream origout;
+	public static PrintStream origout;
 	static String[] lines = new String[10];
 	String fullstring = "";
 	private boolean usingClientGUI;

@@ -1,3 +1,4 @@
+package swing;
 
 /* This class parses the recipes that the user writes and turns them into Incu-Fridge code */
 public class LineParser {

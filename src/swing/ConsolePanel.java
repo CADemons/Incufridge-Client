@@ -1,3 +1,4 @@
+package swing;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.PrintStream;
@@ -9,6 +10,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
+
+import common.ConsoleWriter;
 
 /* This class contains the code for the JPanel used to display the console */
 @SuppressWarnings("serial")
