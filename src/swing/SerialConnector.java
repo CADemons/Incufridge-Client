@@ -13,14 +13,14 @@ public class SerialConnector {
 		tryConnect();
 	}
 	
-	public String findPort() {		
+	public String findPort() {
 		return "Could not find COM port.";
 	}
 	
 	public boolean canConnect() {
 		port = findPort();
 		
-		return port != "Could not find COM port.";
+		return !port.equals("Could not find COM port.");
 	}
 	
 	public void tryConnect() {
