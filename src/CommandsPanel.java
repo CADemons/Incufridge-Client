@@ -1,3 +1,4 @@
+import java.util.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -33,6 +34,7 @@ public class CommandsPanel extends JPanel {
 		
 		this.add(scroll);
 		this.add(saveButton);
+
 	}
 	
 	private class AL implements ActionListener {

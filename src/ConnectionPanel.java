@@ -2,6 +2,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
@@ -49,8 +50,10 @@ public class ConnectionPanel extends JPanel {
 		// Update the status based on whether or not the connection failed
 		if (getConnection()) {
 			connectionStatus.setText("Connected to Incu-Fridge on port " + serial.port);
+			retryButton.setVisible(false);
 		} else {
 			connectionStatus.setText("Was not able to connect to Incu-Fridge");
+			retryButton.setVisible(true);
 		}
 	}
 	

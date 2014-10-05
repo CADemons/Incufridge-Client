@@ -7,19 +7,23 @@ public class SerialConnector {
 	public SerialConnector() {
 		port = findPort();
 		
-		if (tryConnect()) {
-			main = new SerialComm();
-			main.initialize(port);
-		}
+		tryConnect();
 	}
 	
 	public String findPort() {		
 		return "Could not find COM port.";
 	}
 	
-	public boolean tryConnect() {
+	public boolean canConnect() {
 		port = findPort();
 		
 		return port != "Could not find COM port.";
+	}
+	
+	public void tryConnect() {
+		if (canConnect()) {
+			main = new SerialComm();
+			main.initialize(port);
+		}
 	}
 }

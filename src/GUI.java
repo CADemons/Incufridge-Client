@@ -36,17 +36,17 @@ public class GUI extends JFrame {
 
 	public void addTab(String name, JPanel panel) {
 		
-		tabManager.setBounds(20, 20, 360, 360);
 		getContentPane().add(tabManager);
 
-		tabManager.addTab(name, null, panel, "Does nothing");
+		tabManager.addTab(name, null, panel, name);
+		System.currentTimeMillis();
 	}
 	
 	// Remove a tab from the GUI
 	public void removeTab(int index) {
 		tabManager.removeTabAt(index);
 	}
-	
+
 	public static void main(String[] args) {
 		GUI gui = new GUI();
 		// Add all the various tabs
