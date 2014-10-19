@@ -121,6 +121,7 @@ public class Client extends PApplet {
 					redraw();
 				}
 			} else {
+				System.out.println("Port: " + port);
 				startSerial();
 				initGui();
 				state = 3;

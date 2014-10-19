@@ -1,14 +1,9 @@
 package swing;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-
-import javax.swing.JEditorPane;
-import javax.swing.JTextField;
 
 
 public class TextFileWriter {
