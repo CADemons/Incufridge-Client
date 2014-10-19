@@ -64,7 +64,7 @@ public class SerialComm implements SerialPortEventListener {
 			}
 		}
 		if (portId == null) {
-			System.out.println("Could not find COM port.");
+			System.out.println("Could not find port.");
 			return;
 		}
 

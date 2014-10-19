@@ -20,7 +20,6 @@ public class GUI extends JFrame {
 		ConsoleWriter.origout = System.out;
 		
 		this.setSize(512, 512);
-		this.setVisible(true);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setResizable(false);
 	}
@@ -57,5 +56,6 @@ public class GUI extends JFrame {
 		gui.addTab("Recipe", new CommandsPanel());
 		gui.addTab("Console", new ConsolePanel(new ConsoleWriter(false), gui.serial));
 		gui.addTab("Connection Data", new ConnectionPanel(gui.serial));
+		gui.setVisible(true);
 	}
 }
