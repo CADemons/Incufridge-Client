@@ -50,10 +50,8 @@ public class ConnectionPanel extends JPanel {
 		// Update the status based on whether or not the connection failed
 		if (getConnection()) {
 			connectionStatus.setText("Connected to Incu-Fridge on port " + serial.port);
-			retryButton.setVisible(false);
 		} else {
 			connectionStatus.setText("Was not able to connect to Incu-Fridge");
-			retryButton.setVisible(true);
 		}
 	}
 	

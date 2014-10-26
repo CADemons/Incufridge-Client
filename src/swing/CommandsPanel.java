@@ -4,36 +4,47 @@ import java.awt.event.ActionListener;
 import java.io.File;
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 
 @SuppressWarnings("serial")
 public class CommandsPanel extends JPanel {
 	
+	private JLabel fileLabel;
+	private JTextField filenameField;
 	private JButton saveButton;
 	private JTextArea commandsText;
 	private JScrollPane scroll;
+	private JButton loadButton;
 	
 	public CommandsPanel() {
 		commandsText = new JTextArea(20, 35);
+		filenameField = new JTextField(30);
+		fileLabel = new JLabel("File Name: ");
 		
 		scroll = new JScrollPane(commandsText);
 		scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		
 		saveButton = new JButton("Save Recipe");
+		loadButton = new JButton("Load Recipe");
 		
-		commandsText.setText(TextFileReader.readEntireFile("Commands"));
+		commandsText.setText("");
 		commandsText.setEditable(true);
 		
 		AL AL = new AL();
 		saveButton.addActionListener(AL);
+		loadButton.addActionListener(AL);
 		
+		this.add(fileLabel);
+		this.add(filenameField);
 		this.add(scroll);
 		this.add(saveButton);
-
+		this.add(loadButton);
 	}
 	
 	private class AL implements ActionListener {
@@ -41,10 +52,14 @@ public class CommandsPanel extends JPanel {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == saveButton) {
-				File file = new File("Commands");
+				File file = new File(filenameField.getText());
 				file.delete();
 				
-				TextFileWriter.writeToFile("Commands", commandsText.getText());
+				TextFileWriter.writeToFile(filenameField.getText(), commandsText.getText());
+			}
+			
+			if (e.getSource() == loadButton) {
+				commandsText.setText(TextFileReader.readEntireFile(filenameField.getText()));
 			}
 		}
 	}

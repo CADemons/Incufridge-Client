@@ -43,6 +43,8 @@ public class SerialConnector {
 		if (canConnect()) {
 			main = new SerialComm();
 			main.initialize(port);
+		} else {
+			main = null;
 		}
 	}
 }
