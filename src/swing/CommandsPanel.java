@@ -20,6 +20,7 @@ public class CommandsPanel extends JPanel {
 	private JTextArea commandsText;
 	private JScrollPane scroll;
 	private JButton loadButton;
+	private JButton uploadButton;
 	
 	public CommandsPanel() {
 		commandsText = new JTextArea(20, 35);
@@ -32,6 +33,7 @@ public class CommandsPanel extends JPanel {
 		
 		saveButton = new JButton("Save Recipe");
 		loadButton = new JButton("Load Recipe");
+		uploadButton = new JButton("Upload Recipe");
 		
 		commandsText.setText("");
 		commandsText.setEditable(true);
@@ -39,12 +41,14 @@ public class CommandsPanel extends JPanel {
 		AL AL = new AL();
 		saveButton.addActionListener(AL);
 		loadButton.addActionListener(AL);
+		uploadButton.addActionListener(AL);
 		
 		this.add(fileLabel);
 		this.add(filenameField);
 		this.add(scroll);
 		this.add(saveButton);
 		this.add(loadButton);
+		this.add(uploadButton);
 	}
 	
 	private class AL implements ActionListener {

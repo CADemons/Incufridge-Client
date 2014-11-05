@@ -10,6 +10,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.text.DefaultCaret;
 
 import common.ConsoleWriter;
 
@@ -37,6 +38,9 @@ public class ConsolePanel extends JPanel {
 		inputField = new JTextField("Commands", 20);
 		sendButton = new JButton("Send");
 		newWindowButton = new JButton("Open in new window");
+		
+		DefaultCaret caret = (DefaultCaret) console.getCaret();
+		caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
 		
 		scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
