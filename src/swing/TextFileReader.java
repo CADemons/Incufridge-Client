@@ -116,14 +116,12 @@ public class TextFileReader {
 	}
 	
 	public static String[] readCommandsFromFile(String filePath) {
-		LineParser lp = new LineParser();
-		
 		String[] commands = new String[TextFileReader.countLines("Commands") + 1];
 		
 		for (int i = 0; i < commands.length; i++) {
 			commands[i] = TextFileReader.readLineFromFile("Commands", i + 1);
 			
-			commands[i] = lp.parseCommand(commands[i]);
+			commands[i] = LineParser.parseCommand(commands[i]);
 		}
 		
 		return commands;

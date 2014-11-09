@@ -53,7 +53,7 @@ public class GUI extends JFrame {
 		GUI gui = new GUI();
 		// Add all the various tabs
 		gui.addTab("Data", new DataDisplayPanel());
-		gui.addTab("Recipe", new CommandsPanel());
+		gui.addTab("Recipe", new CommandsPanel(gui.serial));
 		gui.addTab("Console", new ConsolePanel(new ConsoleWriter(false), gui.serial));
 		gui.addTab("Connection Data", new ConnectionPanel(gui.serial));
 		gui.setVisible(true);
