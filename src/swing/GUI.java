@@ -25,19 +25,7 @@ public class GUI extends JFrame {
 	}
 	
 	// Add a tab to the GUI
-	public JPanel addTab(String name) {
-		JPanel panel = new JPanel();
-
-		tabManager.setBounds(20, 20, 360, 360);
-		getContentPane().add(tabManager);
-
-		tabManager.addTab(name, null, panel, "Does nothing");
-
-		return panel;
-	}
-
 	public void addTab(String name, JPanel panel) {
-		
 		getContentPane().add(tabManager);
 
 		tabManager.addTab(name, null, panel, name);
@@ -52,7 +40,7 @@ public class GUI extends JFrame {
 	public static void main(String[] args) {
 		GUI gui = new GUI();
 		// Add all the various tabs
-		gui.addTab("Data", new DataDisplayPanel());
+		//gui.addTab("Data", new DataDisplayPanel());
 		gui.addTab("Recipe", new CommandsPanel(gui.serial));
 		gui.addTab("Console", new ConsolePanel(new ConsoleWriter(false), gui.serial));
 		gui.addTab("Connection Data", new ConnectionPanel(gui.serial));

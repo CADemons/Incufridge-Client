@@ -24,6 +24,7 @@ public class ConnectionPanel extends JPanel {
 		
 		connectionStatus = new JTextArea(5, 30);
 		connectionStatus.setEditable(false);
+		connectionStatus.setLineWrap(true);
 		retryButton = new JButton("Retry Connection");
 		
 		// Attempt to connect
@@ -38,7 +39,7 @@ public class ConnectionPanel extends JPanel {
 		this.add(retryButton);
 	}
 	
-	public boolean getConnection() {
+	public boolean isConnected() {
 		// The connection was successful if the serial.main object is not null
 		return serial.main != null;
 	}
@@ -47,8 +48,8 @@ public class ConnectionPanel extends JPanel {
 		// Attempt to connect
 		serial.tryConnect();
 		
-		// Update the status based on whether or not the connection failed
-		if (getConnection()) {
+		// Update the status based on whether or not the connection succeeded
+		if (isConnected()) {
 			connectionStatus.setText("Connected to Incu-Fridge on port " + serial.port);
 		} else {
 			connectionStatus.setText("Was not able to connect to Incu-Fridge");

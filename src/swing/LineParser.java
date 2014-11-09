@@ -4,12 +4,11 @@ import java.util.Scanner;
 
 /* This class parses the recipes that the user writes and turns them into Incu-Fridge code */
 public class LineParser {
+	// Possible commands, any others will be considered errors
 	static String[] commands = new String[] {"GO", "PWM", "FAN_ON", "FAN_OFF", "LIGHT_ON", 
 			"LIGHT_OFF", "READ_DISPLAY", "SET_TEMP"};
 
-	// Ignore these words
-	static String[] wordsToIgnore = new String[] {"the", "degrees", "celsius", "farenheit", "in", "about", "turn", "and"};	
-	// Unused for now
+	// Only pay attention to these words
 	static String[] importantWords = new String[] {"light", "on", "off", "display", "set", "temp", "read", "fan", "go", "pwm"};
 	
 	public static String parseCommand(String str) {

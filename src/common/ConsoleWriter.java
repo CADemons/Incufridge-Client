@@ -12,16 +12,16 @@ public class ConsoleWriter extends OutputStream {
 	public static PrintStream origout;
 	static String[] lines = new String[10];
 	String fullstring = "";
-	private boolean usingClientGUI;
+	private boolean usingOldGUI;
 	
 	private ArrayList<ConsolePanel> cps = new ArrayList<ConsolePanel>();
 
-	public ConsoleWriter(boolean clientGUI) {
+	public ConsoleWriter(boolean oldGUI) {
 		for (int c = 0; c < 10; c++) {
 			lines[c] = "";
 		}
 		
-		usingClientGUI = clientGUI;
+		usingOldGUI = oldGUI;
 	}
 	
 	public void addCp(ConsolePanel cpArg) {
@@ -38,7 +38,7 @@ public class ConsoleWriter extends OutputStream {
 				lines[c] = lines[c+1];
 			}
 			lines[9] = fullstring;
-			if (!usingClientGUI) {
+			if (!usingOldGUI) {
 				for (ConsolePanel console : cps) {
 					console.console.append(fullstring);
 				}
