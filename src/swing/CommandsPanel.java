@@ -1,4 +1,6 @@
 package swing;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -8,21 +10,25 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JTextPane;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Style;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 
 @SuppressWarnings("serial")
 /* Provides a mini text editor for the user to write and upload recipes */
 public class CommandsPanel extends JPanel {
-	
+
 	private JLabel fileLabel;
 	// The user writes the filename here
 	private JTextField filenameField;
 	// Save the recipe to a file
 	private JButton saveButton;
 	// The textArea
-	private JTextArea commandsText;
+	private JTextPane commandsText;
 	// Allows scrolling on the textArea
 	private JScrollPane scroll;
 	// Load a new file
@@ -33,27 +39,28 @@ public class CommandsPanel extends JPanel {
 	private JButton checkButton;
 	// Necessary for uploading the recipe to the incu fridge
 	private SerialConnector serial;
-	
+
 	public CommandsPanel(SerialConnector serial) {
-		commandsText = new JTextArea(20, 35);
+		commandsText = new JTextPane();
+		commandsText.setPreferredSize(new Dimension(400, 300));
 		filenameField = new JTextField(30);
 		fileLabel = new JLabel("File Name: ");
-		
+
 		this.serial = serial;
-		
+
 		// Add scrolling
 		scroll = new JScrollPane(commandsText);
 		scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		scroll.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		
+
 		saveButton = new JButton("Save Recipe");
 		loadButton = new JButton("Load Recipe");
 		uploadButton = new JButton("Upload Recipe");
 		checkButton = new JButton("Check for Errors");
-		
+
 		commandsText.setText("");
 		commandsText.setEditable(true);
-		
+
 		// Add the action listener
 		AL AL = new AL();
 		saveButton.addActionListener(AL);
@@ -61,7 +68,7 @@ public class CommandsPanel extends JPanel {
 		uploadButton.addActionListener(AL);
 		checkButton.addActionListener(AL);
 		filenameField.addActionListener(AL);
-		
+
 		this.add(fileLabel);
 		this.add(filenameField);
 		this.add(scroll);
@@ -70,7 +77,7 @@ public class CommandsPanel extends JPanel {
 		this.add(uploadButton);
 		this.add(checkButton);
 	}
-	
+
 	private class AL implements ActionListener {
 
 		@Override
@@ -78,16 +85,19 @@ public class CommandsPanel extends JPanel {
 			if (e.getSource() == filenameField) {
 				commandsText.setText(TextFileReader.readEntireFile(filenameField.getText()));
 			}
-			
+
 			if (e.getSource() == saveButton) {
 				saveRecipe();
 			}
-			
+
 			if (e.getSource() == loadButton) {
 				commandsText.setText(TextFileReader.readEntireFile(filenameField.getText()));
 			}
-			
+
 			if (e.getSource() == uploadButton) {
+				if (checkError()) {
+					return;
+				}
 				// Get each line separately
 				String[] lines = commandsText.getText().split("\n");
 				String[] compiled = new String[lines.length];
@@ -95,7 +105,7 @@ public class CommandsPanel extends JPanel {
 					// Parse each line and add it to the compiled array
 					compiled[i] = LineParser.parseCommand(lines[i]).trim();
 				}
-				
+
 				// Send the compiled code to the incufridge
 				if (serial.main != null) {
 					for (int i = 0; i < compiled.length; i++) {
@@ -106,12 +116,12 @@ public class CommandsPanel extends JPanel {
 					System.out.println("No connection to transmit data");
 				}
 			}
-			
+
 			if (e.getSource() == checkButton) {
 				checkError();
 			}
 		}
-		
+
 		private void saveRecipe() {
 			// Delete the old file
 			File file = new File(filenameField.getText());
@@ -120,15 +130,56 @@ public class CommandsPanel extends JPanel {
 			// Write the recipe to a new file
 			TextFileWriter.writeToFile(filenameField.getText(), commandsText.getText());
 		}
-		
-		private void checkError() {
+
+		private boolean checkError() {
 			// Check for any errors and report them
 			String[] lines = commandsText.getText().split("\n");
 			for (int i = 0; i < lines.length; i++) {
 				if (LineParser.parseCommand(lines[i]).trim().equals("Error")) {
-					JOptionPane.showMessageDialog(null, "You have an error on line " + (i + 1));
+					StyledDocument doc = commandsText.getStyledDocument();
+
+					Style style = commandsText.addStyle("I'm a Style", null);
+					StyleConstants.setForeground(style, Color.red);
+					
+					commandsText.setText("");
+					
+					for (int j = 0; j < lines.length; j++) {
+						if (lines[j].equals(lines[i])) {
+							try {
+								doc.insertString(doc.getLength(), lines[j] + "\n", style);
+							} catch (BadLocationException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						} else {
+							try {
+								doc.insertString(doc.getLength(), lines[j] + "\n", null);
+							} catch (BadLocationException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+
+					}
+					
+					return true;
 				}
 			}
+			
+			String text = commandsText.getText();
+			StyledDocument doc = commandsText.getStyledDocument();
+			commandsText.setText("");
+
+			try {
+				doc.insertString(doc.getLength(), text, null);
+			} catch (BadLocationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			JOptionPane.showMessageDialog(null, "No Errors :D");
+
+			return false;
 		}
 	}
 }

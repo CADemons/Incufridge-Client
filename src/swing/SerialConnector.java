@@ -32,7 +32,9 @@ public class SerialConnector {
 		if (canConnect()) {
 			main = new SerialComm();
 			main.initialize(port);
+			JOptionPane.showMessageDialog(null, "Connected to Incu-fridge on port: " + port);
 		} else {
+			JOptionPane.showMessageDialog(null, "Unable to connect to Incu-fridge");
 			main = null;
 		}
 	}
