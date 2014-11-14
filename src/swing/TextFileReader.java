@@ -73,6 +73,7 @@ public class TextFileReader {
 			}
 		} else {
 			System.err.println("File " + file + " does not exist!");
+			return "Error:File " + file + " does not exist!";
 		}
 		
 		return entireFile;

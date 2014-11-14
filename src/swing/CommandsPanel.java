@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -39,8 +40,12 @@ public class CommandsPanel extends JPanel {
 	private JButton checkButton;
 	// Necessary for uploading the recipe to the incu fridge
 	private SerialConnector serial;
+	
+	private ArrayList<String> errorLines;
 
 	public CommandsPanel(SerialConnector serial) {
+		errorLines = new ArrayList<String>();
+		
 		commandsText = new JTextPane();
 		commandsText.setPreferredSize(new Dimension(400, 300));
 		filenameField = new JTextField(30);
@@ -91,11 +96,17 @@ public class CommandsPanel extends JPanel {
 			}
 
 			if (e.getSource() == loadButton) {
-				commandsText.setText(TextFileReader.readEntireFile(filenameField.getText()));
+				String text = TextFileReader.readEntireFile(filenameField.getText());
+				if (text.split(":")[0].equals("Error")) {
+					JOptionPane.showMessageDialog(null, text.split(":")[1]);
+					return;
+				}
+				commandsText.setText(text);
 			}
 
 			if (e.getSource() == uploadButton) {
 				if (checkError()) {
+					JOptionPane.showMessageDialog(null, "Found Errors. Aborting upload");
 					return;
 				}
 				// Get each line separately
@@ -132,54 +143,50 @@ public class CommandsPanel extends JPanel {
 		}
 
 		private boolean checkError() {
+			boolean hasError = false;
 			// Check for any errors and report them
 			String[] lines = commandsText.getText().split("\n");
 			for (int i = 0; i < lines.length; i++) {
+				if (lines[i].trim().equals("")) {
+					continue;
+				}
 				if (LineParser.parseCommand(lines[i]).trim().equals("Error")) {
-					StyledDocument doc = commandsText.getStyledDocument();
-
-					Style style = commandsText.addStyle("I'm a Style", null);
-					StyleConstants.setForeground(style, Color.red);
-					
-					commandsText.setText("");
-					
-					for (int j = 0; j < lines.length; j++) {
-						if (lines[j].equals(lines[i])) {
-							try {
-								doc.insertString(doc.getLength(), lines[j] + "\n", style);
-							} catch (BadLocationException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-						} else {
-							try {
-								doc.insertString(doc.getLength(), lines[j] + "\n", null);
-							} catch (BadLocationException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-						}
-
-					}
-					
-					return true;
+					errorLines.add(lines[i]);
+					hasError = true;
 				}
 			}
 			
-			String text = commandsText.getText();
-			StyledDocument doc = commandsText.getStyledDocument();
-			commandsText.setText("");
-
-			try {
-				doc.insertString(doc.getLength(), text, null);
-			} catch (BadLocationException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			if (!hasError) {
+				JOptionPane.showMessageDialog(null, "No Errors :D");
 			}
 			
-			JOptionPane.showMessageDialog(null, "No Errors :D");
+			recolor();
 
-			return false;
+			return hasError;
+		}
+		
+		private void recolor() {
+			String[] lines = commandsText.getText().split("\n");
+			commandsText.setText("");
+
+			for (int i = 0; i < lines.length; i++) {
+				StyledDocument doc = commandsText.getStyledDocument();
+
+				Style style = commandsText.addStyle("Error Style", null);
+				StyleConstants.setForeground(style, Color.red);
+
+				try {
+					if (errorLines.contains(lines[i])) {
+						doc.insertString(doc.getLength(), lines[i] + "\n", style);
+					} else {
+						doc.insertString(doc.getLength(), lines[i] + "\n", null);
+						System.out.println(lines[i]);
+					}
+				} catch (BadLocationException e) {
+					e.printStackTrace();
+				}
+
+			}
 		}
 	}
 }

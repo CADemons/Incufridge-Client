@@ -92,7 +92,7 @@ public class ConsolePanel extends JPanel {
 		private void sendCommand() {
 			if (serial.main != null) {
 				serial.main.writeBytes(inputField.getText().getBytes());
-				System.out.println("Sent command: " + inputField.getText());
+				System.out.println("Sent command: " + LineParser.parseCommand(inputField.getText()));
 			} else {
 				System.out.println("No connection to transmit data");
 			}

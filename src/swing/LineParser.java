@@ -16,7 +16,6 @@ public class LineParser {
 		Scanner s = new Scanner(str);
 		while (s.hasNext()) {
 			String next = s.next();
-			System.out.println("Next: " + next);
 			if (contains(importantWords, next) || isInt(next)) {
 				if (!parsedCommand.equals("")) {
 					parsedCommand += isInt(next) ? " " : "_";
