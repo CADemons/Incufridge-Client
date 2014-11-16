@@ -88,7 +88,13 @@ public class CommandsPanel extends JPanel {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == filenameField) {
-				commandsText.setText(TextFileReader.readEntireFile(filenameField.getText()));
+				errorLines.clear();
+				String text = TextFileReader.readEntireFile(filenameField.getText());
+				if (text.split(":")[0].equals("Error")) {
+					JOptionPane.showMessageDialog(null, text.split(":")[1]);
+					return;
+				}
+				commandsText.setText(text);
 			}
 
 			if (e.getSource() == saveButton) {
@@ -96,6 +102,7 @@ public class CommandsPanel extends JPanel {
 			}
 
 			if (e.getSource() == loadButton) {
+				errorLines.clear();
 				String text = TextFileReader.readEntireFile(filenameField.getText());
 				if (text.split(":")[0].equals("Error")) {
 					JOptionPane.showMessageDialog(null, text.split(":")[1]);
@@ -180,7 +187,6 @@ public class CommandsPanel extends JPanel {
 						doc.insertString(doc.getLength(), lines[i] + "\n", style);
 					} else {
 						doc.insertString(doc.getLength(), lines[i] + "\n", null);
-						System.out.println(lines[i]);
 					}
 				} catch (BadLocationException e) {
 					e.printStackTrace();

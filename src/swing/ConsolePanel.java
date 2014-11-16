@@ -7,7 +7,6 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.text.DefaultCaret;
@@ -17,7 +16,7 @@ import common.ConsoleWriter;
 /* This class contains the code for the JPanel used to display the console */
 @SuppressWarnings("serial")
 public class ConsolePanel extends JPanel {
-	public JTextArea console;
+	public ConsoleTextArea console;
 	private JScrollPane scroll;
 	private JTextField inputField;
 	private JButton sendButton;
@@ -30,7 +29,7 @@ public class ConsolePanel extends JPanel {
 		this.consoleWriter = consoleWriter;
 		this.serial = serial;
 		
-		console = new JTextArea(20, 35);
+		console = new ConsoleTextArea(20, 35);
 		
 		console.setEditable(false);
 		
@@ -91,7 +90,7 @@ public class ConsolePanel extends JPanel {
 		// Send the command to the incu-fridge
 		private void sendCommand() {
 			if (serial.main != null) {
-				serial.main.writeBytes(inputField.getText().getBytes());
+				serial.main.writeBytes(LineParser.parseCommand(inputField.getText()).getBytes());
 				System.out.println("Sent command: " + LineParser.parseCommand(inputField.getText()));
 			} else {
 				System.out.println("No connection to transmit data");
