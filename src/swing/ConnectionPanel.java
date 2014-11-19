@@ -6,6 +6,8 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
+import common.SerialConnector;
+
 /* This class contains the code for the JPanel containing information about connection to the 
  * Incu-Fridge */
 @SuppressWarnings("serial")

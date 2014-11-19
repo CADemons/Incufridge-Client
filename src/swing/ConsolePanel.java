@@ -12,6 +12,8 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.text.DefaultCaret;
 
 import common.ConsoleWriter;
+import common.LineParser;
+import common.SerialConnector;
 
 /* This class contains the code for the JPanel used to display the console */
 @SuppressWarnings("serial")

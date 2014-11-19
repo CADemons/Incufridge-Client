@@ -19,6 +19,11 @@ import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
+import common.LineParser;
+import common.SerialConnector;
+import common.TextFileReader;
+import common.TextFileWriter;
+
 @SuppressWarnings("serial")
 /* Provides a mini text editor for the user to write and upload recipes */
 public class CommandsPanel extends JPanel {

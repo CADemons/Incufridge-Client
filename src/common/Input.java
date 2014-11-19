@@ -1,4 +1,4 @@
-package swing;
+package common;
 
 // Simple class that provides an interface with which you can access the data sent from the incufridge
 public class Input {

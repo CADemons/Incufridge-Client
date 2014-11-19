@@ -1,9 +1,7 @@
-package swing;
+package common;
 import javax.swing.JOptionPane;
 
 import processing.serial.Serial;
-
-import common.SerialComm;
 
 
 /* This class manages serial operations using the SerialComm class */
