@@ -12,9 +12,9 @@ import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.text.DefaultCaret;
 
+import common.Communicator;
 import common.ConsoleWriter;
 import common.LineParser;
-import common.SerialConnector;
 
 /* This class contains the code for the JPanel used to display the console */
 @SuppressWarnings("serial")
@@ -25,12 +25,10 @@ public class ConsolePanel extends JPanel {
 	private JButton sendButton;
 	private JButton newWindowButton;
 	private ConsoleWriter consoleWriter;
-	private SerialConnector serial;
 	
 	// Pass in the GUI's consoleWriter and main SerialConnector
-	public ConsolePanel(ConsoleWriter consoleWriter, SerialConnector serial) {
+	public ConsolePanel(ConsoleWriter consoleWriter) {
 		this.consoleWriter = consoleWriter;
-		this.serial = serial;
 		
 		console = new JTextArea(20, 35);
 		
@@ -70,7 +68,7 @@ public class ConsolePanel extends JPanel {
 		frame.setSize(512, 512);
 		frame.setVisible(true);
 		frame.setResizable(true);
-		frame.add(new ConsolePanel(consoleWriter, serial));
+		frame.add(new ConsolePanel(consoleWriter));
 	}
 	
 	private class AL implements ActionListener {
@@ -78,28 +76,18 @@ public class ConsolePanel extends JPanel {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == sendButton) {
-				sendCommand();
+				Communicator.sendCommand(LineParser.parseCommand(inputField.getText()));
+				inputField.setText("");
 			}
 			
 			if (e.getSource() == inputField) {
-				sendCommand();
+				Communicator.sendCommand(LineParser.parseCommand(inputField.getText()));
+				inputField.setText("");
 			}
 			
 			if (e.getSource() == newWindowButton) {
 				addInNewWindow();
 			}
-		}
-		
-		// Send the command to the incu-fridge
-		private void sendCommand() {
-			if (serial.main != null) {
-				serial.main.writeBytes(LineParser.parseCommand(inputField.getText()).getBytes());
-				System.out.println("Sent command: " + LineParser.parseCommand(inputField.getText()));
-			} else {
-				System.out.println("No connection to transmit data");
-			}
-			
-			inputField.setText("");
 		}
 	}
 }

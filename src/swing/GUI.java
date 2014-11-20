@@ -1,12 +1,14 @@
 package swing;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
+import common.Communicator;
 import common.ConsoleWriter;
-import common.Input;
 import common.LineParser;
-import common.Log;
 import common.SerialConnector;
 
 /* This class runs the GUI of the incu-fridge */
@@ -26,6 +28,13 @@ public class GUI extends JFrame {
 		this.setSize(512, 512);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setResizable(false);
+		
+		this.addWindowListener(new WindowAdapter() {
+		    public void windowClosing(WindowEvent e) {
+		    	serial.close();
+		    	System.out.println("Closing");
+		    }
+		});
 	}
 	
 	// Add a tab to the GUI
@@ -43,16 +52,15 @@ public class GUI extends JFrame {
 
 	public static void main(String[] args) {
 		GUI gui = new GUI();
+		Communicator.setSerial(gui.serial);
 		// Add all the various tabs
-		//gui.addTab("Data", new DataDisplayPanel());
-		gui.addTab("Recipe", new CommandsPanel(gui.serial));
-		gui.addTab("Console", new ConsolePanel(new ConsoleWriter(false), gui.serial));
+		gui.addTab("Data", new DataDisplayPanel());
+		gui.addTab("Recipe", new CommandsPanel());
+		gui.addTab("Console", new ConsolePanel(new ConsoleWriter(false)));
 		gui.addTab("Connection Data", new ConnectionPanel(gui.serial));
 		LineParser.init(new String[] {"PWM", "FAN_ON", "FAN_OFF", "LIGHT_ON", 
 			"LIGHT_OFF", "READ_DISPLAY", "SET_TEMP", "PRESS_BUTTON"});
 		gui.setVisible(true);
 		
-		Input.setInput("15.5");
-		Log.createLog(gui.serial);
 	}
 }

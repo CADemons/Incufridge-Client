@@ -36,4 +36,10 @@ public class SerialConnector {
 			main = null;
 		}
 	}
+	
+	public void close() {
+		if (main != null) {
+			main.close();
+		}
+	}
 }

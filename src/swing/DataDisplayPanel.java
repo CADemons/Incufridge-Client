@@ -1,8 +1,43 @@
 package swing;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+
+import common.Communicator;
 
 
 @SuppressWarnings("serial")
 public class DataDisplayPanel extends JPanel {
+	private JLabel tempLabel;
+	private JButton updateButton;
 	
+	public DataDisplayPanel() {
+		tempLabel = new JLabel("Temperature: ");
+		updateButton = new JButton("Update");
+		
+		AL AL = new AL();
+		updateButton.addActionListener(AL);
+		
+		this.add(tempLabel);
+		this.add(updateButton);
+	}
+	
+	private class AL implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if (e.getSource() == updateButton) {
+				if (Communicator.isConnected()) {
+					tempLabel.setText("Temperature: " + Communicator.getTemperature());
+				} else {
+					JOptionPane.showMessageDialog(null, "No connection");
+				}
+			}
+		}
+		
+	}
 }

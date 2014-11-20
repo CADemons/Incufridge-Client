@@ -7,14 +7,14 @@ import java.util.Date;
 
 public class Log {
 	/** Creates a log file **/
-	public static void createLog(SerialConnector serial) {
+	public static void createLog() {
 		File logDir = new File("Logs");
 		if (!logDir.exists()) {
 			System.out.println("Here");
 			logDir.mkdir();
 		}
 		
-		sendCommand(serial, "READ_DISPLAY");
+		Communicator.sendCommand("READ_DISPLAY");
 		String temp = Input.getInput();
 		
 		DateFormat dateFormat = new SimpleDateFormat("EEEE' 'MMMM' 'd', 'yyyy' at 'h:mm' 'aa");
@@ -28,14 +28,8 @@ public class Log {
 	}
 	
 	public static void uploadLogFile(File f) {
-	}
-
-	// Sends a command to the incu-fridge
-	private static void sendCommand(SerialConnector serial, String comm) {
-		if (serial.main != null) {
-			serial.main.writeBytes(comm.getBytes());
-		} else {
-			System.out.println("No connection to transmit data");
-		}
+		SFTPConnection c = new SFTPConnection();
+		SFTP s = c.connect("", "", "", 22);
+		s.upload(f.getAbsolutePath(), "Logs/");
 	}
 }

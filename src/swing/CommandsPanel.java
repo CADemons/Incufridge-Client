@@ -19,8 +19,8 @@ import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
+import common.Communicator;
 import common.LineParser;
-import common.SerialConnector;
 import common.TextFileReader;
 import common.TextFileWriter;
 
@@ -43,20 +43,16 @@ public class CommandsPanel extends JPanel {
 	private JButton uploadButton;
 	// Check the recipe for errors
 	private JButton checkButton;
-	// Necessary for uploading the recipe to the incu fridge
-	private SerialConnector serial;
 	
 	private ArrayList<String> errorLines;
 
-	public CommandsPanel(SerialConnector serial) {
+	public CommandsPanel() {
 		errorLines = new ArrayList<String>();
 		
 		commandsText = new JTextPane();
 		commandsText.setPreferredSize(new Dimension(400, 300));
 		filenameField = new JTextField(30);
 		fileLabel = new JLabel("File Name: ");
-
-		this.serial = serial;
 
 		// Add scrolling
 		scroll = new JScrollPane(commandsText);
@@ -129,14 +125,13 @@ public class CommandsPanel extends JPanel {
 					compiled[i] = LineParser.parseCommand(lines[i]).trim();
 				}
 
-				// Send the compiled code to the incufridge
-				if (serial.main != null) {
+				if (Communicator.isConnected()) {
+					// Send the compiled code to the incufridge
 					for (int i = 0; i < compiled.length; i++) {
-						serial.main.writeBytes(compiled[i].getBytes());
-						System.out.println("Sent command: " + compiled[i]);
+						Communicator.sendCommand(compiled[i]);
 					}
 				} else {
-					System.out.println("No connection to transmit data");
+					JOptionPane.showMessageDialog(null, "No connection");
 				}
 			}
 
