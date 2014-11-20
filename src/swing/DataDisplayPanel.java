@@ -8,22 +8,27 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import common.Communicator;
+import common.Log;
 
 
 @SuppressWarnings("serial")
 public class DataDisplayPanel extends JPanel {
 	private JLabel tempLabel;
 	private JButton updateButton;
+	private JButton createLogButton;
 	
 	public DataDisplayPanel() {
 		tempLabel = new JLabel("Temperature: ");
 		updateButton = new JButton("Update");
+		createLogButton = new JButton("Create log");
 		
 		AL AL = new AL();
 		updateButton.addActionListener(AL);
+		createLogButton.addActionListener(AL);
 		
 		this.add(tempLabel);
 		this.add(updateButton);
+		this.add(createLogButton);
 	}
 	
 	private class AL implements ActionListener {
@@ -36,6 +41,10 @@ public class DataDisplayPanel extends JPanel {
 				} else {
 					JOptionPane.showMessageDialog(null, "No connection");
 				}
+			}
+			
+			if (e.getSource() == createLogButton) {
+				Log.createLog();
 			}
 		}
 		

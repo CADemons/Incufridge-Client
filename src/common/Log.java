@@ -24,7 +24,7 @@ public class Log {
 		output += "Created on: " + dateFormat.format(date) + "\n\n";
 		output += "Temperature: " + temp + "\n";
 
-		TextFileWriter.writeToFile("Logs/Log" + (logDir.listFiles().length + 1), output);
+		TextFileWriter.writeToFile("Logs/Log" + (logDir.listFiles().length + 1) + ".txt", output);
 	}
 	
 	public static void uploadLogFile(File f) {

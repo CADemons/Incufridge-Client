@@ -61,6 +61,5 @@ public class GUI extends JFrame {
 		LineParser.init(new String[] {"PWM", "FAN_ON", "FAN_OFF", "LIGHT_ON", 
 			"LIGHT_OFF", "READ_DISPLAY", "SET_TEMP", "PRESS_BUTTON"});
 		gui.setVisible(true);
-		
 	}
 }

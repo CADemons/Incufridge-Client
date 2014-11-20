@@ -12,6 +12,10 @@ public class LineParser {
 	// Only pay attention to these words
 	static String[] importantWords;
 	
+	static String possibleUnitsRegex = "(second(s)?) || (minute(s)?) || (hour(s)?) || (day(s)?)";
+	static String dateRegex = "\\d/\\d/\\d";
+	static String timeRegex = "\\d:\\d";
+	
 	public static void init(String[] commandsList) {
 		commands = commandsList;
 		
@@ -29,8 +33,31 @@ public class LineParser {
 	
 	public static String parseCommand(String str) {
 		str = str.toLowerCase();
+		
+		
 		String parsedCommand = "";
+
+
 		Scanner s = new Scanner(str);
+
+		if (s.hasNext("every")) {
+			// Gobble up the "every"
+			s.next();
+			String interval = s.next();
+			String units = s.next();
+			String date = s.next();
+			String time = s.next();
+			String fileToRun = s.next();
+			s.close();
+			
+			if (isInt(interval) && units.matches(possibleUnitsRegex) && date.matches(dateRegex) && time.matches(timeRegex)) {
+				return "schedule-" + interval + "-" + units + "-" + date + "-" + time + "-" + fileToRun;
+			} else {
+				return "Error";
+			}
+
+		}
+
 		while (s.hasNext()) {
 			String next = s.next();
 			if (contains(importantWords, next) || isInt(next)) {
@@ -73,7 +100,7 @@ public class LineParser {
 		LineParser.init(new String[] {"GO", "PWM", "FAN_ON", "FAN_OFF", "LIGHT_ON", 
 			"LIGHT_OFF", "READ_DISPLAY", "SET_TEMP"});
 		String command = "set the blah blah TEMP 30 to 40 and blah";
-
+		
 		System.out.println(LineParser.parseCommand(command));
 	}
 }

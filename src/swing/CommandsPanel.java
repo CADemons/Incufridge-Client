@@ -19,7 +19,7 @@ import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
-import common.Communicator;
+import common.FileRunner;
 import common.LineParser;
 import common.TextFileReader;
 import common.TextFileWriter;
@@ -117,22 +117,9 @@ public class CommandsPanel extends JPanel {
 					JOptionPane.showMessageDialog(null, "Found Errors. Aborting upload");
 					return;
 				}
-				// Get each line separately
-				String[] lines = commandsText.getText().split("\n");
-				String[] compiled = new String[lines.length];
-				for (int i = 0; i < lines.length; i++) {
-					// Parse each line and add it to the compiled array
-					compiled[i] = LineParser.parseCommand(lines[i]).trim();
-				}
-
-				if (Communicator.isConnected()) {
-					// Send the compiled code to the incufridge
-					for (int i = 0; i < compiled.length; i++) {
-						Communicator.sendCommand(compiled[i]);
-					}
-				} else {
-					JOptionPane.showMessageDialog(null, "No connection");
-				}
+				saveRecipe();
+				FileRunner r = new FileRunner(filenameField.getText());
+				r.updloadAndRun();
 			}
 
 			if (e.getSource() == checkButton) {
