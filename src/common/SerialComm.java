@@ -116,8 +116,9 @@ public class SerialComm implements SerialPortEventListener {
 		if (oEvent.getEventType() == SerialPortEvent.DATA_AVAILABLE) {
 			bytes++;
 			try {
-				String inputLine=input.readLine();
+				String inputLine = input.readLine();
 				System.out.println(inputLine);
+				Input.setInput(inputLine);
 			} catch (Exception e) {
 				System.err.println(e.toString());
 			}

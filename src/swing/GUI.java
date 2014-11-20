@@ -4,7 +4,9 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
 import common.ConsoleWriter;
+import common.Input;
 import common.LineParser;
+import common.Log;
 import common.SerialConnector;
 
 /* This class runs the GUI of the incu-fridge */
@@ -49,5 +51,8 @@ public class GUI extends JFrame {
 		LineParser.init(new String[] {"PWM", "FAN_ON", "FAN_OFF", "LIGHT_ON", 
 			"LIGHT_OFF", "READ_DISPLAY", "SET_TEMP", "PRESS_BUTTON"});
 		gui.setVisible(true);
+		
+		Input.setInput("15.5");
+		Log.createLog(gui.serial);
 	}
 }

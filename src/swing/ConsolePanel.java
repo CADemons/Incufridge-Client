@@ -7,6 +7,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.text.DefaultCaret;
@@ -18,7 +19,7 @@ import common.SerialConnector;
 /* This class contains the code for the JPanel used to display the console */
 @SuppressWarnings("serial")
 public class ConsolePanel extends JPanel {
-	public ConsoleTextArea console;
+	public JTextArea console;
 	private JScrollPane scroll;
 	private JTextField inputField;
 	private JButton sendButton;
@@ -31,7 +32,7 @@ public class ConsolePanel extends JPanel {
 		this.consoleWriter = consoleWriter;
 		this.serial = serial;
 		
-		console = new ConsoleTextArea(20, 35);
+		console = new JTextArea(20, 35);
 		
 		console.setEditable(false);
 		
