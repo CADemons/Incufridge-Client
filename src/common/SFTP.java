@@ -17,6 +17,14 @@ public class SFTP {
 			e.printStackTrace();
 		}
 	}
+	
+	public void download(String fileToDownload, String destination) {
+		try {
+			mySftpChannel.get(fileToDownload, destination);
+		} catch (SftpException e) {
+			e.printStackTrace();
+		}
+	}
 
 	public void exit() {
 		mySftpChannel.exit();

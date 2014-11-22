@@ -20,7 +20,10 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
 import common.FileRunner;
+import common.Info;
 import common.LineParser;
+import common.SFTP;
+import common.SFTPConnection;
 import common.TextFileReader;
 import common.TextFileWriter;
 
@@ -43,7 +46,7 @@ public class CommandsPanel extends JPanel {
 	private JButton uploadButton;
 	// Check the recipe for errors
 	private JButton checkButton;
-	
+	// Contains all lines which have errors in them
 	private ArrayList<String> errorLines;
 
 	public CommandsPanel() {
@@ -100,16 +103,35 @@ public class CommandsPanel extends JPanel {
 
 			if (e.getSource() == saveButton) {
 				saveRecipe();
+				if (filenameField.getText().startsWith("Server:")) {
+					SFTP s = new SFTPConnection().connect(Info.username, Info.hostname, Info.password, Info.portnum);
+					s.upload(filenameField.getText().split(":")[1].trim(), "Programs/");
+					s.exit();
+				}
 			}
 
 			if (e.getSource() == loadButton) {
 				errorLines.clear();
-				String text = TextFileReader.readEntireFile(filenameField.getText());
-				if (text.split(":")[0].equals("Error")) {
-					JOptionPane.showMessageDialog(null, text.split(":")[1]);
-					return;
+				if (!filenameField.getText().startsWith("Server:")) {
+					String text = TextFileReader.readEntireFile(filenameField.getText());
+					if (text.split(":")[0].equals("Error")) {
+						JOptionPane.showMessageDialog(null, text.split(":")[1]);
+						return;
+					}
+					commandsText.setText(text);
+				} else {
+					String filename = filenameField.getText().split(":")[1].trim();
+					SFTP s = new SFTPConnection().connect(Info.username, Info.hostname, Info.password, Info.portnum);
+					System.out.println(filename);
+					s.download("Programs/" + filename, filename);
+					String text = TextFileReader.readEntireFile(filename);
+					if (text.split(":")[0].equals("Error")) {
+						JOptionPane.showMessageDialog(null, text.split(":")[1]);
+						return;
+					}
+					commandsText.setText(text);
+					s.exit();
 				}
-				commandsText.setText(text);
 			}
 
 			if (e.getSource() == uploadButton) {
@@ -125,15 +147,20 @@ public class CommandsPanel extends JPanel {
 			if (e.getSource() == checkButton) {
 				checkError();
 			}
+			
 		}
 
 		private void saveRecipe() {
-			// Delete the old file
 			File file = new File(filenameField.getText());
+			if (filenameField.getText().startsWith("Server:")) {
+				file = new File(filenameField.getText().split(":")[1].trim());
+			}
+			
+			// Delete the old file
 			file.delete();
 
 			// Write the recipe to a new file
-			TextFileWriter.writeToFile(filenameField.getText(), commandsText.getText());
+			TextFileWriter.writeToFile(file.getName(), commandsText.getText());
 		}
 
 		private boolean checkError() {
