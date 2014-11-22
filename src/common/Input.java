@@ -10,6 +10,25 @@ public class Input {
 		return currentInput;
 	}
 	
+	/** Waits for a new input to be received and returns it. Pauses the thread **/
+	public static String getNextInput() {
+		System.out.println("Here");
+
+		while (true) {
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			if (Communicator.receivedInput()) {
+				break;
+			}
+		}
+		Communicator.setReceivedInput(false);
+		
+		return currentInput;
+	}
+	
 	/** Set the current input for other classes to access **/
 	public static void setInput(String s) {
 		currentInput = s;

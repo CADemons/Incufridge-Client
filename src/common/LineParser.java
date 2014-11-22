@@ -2,6 +2,7 @@ package common;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 /* This class parses the recipes that the user writes and turns them into Incu-Fridge code */
@@ -12,9 +13,9 @@ public class LineParser {
 	// Only pay attention to these words
 	static String[] importantWords;
 	
-	static String possibleUnitsRegex = "(second(s)?) || (minute(s)?) || (hour(s)?) || (day(s)?)";
-	static String dateRegex = "\\d/\\d/\\d";
-	static String timeRegex = "\\d:\\d";
+	static String possibleUnitsRegex = "((second(s)?)|(minute(s)?)|(hour(s)?)|(day(s)?))";
+	static String dateRegex = "\\d+/\\d+/\\d+";
+	static String timeRegex = "\\d+:\\d+";
 	
 	public static void init(String[] commandsList) {
 		commands = commandsList;
@@ -43,11 +44,17 @@ public class LineParser {
 		if (s.hasNext("every")) {
 			// Gobble up the "every"
 			s.next();
-			String interval = s.next();
-			String units = s.next();
-			String date = s.next();
-			String time = s.next();
-			String fileToRun = s.next();
+			String interval, units, date, time, fileToRun;
+			try {
+				interval = s.next();
+				units = s.next();
+				date = s.next();
+				time = s.next();
+				fileToRun = s.next();
+			} catch (NoSuchElementException e) {
+				s.close();
+				return "Error";
+			}
 			s.close();
 			
 			if (isInt(interval) && units.matches(possibleUnitsRegex) && date.matches(dateRegex) && time.matches(timeRegex)) {
@@ -56,6 +63,16 @@ public class LineParser {
 				return "Error";
 			}
 
+		}
+		
+		if (s.hasNext("createlog")) {
+			s.close();
+			return "log";
+		}
+		
+		if (s.hasNext("cancel")) {
+			s.close();
+			return "cancel";
 		}
 
 		while (s.hasNext()) {
@@ -99,7 +116,7 @@ public class LineParser {
 	public static void main(String[] args) {
 		LineParser.init(new String[] {"GO", "PWM", "FAN_ON", "FAN_OFF", "LIGHT_ON", 
 			"LIGHT_OFF", "READ_DISPLAY", "SET_TEMP"});
-		String command = "set the blah blah TEMP 30 to 40 and blah";
+		String command = "every 10 minute 11/12/14 13:15 Program";
 		
 		System.out.println(LineParser.parseCommand(command));
 	}

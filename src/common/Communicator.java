@@ -19,10 +19,10 @@ public class Communicator {
 	}
 	
 	public static double getTemperature() {
-		sendCommand("READ_DISPLAY");
+		sendCommand("READ_DISPLAY;");
 		double temp = -1;
 		try {
-			temp = Double.parseDouble(Input.getInput());
+			temp = Double.parseDouble(Input.getNextInput());
 		} catch (NumberFormatException e) {
 			JOptionPane.showMessageDialog(null, "There was an error with the temperature received. Please try again");
 		}
@@ -31,5 +31,13 @@ public class Communicator {
 	
 	public static boolean isConnected() {
 		return serial.main != null;
+	}
+	
+	public static boolean receivedInput() {
+		return serial.main.receivedInput;
+	}
+	
+	public static void setReceivedInput(boolean b) {
+		serial.main.receivedInput = b;
 	}
 }

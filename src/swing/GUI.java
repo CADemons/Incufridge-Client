@@ -1,8 +1,13 @@
 package swing;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
@@ -13,12 +18,14 @@ import common.SerialConnector;
 
 /* This class runs the GUI of the incu-fridge */
 @SuppressWarnings("serial")
-public class GUI extends JFrame {
+public class GUI extends JFrame implements ActionListener {
 	
 	// Manage the various tabs of the GUI
 	private JTabbedPane tabManager = new JTabbedPane(JTabbedPane.TOP);
 	// The main object to make serial connections
 	public SerialConnector serial = new SerialConnector();
+	
+	private JMenuBar menuBar = new JMenuBar();
 	
 	public GUI() {
 		super("Incu-Fridge");
@@ -35,6 +42,33 @@ public class GUI extends JFrame {
 		    	System.out.println("Closing");
 		    }
 		});
+		
+		this.setJMenuBar(menuBar);
+	}
+	
+	public void init() {
+		Communicator.setSerial(serial);
+
+		// Add all the various tabs
+		addTab("Data", new DataDisplayPanel());
+		addTab("Recipe", new CommandsPanel());
+		addTab("Console", new ConsolePanel(new ConsoleWriter(false)));
+		addTab("Connection Data", new ConnectionPanel(serial));
+		
+		JMenu m = new JMenu("File");
+		JMenuItem item = new JMenuItem("Help");
+		item.addActionListener(this);
+		m.add(item);
+		addMenu(m);
+
+		LineParser.init(new String[] {"PWM", "FAN_ON", "FAN_OFF", "LIGHT_ON", 
+			"LIGHT_OFF", "READ_DISPLAY", "SET_TEMP", "PRESS_BUTTON"});
+
+		setVisible(true);
+	}
+	
+	public void addMenu(JMenu m) {
+		menuBar.add(m);
 	}
 	
 	// Add a tab to the GUI
@@ -50,16 +84,18 @@ public class GUI extends JFrame {
 		tabManager.removeTabAt(index);
 	}
 
+	public void actionPerformed(ActionEvent e) {
+		if (((JMenuItem) e.getSource()).getText().equals("Help")) {
+			JFrame frame = new JFrame("Incu-Fridge Help");
+			frame.setSize(512, 512);
+			frame.setResizable(false);
+			frame.setVisible(true);
+			frame.add(new HelpPanel());
+		}
+	}
+
 	public static void main(String[] args) {
 		GUI gui = new GUI();
-		Communicator.setSerial(gui.serial);
-		// Add all the various tabs
-		gui.addTab("Data", new DataDisplayPanel());
-		gui.addTab("Recipe", new CommandsPanel());
-		gui.addTab("Console", new ConsolePanel(new ConsoleWriter(false)));
-		gui.addTab("Connection Data", new ConnectionPanel(gui.serial));
-		LineParser.init(new String[] {"PWM", "FAN_ON", "FAN_OFF", "LIGHT_ON", 
-			"LIGHT_OFF", "READ_DISPLAY", "SET_TEMP", "PRESS_BUTTON"});
-		gui.setVisible(true);
+		gui.init();
 	}
 }

@@ -14,10 +14,9 @@ public class Log {
 			logDir.mkdir();
 		}
 		
-		Communicator.sendCommand("READ_DISPLAY");
-		String temp = Input.getInput();
+		double temp = Communicator.getTemperature();
 		
-		DateFormat dateFormat = new SimpleDateFormat("EEEE' 'MMMM' 'd', 'yyyy' at 'h:mm' 'aa");
+		DateFormat dateFormat = new SimpleDateFormat("EEEE' 'MMMM' 'd', 'yyyy' at 'h:mm:ss' 'aa");
 		Date date = new Date();
 		
 		String output = "Log File\n";
@@ -25,6 +24,8 @@ public class Log {
 		output += "Temperature: " + temp + "\n";
 
 		TextFileWriter.writeToFile("Logs/Log" + (logDir.listFiles().length + 1) + ".txt", output);
+		
+		System.out.println("Created log");
 	}
 	
 	public static void uploadLogFile(File f) {

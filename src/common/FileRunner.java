@@ -1,5 +1,6 @@
 package common;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -10,6 +11,8 @@ import javax.swing.JOptionPane;
 
 public class FileRunner {
 	private String myFileText;
+	
+	private ArrayList<ScheduledRunner> schedules = new ArrayList<ScheduledRunner>();
 	
 	public FileRunner(String filename) {
 		myFileText = TextFileReader.readEntireFile(filename);
@@ -48,9 +51,20 @@ public class FileRunner {
 					int minute = Integer.parseInt(time[1]);
 					
 					Calendar c = new GregorianCalendar();
-					c.set(year, month, day, hourOfDay, minute);
+					c.set(year, month - 1, day, hourOfDay, minute);
+					System.out.println(c.getTime());
 					
-					new ScheduledRunner(minutes, new Date(c.getTimeInMillis()), parts[5]);
+					if (c.getTimeInMillis() < System.currentTimeMillis()) {
+						JOptionPane.showMessageDialog(null, "That time is in the past");
+					}
+					
+					schedules.add(new ScheduledRunner(minutes, new Date(c.getTimeInMillis()), parts[5]));
+				} else if (compiled[i].equals("log")) {
+					Log.createLog();
+				} else if (compiled[i].equals("cancel")) {
+					for (ScheduledRunner s : schedules) {
+						s.cancel();
+					}
 				} else {
 					Communicator.sendCommand(compiled[i]);
 				}

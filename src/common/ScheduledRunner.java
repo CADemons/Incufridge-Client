@@ -11,6 +11,11 @@ public class ScheduledRunner {
 	public ScheduledRunner(long minutes, Date firstTime, String fileToRun) {
 		timer = new Timer();
 		timer.scheduleAtFixedRate(new RunTask(fileToRun), firstTime, TimeUnit.MINUTES.toMillis(minutes));
+		System.out.println("Here");
+	}
+	
+	public void cancel() {
+		timer.cancel();
 	}
 	
 	class RunTask extends TimerTask {
@@ -19,6 +24,7 @@ public class ScheduledRunner {
 			myFileName = fileToRun;
 		}
 		public void run() {
+			System.out.println("Here");
 			FileRunner r = new FileRunner(myFileName);
 			r.updloadAndRun();
 		}

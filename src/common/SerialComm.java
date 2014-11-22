@@ -34,6 +34,8 @@ public class SerialComm implements SerialPortEventListener {
 	private static final int TIME_OUT = 2000;
 	/** Default bits per second for COM port. */
 	private static final int DATA_RATE = 9600;
+	
+	public boolean receivedInput;
 
 	public void initialize(String port) {
 		//		Set<String> without = new HashSet<String>(Arrays.asList(Serial.list()));
@@ -118,7 +120,10 @@ public class SerialComm implements SerialPortEventListener {
 			try {
 				String inputLine = input.readLine();
 				System.out.println(inputLine);
-				Input.setInput(inputLine);
+				if (inputLine.matches("\\d+(.\\d+)?")) {
+					Input.setInput(inputLine);
+					receivedInput = true;
+				}
 			} catch (Exception e) {
 				System.err.println(e.toString());
 			}
