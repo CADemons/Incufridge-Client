@@ -37,6 +37,6 @@ public class Log {
 		SFTP s = c.connect(Info.username, Info.hostname, Info.password, Info.portnum);
 		s.upload(f.getAbsolutePath(), "Logs/");
 		s.upload("Logs/NumLogs.txt", "Logs/");
-		s.exit();
+		c.disconnect();
 	}
 }

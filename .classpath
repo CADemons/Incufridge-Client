@@ -2,17 +2,13 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="core.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="http://processing.org/reference/javadoc/everything/"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="src/RXTXcomm.jar">
+	<classpathentry kind="lib" path="lib/jsch-0.1.51.jar"/>
+	<classpathentry kind="lib" path="lib/core.jar"/>
+	<classpathentry kind="lib" path="lib/serial.jar"/>
+	<classpathentry kind="lib" path="lib/RXTXcomm.jar">
 		<attributes>
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="Incufridge-Client/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="src/serial.jar"/>
-	<classpathentry kind="lib" path="lib/jsch-0.1.51.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

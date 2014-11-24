@@ -13,6 +13,7 @@ import javax.swing.JTabbedPane;
 
 import common.Communicator;
 import common.ConsoleWriter;
+import common.Info;
 import common.LineParser;
 import common.SerialConnector;
 
@@ -38,16 +39,19 @@ public class GUI extends JFrame implements ActionListener {
 		
 		this.addWindowListener(new WindowAdapter() {
 		    public void windowClosing(WindowEvent e) {
+		    	// Make sure to close the serial port when the program is closed
 		    	serial.close();
 		    	System.out.println("Closing");
 		    }
 		});
 		
+		// Add the menubar
 		this.setJMenuBar(menuBar);
 	}
 	
 	public void init() {
 		Communicator.setSerial(serial);
+		Info.init();
 
 		// Add all the various tabs
 		addTab("Data", new DataDisplayPanel());
@@ -55,12 +59,15 @@ public class GUI extends JFrame implements ActionListener {
 		addTab("Console", new ConsolePanel(new ConsoleWriter(false)));
 		addTab("Connection Data", new ConnectionPanel(serial));
 		
+		// Add the menubar
 		JMenu m = new JMenu("File");
+		// File -> help
 		JMenuItem item = new JMenuItem("Help");
 		item.addActionListener(this);
 		m.add(item);
 		addMenu(m);
 
+		// The commands for the line parser
 		LineParser.init(new String[] {"PWM", "FAN_ON", "FAN_OFF", "LIGHT_ON", 
 			"LIGHT_OFF", "READ_DISPLAY", "SET_TEMP", "PRESS_BUTTON"});
 
@@ -86,6 +93,8 @@ public class GUI extends JFrame implements ActionListener {
 
 	public void actionPerformed(ActionEvent e) {
 		if (((JMenuItem) e.getSource()).getText().equals("Help")) {
+			// What to do when File -> help is pressed
+			// Make a new JFrame containing the help panel
 			JFrame frame = new JFrame("Incu-Fridge Help");
 			frame.setSize(512, 512);
 			frame.setResizable(false);

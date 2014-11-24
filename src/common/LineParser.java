@@ -35,9 +35,7 @@ public class LineParser {
 	public static String parseCommand(String str) {
 		str = str.toLowerCase();
 		
-		
 		String parsedCommand = "";
-
 
 		Scanner s = new Scanner(str);
 
@@ -93,7 +91,7 @@ public class LineParser {
 		return parsedCommand + ";";
 	}
 	
-	public static boolean contains(String[] arr, String str) {
+	private static boolean contains(String[] arr, String str) {
 		for (String s : arr) {
 			if (s.equals(str)) {
 				return true;
@@ -103,21 +101,12 @@ public class LineParser {
 		return false;
 	}
 	
-	public static boolean isInt(String s) {
+	private static boolean isInt(String s) {
 		try {
 			Integer.parseInt(s);
 		} catch (NumberFormatException e) {
 			return false;
 		}
 		return true;
-	}
-
-	// Test main method
-	public static void main(String[] args) {
-		LineParser.init(new String[] {"GO", "PWM", "FAN_ON", "FAN_OFF", "LIGHT_ON", 
-			"LIGHT_OFF", "READ_DISPLAY", "SET_TEMP"});
-		String command = "every 10 minute 11/12/14 13:15 Program";
-		
-		System.out.println(LineParser.parseCommand(command));
 	}
 }

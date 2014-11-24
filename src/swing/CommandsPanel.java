@@ -70,7 +70,7 @@ public class CommandsPanel extends JPanel {
 		commandsText.setText("");
 		commandsText.setEditable(true);
 
-		// Add the action listener
+		// Add the action listeners
 		AL AL = new AL();
 		saveButton.addActionListener(AL);
 		loadButton.addActionListener(AL);
@@ -92,46 +92,21 @@ public class CommandsPanel extends JPanel {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == filenameField) {
-				errorLines.clear();
-				String text = TextFileReader.readEntireFile(filenameField.getText());
-				if (text.split(":")[0].equals("Error")) {
-					JOptionPane.showMessageDialog(null, text.split(":")[1]);
-					return;
-				}
-				commandsText.setText(text);
+				loadFile();
 			}
 
 			if (e.getSource() == saveButton) {
 				saveRecipe();
 				if (filenameField.getText().startsWith("Server:")) {
-					SFTP s = new SFTPConnection().connect(Info.username, Info.hostname, Info.password, Info.portnum);
+					SFTPConnection c = new SFTPConnection();
+					SFTP s = c.connect(Info.username, Info.hostname, Info.password, Info.portnum);
 					s.upload(filenameField.getText().split(":")[1].trim(), "Programs/");
-					s.exit();
+					c.disconnect();
 				}
 			}
 
 			if (e.getSource() == loadButton) {
-				errorLines.clear();
-				if (!filenameField.getText().startsWith("Server:")) {
-					String text = TextFileReader.readEntireFile(filenameField.getText());
-					if (text.split(":")[0].equals("Error")) {
-						JOptionPane.showMessageDialog(null, text.split(":")[1]);
-						return;
-					}
-					commandsText.setText(text);
-				} else {
-					String filename = filenameField.getText().split(":")[1].trim();
-					SFTP s = new SFTPConnection().connect(Info.username, Info.hostname, Info.password, Info.portnum);
-					System.out.println(filename);
-					s.download("Programs/" + filename, filename);
-					String text = TextFileReader.readEntireFile(filename);
-					if (text.split(":")[0].equals("Error")) {
-						JOptionPane.showMessageDialog(null, text.split(":")[1]);
-						return;
-					}
-					commandsText.setText(text);
-					s.exit();
-				}
+				loadFile();
 			}
 
 			if (e.getSource() == uploadButton) {
@@ -161,6 +136,31 @@ public class CommandsPanel extends JPanel {
 
 			// Write the recipe to a new file
 			TextFileWriter.writeToFile(file.getName(), commandsText.getText());
+		}
+		
+		private void loadFile() {
+			errorLines.clear();
+			if (!filenameField.getText().startsWith("Server:")) {
+				String text = TextFileReader.readEntireFile(filenameField.getText());
+				if (text.split(":")[0].equals("Error")) {
+					JOptionPane.showMessageDialog(null, text.split(":")[1]);
+					return;
+				}
+				commandsText.setText(text);
+			} else {
+				String filename = filenameField.getText().split(":")[1].trim();
+				SFTPConnection c = new SFTPConnection();
+				SFTP s = c.connect(Info.username, Info.hostname, Info.password, Info.portnum);
+				s.download("Programs/" + filename, filename);
+				c.disconnect();
+				String text = TextFileReader.readEntireFile(filename);
+				if (text.split(":")[0].equals("Error")) {
+					JOptionPane.showMessageDialog(null, text.split(":")[1]);
+					return;
+				}
+				commandsText.setText(text);
+				s.exit();
+			}
 		}
 
 		private boolean checkError() {
@@ -205,7 +205,6 @@ public class CommandsPanel extends JPanel {
 				} catch (BadLocationException e) {
 					e.printStackTrace();
 				}
-
 			}
 		}
 	}

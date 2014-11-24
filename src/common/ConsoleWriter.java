@@ -45,7 +45,7 @@ public class ConsoleWriter extends OutputStream {
 			}
 			
 			fullstring = "";
-			if (Client.state == 3) {Client.app.redraw();}
+			if (Client.state == 3) Client.app.redraw();
 		}
 	}
 	

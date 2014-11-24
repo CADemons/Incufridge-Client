@@ -19,11 +19,13 @@ public class Communicator {
 	}
 	
 	public static double getTemperature() {
+		// Send the read display command and then get the next input
 		sendCommand("READ_DISPLAY;");
 		double temp = -1;
 		try {
 			temp = Double.parseDouble(Input.getNextInput());
 		} catch (NumberFormatException e) {
+			// If the input is not a double then there is an error
 			JOptionPane.showMessageDialog(null, "There was an error with the temperature received. Please try again");
 		}
 		return temp;
