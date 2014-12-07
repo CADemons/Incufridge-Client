@@ -83,7 +83,6 @@ public class GUI extends JFrame implements ActionListener {
 		getContentPane().add(tabManager);
 
 		tabManager.addTab(name, null, panel, name);
-		System.currentTimeMillis();
 	}
 	
 	// Remove a tab from the GUI
