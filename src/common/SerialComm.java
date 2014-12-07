@@ -18,20 +18,27 @@ import java.util.Set;
 public class SerialComm implements SerialPortEventListener {
 	int bytes = 0;
 	SerialPort serialPort;
+	
 	//static byte[] temps = new byte[12];
+	
 	private ArrayList<Byte> outBytes = new ArrayList<Byte>();
+	
 	/** The port we're normally going to use. */
 	private static final String PORT_NAMES[] = new String[1];
+	
 	/**
 	 * A BufferedReader which will be fed by a InputStreamReader 
 	 * converting the bytes into characters 
 	 * making the displayed results codepage independent
 	 */
 	private BufferedReader input;
+	
 	/** The output stream to the port */
 	public OutputStream output;
+	
 	/** Milliseconds to block while waiting for port open */
 	private static final int TIME_OUT = 2000;
+	
 	/** Default bits per second for COM port. */
 	private static final int DATA_RATE = 9600;
 	
