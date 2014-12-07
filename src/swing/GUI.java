@@ -23,6 +23,7 @@ public class GUI extends JFrame implements ActionListener {
 	
 	// Manage the various tabs of the GUI
 	private JTabbedPane tabManager = new JTabbedPane(JTabbedPane.TOP);
+	
 	// The main object to make serial connections
 	public SerialConnector serial = new SerialConnector();
 	
@@ -61,6 +62,7 @@ public class GUI extends JFrame implements ActionListener {
 		
 		// Add the menubar
 		JMenu m = new JMenu("File");
+		
 		// File -> help
 		JMenuItem item = new JMenuItem("Help");
 		item.addActionListener(this);
