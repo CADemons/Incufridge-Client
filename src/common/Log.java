@@ -6,13 +6,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Log {
-	private static int numLogs;
-	
 	/** Creates a log file **/
 	public static void createLog() {
 		File logDir = new File("Logs");
 		if (!logDir.exists()) {
-			System.out.println("Here");
 			logDir.mkdir();
 		}
 		
@@ -21,22 +18,21 @@ public class Log {
 		DateFormat dateFormat = new SimpleDateFormat("EEEE' 'MMMM' 'd', 'yyyy' at 'h:mm:ss' 'aa");
 		Date date = new Date();
 		
-		String output = "Log File\n";
-		output += "Created on: " + dateFormat.format(date) + "\n\n";
+		String output = "Created on " + dateFormat.format(date) + "\n\n";
 		output += "Temperature: " + temp + "\n";
 
-		numLogs = logDir.listFiles().length + 1;
-		TextFileWriter.writeToFile("Logs/Log" + (logDir.listFiles().length + 1) + ".txt", output);
-		TextFileWriter.writeToFile("Logs/NumLogs.txt", numLogs + "");
+		TextFileWriter.writeToFile("Logs/log.txt", output + "\n\n");
 		
 		System.out.println("Created log");
+		
+		uploadLogFile();
 	}
 	
-	public static void uploadLogFile(File f) {
+	public static void uploadLogFile() {
+		File f = new File("Logs/log.txt");
 		SFTPConnection c = new SFTPConnection();
 		SFTP s = c.connect(Info.username, Info.hostname, Info.password, Info.portnum);
-		s.upload(f.getAbsolutePath(), "Logs/");
-		s.upload("Logs/NumLogs.txt", "Logs/");
+		s.upload(f.getAbsolutePath(), "cademons/incuTest/Logs/");
 		c.disconnect();
 	}
 }

@@ -36,10 +36,12 @@ public class Communicator {
 	}
 	
 	public static boolean receivedInput() {
-		return serial.main.receivedInput;
+		return serial.main != null ? serial.main.receivedInput : false;
 	}
 	
 	public static void setReceivedInput(boolean b) {
-		serial.main.receivedInput = b;
+		if (serial.main != null) {
+			serial.main.receivedInput = b;
+		}
 	}
 }

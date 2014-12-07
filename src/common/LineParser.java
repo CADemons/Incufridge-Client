@@ -1,7 +1,6 @@
 package common;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -29,7 +28,6 @@ public class LineParser {
 		}
 		
 		importantWords = importantWordsList.toArray(new String[importantWordsList.size()]);
-		System.out.println(Arrays.toString(importantWords));
 	}
 	
 	public static String parseCommand(String str) {
