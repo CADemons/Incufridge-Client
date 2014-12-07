@@ -11,9 +11,9 @@ public class SerialConnector {
 
 	public String findPort() {
 		SerialComm portFinder = new SerialComm();
-		JOptionPane.showMessageDialog(null, "Detach the IncuFridge, then click ok");
+		JOptionPane.showMessageDialog(null, "Detach the IncuFridge, then click \"OK\"");
 		String[] without = Serial.list();
-		JOptionPane.showMessageDialog(null, "Reattach the IncuFridge, then click ok");
+		JOptionPane.showMessageDialog(null, "Reattach the IncuFridge, then click \"OK\"");
 		String[] with = Serial.list();
 		port = portFinder.getPort(without, with);
 
