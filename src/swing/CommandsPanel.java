@@ -177,11 +177,11 @@ public class CommandsPanel extends JPanel {
 				}
 			}
 			
+			recolor();
+			
 			if (!hasError) {
 				JOptionPane.showMessageDialog(null, "No Errors :D");
 			}
-			
-			recolor();
 
 			return hasError;
 		}

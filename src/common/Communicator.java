@@ -2,6 +2,7 @@ package common;
 
 import javax.swing.JOptionPane;
 
+// Provides easy means to communicate with the Arduino
 public class Communicator {
 	private static SerialConnector serial;
 	
@@ -11,6 +12,13 @@ public class Communicator {
 	
 	public static void sendCommand(String comm) {
 		if (serial.main != null) {
+			
+			// When the "set temp X" command is run, record it in file
+			if (comm.contains("SET_TEMP")) {
+				// Write the last set target temperature to file
+				TextFileWriter.writeToFile("lastTargetTemp.txt", comm.split(" ")[1]);
+			}
+			
 			serial.main.writeBytes(comm.getBytes());
 			System.out.println("Send command: " + comm);
 		} else {
@@ -36,6 +44,7 @@ public class Communicator {
 	}
 	
 	public static boolean receivedInput() {
+		// Return serial.main.receivedInput if serial.main is not equal to null, else return false
 		return serial.main != null ? serial.main.receivedInput : false;
 	}
 	
