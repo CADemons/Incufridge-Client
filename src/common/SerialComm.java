@@ -45,18 +45,6 @@ public class SerialComm implements SerialPortEventListener {
 	public boolean receivedInput;
 
 	public void initialize(String port) {
-		//		Set<String> without = new HashSet<String>(Arrays.asList(Serial.list()));
-		//		try {
-		//			Thread.sleep(5000);
-		//		} catch (InterruptedException e) {
-		//			e.printStackTrace();
-		//		}
-		//		Set<String> with = new HashSet<String>(Arrays.asList(Serial.list()));
-		//		with.removeAll(without);
-		//		String[] newports = with.toArray(new String[0]);
-		//		for(int a=0; a<newports.length;a++){
-		//			System.out.println(newports[a]);
-		//		}
 		PORT_NAMES[0] = port;
 		CommPortIdentifier portId = null;
 		@SuppressWarnings("rawtypes")
@@ -137,11 +125,6 @@ public class SerialComm implements SerialPortEventListener {
 			if (outBytes.size() > 0) {
 				try {
 					System.out.println("Sending data");
-//					output.write('~');
-//					for (int c = 0; c != 12; c++) {
-//						output.write(temps[c]);
-//					}
-//					output.write('D');
 					for(int i = 0; i < outBytes.size(); i++){
 						output.write(outBytes.get(i));
 					}
@@ -150,9 +133,6 @@ public class SerialComm implements SerialPortEventListener {
 					e.printStackTrace();
 				}
 			}
-			//			if (bytes == 5) {
-			//				close();
-			//			}
 		}
 		// Ignore all the other eventTypes, but you should consider the other ones.
 	}
