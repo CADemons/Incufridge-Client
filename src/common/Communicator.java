@@ -10,9 +10,9 @@ public class Communicator {
 	}
 	
 	public static void sendCommand(String comm) {
-		if (serial.main != null) {
+		if (isConnected()) {
 			serial.main.writeBytes(comm.getBytes());
-			System.out.println("Send command: " + comm);
+			System.out.println("Sent command: " + comm);
 		} else {
 			JOptionPane.showMessageDialog(null, "No connection to transmit data");
 		}
@@ -28,6 +28,7 @@ public class Communicator {
 			// If the input is not a double then there is an error
 			JOptionPane.showMessageDialog(null, "There was an error with the temperature received. Please try again");
 		}
+
 		return temp;
 	}
 	

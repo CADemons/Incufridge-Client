@@ -44,7 +44,11 @@ public class DataDisplayPanel extends JPanel {
 			}
 			
 			if (e.getSource() == createLogButton) {
-				Log.createLog();
+				if (Communicator.isConnected()) {
+					Log.createLog();
+				} else {
+					JOptionPane.showMessageDialog(null, "No connection");
+				}
 			}
 		}
 		
