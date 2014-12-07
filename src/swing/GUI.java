@@ -29,6 +29,7 @@ public class GUI extends JFrame implements ActionListener {
 	
 	private JMenuBar menuBar = new JMenuBar();
 	
+	// GUI constructor to set basic JFrame properties
 	public GUI() {
 		super("Incu-Fridge");
 		
