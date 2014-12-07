@@ -19,8 +19,6 @@ public class SerialComm implements SerialPortEventListener {
 	int bytes = 0;
 	SerialPort serialPort;
 	
-	//static byte[] temps = new byte[12];
-	
 	private ArrayList<Byte> outBytes = new ArrayList<Byte>();
 	
 	/** The port we're normally going to use. */
