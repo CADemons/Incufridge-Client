@@ -14,7 +14,6 @@ public class TextFileWriter {
 			try {
 				file.createNewFile();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				System.err.println(filePath + " does not exist. Failed to create new file");
 			}
 		}
@@ -26,9 +25,5 @@ public class TextFileWriter {
 		} catch (IOException e) {
 			System.err.println("Could not write to file: " + filePath);
 		}
-	}
-
-	public static void main(String[] args) {
-		TextFileWriter.writeToFile("~/Hello.txt", "Hello");
 	}
 }

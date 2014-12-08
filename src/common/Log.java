@@ -20,6 +20,7 @@ public class Log {
 		
 		String output = "Created on " + dateFormat.format(date) + "\n\n";
 		output += "Temperature: " + temp + "\n";
+		output += "Target Temperature: " + TextFileReader.readLineFromFile("targetTemp.txt", 1) + "\n";
 
 		TextFileWriter.writeToFile("Logs/log.txt", output + "\n\n");
 		
