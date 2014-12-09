@@ -29,7 +29,7 @@ public class SerialComm implements SerialPortEventListener {
 	 * converting the bytes into characters 
 	 * making the displayed results codepage independent
 	 */
-	private BufferedReader input;
+	public BufferedReader input;
 	
 	/** The output stream to the port */
 	public OutputStream output;

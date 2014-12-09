@@ -1,4 +1,6 @@
 package common;
+import java.io.IOException;
+
 import javax.swing.JOptionPane;
 
 import processing.serial.Serial;
@@ -20,9 +22,12 @@ public class SerialConnector {
 		String[] portTest = Serial.list();
 		for(int i = 0; i < portTest.length; i++) {
 			portFinder.initialize(portTest[i]);
-			if(ConsoleWriter.origout.equals("A")) {
-				port = portTest[i];
-				break;
+			try {
+				if(portFinder.input.readLine().equals("A")) {
+					port = portTest[i];
+					break;
+				}
+			} catch(IOException e) {
 			}
 			portFinder.close();
 		}
