@@ -41,6 +41,7 @@ public class SerialComm implements SerialPortEventListener {
 	private static final int DATA_RATE = 9600;
 	
 	public boolean receivedInput;
+	public boolean receivedA;
 
 	public void initialize(String port) {
 		PORT_NAMES[0] = port;
@@ -116,6 +117,9 @@ public class SerialComm implements SerialPortEventListener {
 				if (inputLine.matches("\\d+(.\\d+)?")) {
 					Input.setInput(inputLine);
 					receivedInput = true;
+				}
+				if (inputLine.equals("A")) {
+					receivedA = true;
 				}
 			} catch (Exception e) {
 				System.err.println(e.toString());

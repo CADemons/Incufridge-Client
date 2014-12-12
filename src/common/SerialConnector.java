@@ -1,6 +1,4 @@
 package common;
-import java.io.IOException;
-
 import javax.swing.JOptionPane;
 
 import processing.serial.Serial;
@@ -10,24 +8,24 @@ import processing.serial.Serial;
 public class SerialConnector {
 	public SerialComm main;
 	public String port = "Could not find port.";
+	private int timeout = 250;
 
 	public String findPort() {
 		SerialComm portFinder = new SerialComm();
-//		JOptionPane.showMessageDialog(null, "Detach the IncuFridge, then click \"OK\"");
-//		String[] without = Serial.list();
-//		JOptionPane.showMessageDialog(null, "Reattach the IncuFridge, then click \"OK\"");
-//		String[] with = Serial.list();
-//		port = portFinder.getPort(without, with);
-//		
+		port = "Could not find port.";
+
 		String[] portTest = Serial.list();
 		for(int i = 0; i < portTest.length; i++) {
 			portFinder.initialize(portTest[i]);
-			try {
-				if(portFinder.input.readLine().equals("A")) {
-					port = portTest[i];
+			long startTime = System.currentTimeMillis();
+			while (true) {
+				if (portFinder.receivedA) {
+					portFinder.close();
+					return portTest[i];
+				}
+				if (System.currentTimeMillis() - startTime > timeout) {
 					break;
 				}
-			} catch(IOException e) {
 			}
 			portFinder.close();
 		}
