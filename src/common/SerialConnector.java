@@ -8,7 +8,7 @@ import processing.serial.Serial;
 public class SerialConnector {
 	public SerialComm main;
 	public String port = "Could not find port.";
-	private int timeout = 250;
+	private int timeout = 1000;
 
 	public String findPort() {
 		SerialComm portFinder = new SerialComm();
@@ -16,6 +16,7 @@ public class SerialConnector {
 
 		String[] portTest = Serial.list();
 		for(int i = 0; i < portTest.length; i++) {
+			System.out.println(portTest[i]);
 			portFinder.initialize(portTest[i]);
 			long startTime = System.currentTimeMillis();
 			while (true) {

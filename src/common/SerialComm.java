@@ -113,13 +113,14 @@ public class SerialComm implements SerialPortEventListener {
 			bytes++;
 			try {
 				String inputLine = input.readLine();
-				System.out.println(inputLine);
 				if (inputLine.matches("\\d+(.\\d+)?")) {
 					Input.setInput(inputLine);
 					receivedInput = true;
 				}
 				if (inputLine.equals("A")) {
 					receivedA = true;
+				} else {
+					System.out.println(inputLine);
 				}
 			} catch (Exception e) {
 				System.err.println(e.toString());
