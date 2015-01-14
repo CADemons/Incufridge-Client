@@ -3,6 +3,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
@@ -48,7 +49,16 @@ public class ConnectionPanel extends JPanel {
 	
 	public void connect() {
 		// Attempt to connect
-		serial.tryConnect();
+		int messageType = JOptionPane.QUESTION_MESSAGE;
+		String[] options = {"Yes", "No"};
+		int code = JOptionPane.showOptionDialog(null, 
+				"Are you connected to the Incufridge?", 
+				"Connected?", 0, messageType, 
+				null, options, "Yes");
+
+		if (code == 0) {
+			serial.tryConnect();
+		}
 		
 		// Update the status based on whether or not the connection succeeded
 		if (isConnected()) {
