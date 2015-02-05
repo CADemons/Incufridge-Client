@@ -22,7 +22,7 @@ public class Log {
 		output += "Temperature: " + temp + "\n";
 		output += "Target Temperature: " + TextFileReader.readLineFromFile("lastTargetTemp.txt", 1) + "\n";
 
-		TextFileWriter.writeToFile("Logs/log.txt", output + "\n\n");
+		TextFileWriter.writeToFile("log.txt", output + "\n\n");
 		
 		System.out.println("Created log");
 		
@@ -30,10 +30,10 @@ public class Log {
 	}
 	
 	public static void uploadLogFile() {
-		File f = new File("Logs/log.txt");
+		File f = new File("log.txt");
 		SFTPConnection c = new SFTPConnection();
 		SFTP s = c.connect(Info.username, Info.hostname, Info.password, Info.portnum);
-		s.upload(f.getAbsolutePath(), "cademons/incuTest/Logs/");
+		s.upload(f.getAbsolutePath(), "cademons/incuTest/");
 		c.disconnect();
 	}
 }

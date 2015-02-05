@@ -13,8 +13,8 @@ public class LineParser {
 	static String[] importantWords;
 	
 	static String possibleUnitsRegex = "((second(s)?)|(minute(s)?)|(hour(s)?)|(day(s)?))";
-	static String dateRegex = "\\d+/\\d+/\\d+";
-	static String timeRegex = "\\d+:\\d+";
+	static String dateRegex = "(\\d+/\\d+/\\d+)|(today)";
+	static String timeRegex = "(\\d+:\\d+)|(now)";
 	
 	public static void init(String[] commandsList) {
 		commands = commandsList;

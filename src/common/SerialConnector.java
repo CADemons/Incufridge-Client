@@ -11,24 +11,26 @@ public class SerialConnector {
 	private int timeout = 1000;
 
 	public String findPort() {
-		SerialComm portFinder = new SerialComm();
-		port = "Could not find port.";
+		if (main == null) {
+			SerialComm portFinder = new SerialComm();
+			port = "Could not find port.";
 
-		String[] portTest = Serial.list();
-		for(int i = 0; i < portTest.length; i++) {
-			System.out.println(portTest[i]);
-			portFinder.initialize(portTest[i]);
-			long startTime = System.currentTimeMillis();
-			while (true) {
-				if (portFinder.receivedA) {
-					portFinder.close();
-					return portTest[i];
+			String[] portTest = Serial.list();
+			for(int i = 0; i < portTest.length; i++) {
+				System.out.println(portTest[i]);
+				portFinder.initialize(portTest[i]);
+				long startTime = System.currentTimeMillis();
+				while (true) {
+					if (portFinder.receivedA) {
+						portFinder.close();
+						return portTest[i];
+					}
+					if (System.currentTimeMillis() - startTime > timeout) {
+						break;
+					}
 				}
-				if (System.currentTimeMillis() - startTime > timeout) {
-					break;
-				}
+				portFinder.close();
 			}
-			portFinder.close();
 		}
 		return port;
 	}
