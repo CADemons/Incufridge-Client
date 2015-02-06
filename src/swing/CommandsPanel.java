@@ -100,7 +100,7 @@ public class CommandsPanel extends JPanel {
 				if (filenameField.getText().startsWith("Server:")) {
 					SFTPConnection c = new SFTPConnection();
 					SFTP s = c.connect(Info.username, Info.hostname, Info.password, Info.portnum);
-					s.upload(filenameField.getText().split(":")[1].trim(), "Programs/");
+					s.upload(filenameField.getText().split(":")[1].trim(), "cademons/incu/Programs/");
 					c.disconnect();
 				}
 			}
@@ -115,8 +115,7 @@ public class CommandsPanel extends JPanel {
 					return;
 				}
 				saveRecipe();
-				FileRunner r = new FileRunner(filenameField.getText());
-				r.updloadAndRun();
+				FileRunner.uploadAndRun("Programs/" + filenameField.getText());
 			}
 
 			if (e.getSource() == checkButton) {
@@ -126,22 +125,22 @@ public class CommandsPanel extends JPanel {
 		}
 
 		private void saveRecipe() {
-			File file = new File(filenameField.getText());
+			File file = new File("Programs/" + filenameField.getText());
 			if (filenameField.getText().startsWith("Server:")) {
-				file = new File(filenameField.getText().split(":")[1].trim());
+				file = new File("Programs/" + filenameField.getText().split(":")[1].trim());
 			}
 			
 			// Delete the old file
 			file.delete();
 
 			// Write the recipe to a new file
-			TextFileWriter.writeToFile(file.getName(), commandsText.getText());
+			TextFileWriter.writeToFile("Programs/" + file.getName(), commandsText.getText());
 		}
 		
 		private void loadFile() {
 			errorLines.clear();
 			if (!filenameField.getText().startsWith("Server:")) {
-				String text = TextFileReader.readEntireFile(filenameField.getText());
+				String text = TextFileReader.readEntireFile("Programs/" + filenameField.getText());
 				if (text.split(":")[0].equals("Error")) {
 					JOptionPane.showMessageDialog(null, text.split(":")[1]);
 					return;
@@ -151,7 +150,7 @@ public class CommandsPanel extends JPanel {
 				String filename = filenameField.getText().split(":")[1].trim();
 				SFTPConnection c = new SFTPConnection();
 				SFTP s = c.connect(Info.username, Info.hostname, Info.password, Info.portnum);
-				s.download("Programs/" + filename, filename);
+				s.download("cademons/incu/Programs/" + filename, filename);
 				c.disconnect();
 				String text = TextFileReader.readEntireFile(filename);
 				if (text.split(":")[0].equals("Error")) {

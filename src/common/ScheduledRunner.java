@@ -25,8 +25,7 @@ public class ScheduledRunner {
 		}
 		public void run() {
 			System.out.println("Here");
-			FileRunner r = new FileRunner(myFileName);
-			r.updloadAndRun();
+			FileRunner.uploadAndRun("Programs/" + myFileName);
 		}
 	}
 }

@@ -9,17 +9,12 @@ import java.util.concurrent.TimeUnit;
 import javax.swing.JOptionPane;
 
 public class FileRunner {
-	private String myFileText;
+	private static ArrayList<ScheduledRunner> schedules = new ArrayList<ScheduledRunner>();
 
-	private ArrayList<ScheduledRunner> schedules = new ArrayList<ScheduledRunner>();
-
-	public FileRunner(String filename) {
-		myFileText = TextFileReader.readEntireFile(filename);
-	}
-
-	public void updloadAndRun() {
+	public static void uploadAndRun(String filename) {
+		String fileText = TextFileReader.readEntireFile(filename);
 		// Get each line separately
-		String[] lines = myFileText.split("\n");
+		String[] lines = fileText.split("\n");
 		String[] compiled = new String[lines.length];
 		for (int i = 0; i < lines.length; i++) {
 			// Parse each line and add it to the compiled array
@@ -46,9 +41,9 @@ public class FileRunner {
 						minutes = TimeUnit.DAYS.toMinutes(interval);
 					}
 
-					int year;
-					int month;
-					int day;
+					int year = 0;
+					int month = 0;
+					int day = 0;
 					Calendar now = Calendar.getInstance();
 					if (parts[3].equals("today")) {
 						year = now.get(Calendar.YEAR);
@@ -63,8 +58,8 @@ public class FileRunner {
 						day = Integer.parseInt(date[1]);
 					}
 
-					int hourOfDay;
-					int minute;
+					int hourOfDay = 0;
+					int minute = 0;
 
 					if (parts[4].equals("now")) {
 						hourOfDay = now.get(Calendar.HOUR_OF_DAY);

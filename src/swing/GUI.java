@@ -16,6 +16,7 @@ import common.ConsoleWriter;
 import common.Info;
 import common.LineParser;
 import common.SerialConnector;
+import common.ServerChecker;
 
 /* This class runs the GUI of the incu-fridge */
 @SuppressWarnings("serial")
@@ -74,7 +75,9 @@ public class GUI extends JFrame implements ActionListener {
 		LineParser.init(new String[] {"PWM", "FAN_ON", "FAN_OFF", "LIGHT_ON", 
 			"LIGHT_OFF", "READ_DISPLAY", "SET_TEMP", "PRESS_BUTTON"});
 
+		new ServerChecker();
 		setVisible(true);
+		
 	}
 	
 	public void addMenu(JMenu m) {

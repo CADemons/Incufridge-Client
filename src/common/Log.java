@@ -33,7 +33,7 @@ public class Log {
 		File f = new File("log.txt");
 		SFTPConnection c = new SFTPConnection();
 		SFTP s = c.connect(Info.username, Info.hostname, Info.password, Info.portnum);
-		s.upload(f.getAbsolutePath(), "cademons/incuTest/");
+		s.upload(f.getAbsolutePath(), "cademons/incu/");
 		c.disconnect();
 	}
 }
