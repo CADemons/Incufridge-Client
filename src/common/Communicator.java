@@ -15,7 +15,8 @@ public class Communicator {
 			// When the "set temp X" command is run, record it in file
 			if (comm.contains("SET_TEMP")) {
 				// Write the last set target temperature to file
-				TextFileWriter.writeToFile("lastTargetTemp.txt", comm.split(" ")[1]);
+				String targetTemp = comm.split(" ")[1];
+				TextFileWriter.writeToFile("lastTargetTemp.txt", targetTemp.substring(0, targetTemp.length()));
 			}
 			
 			serial.main.writeBytes(comm.getBytes());

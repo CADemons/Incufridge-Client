@@ -48,7 +48,7 @@ public class SFTP {
 	public boolean fileExists() {
 		try {
 			mySftpChannel.cd("cademons/incu/");
-			boolean result = mySftpChannel.ls(mySftpChannel.pwd()).toString().contains("Checked");
+			boolean result = mySftpChannel.ls(mySftpChannel.pwd()).toString().contains(" Checked,");
 			mySftpChannel.cd("../../");
 			
 			return result;

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 import javax.swing.JOptionPane;
@@ -44,10 +45,12 @@ public class FileRunner {
 					int year = 0;
 					int month = 0;
 					int day = 0;
-					Calendar now = Calendar.getInstance();
+					Calendar now = new GregorianCalendar();
+				    now.setTimeZone(TimeZone.getTimeZone("EST"));
+				    System.out.println(new Date());
 					if (parts[3].equals("today")) {
 						year = now.get(Calendar.YEAR);
-						month = now.get(Calendar.MONTH);
+						month = now.get(Calendar.MONTH) + 1;
 						day = now.get(Calendar.DAY_OF_MONTH);
 					} else {
 						// Date is formatted MM/dd/yyyy
@@ -63,7 +66,7 @@ public class FileRunner {
 
 					if (parts[4].equals("now")) {
 						hourOfDay = now.get(Calendar.HOUR_OF_DAY);
-						minutes = now.get(Calendar.MINUTE);
+						minute = now.get(Calendar.MINUTE);
 					} else {
 						// Time is formatted hh:mm
 						String[] time = parts[4].split(":");
@@ -74,7 +77,8 @@ public class FileRunner {
 
 					// Make the calendar
 					Calendar c = new GregorianCalendar();
-					c.set(year, month - 1, day, hourOfDay, minute);
+					c.setTimeZone(TimeZone.getTimeZone("EST"));
+					c.set(year, month - 1, day, hourOfDay, minute, now.get(Calendar.SECOND) + 1);
 					System.out.println(c.getTime());
 
 					// Make sure the time specified is not in the past

@@ -20,9 +20,15 @@ public class Log {
 		
 		String output = "Created on " + dateFormat.format(date) + "\n\n";
 		output += "Temperature: " + temp + "\n";
-		output += "Target Temperature: " + TextFileReader.readLineFromFile("lastTargetTemp.txt", 1) + "\n";
+		String targetTemp = TextFileReader.readLineFromFile("lastTargetTemp.txt", 1);
+		output += "Target Temperature: " + targetTemp + "\n";
 
-		TextFileWriter.writeToFile("log.txt", output + "\n\n");
+		String rawLog = date.getTime() + "\n";
+		rawLog += temp + "\n";
+		rawLog += targetTemp + "\n";
+
+		TextFileWriter.writeToFile("log.txt", output + "\n");
+		TextFileWriter.writeToFile("rawLog.txt", rawLog);
 		
 		System.out.println("Created log");
 		
@@ -33,6 +39,8 @@ public class Log {
 		File f = new File("log.txt");
 		SFTPConnection c = new SFTPConnection();
 		SFTP s = c.connect(Info.username, Info.hostname, Info.password, Info.portnum);
+		s.upload(f.getAbsolutePath(), "cademons/incu/");
+		f = new File("rawLog.txt");
 		s.upload(f.getAbsolutePath(), "cademons/incu/");
 		c.disconnect();
 	}

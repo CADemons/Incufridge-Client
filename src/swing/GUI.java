@@ -72,8 +72,7 @@ public class GUI extends JFrame implements ActionListener {
 		addMenu(m);
 
 		// The commands for the line parser
-		LineParser.init(new String[] {"PWM", "FAN_ON", "FAN_OFF", "LIGHT_ON", 
-			"LIGHT_OFF", "READ_DISPLAY", "SET_TEMP", "PRESS_BUTTON"});
+		LineParser.init(new String[] {"PWM", "FAN_ON", "FAN_OFF", "LIGHT_ON", "LIGHT_OFF", "READ_DISPLAY", "SET_TEMP", "PRESS_BUTTON"});
 
 		new ServerChecker();
 		setVisible(true);
