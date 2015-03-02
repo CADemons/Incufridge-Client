@@ -25,7 +25,7 @@ public class FileRunner {
 		if (Communicator.isConnected()) {
 			// Send the compiled code to the incufridge
 			for (int i = 0; i < compiled.length; i++) {
-				if (compiled[i].contains("schedule")) {
+				if (compiled[i].contains("schedule") || compiled[i].contains("at")) {
 
 					// Split everything
 					String[] parts = compiled[i].split("-");
@@ -52,6 +52,9 @@ public class FileRunner {
 						year = now.get(Calendar.YEAR);
 						month = now.get(Calendar.MONTH) + 1;
 						day = now.get(Calendar.DAY_OF_MONTH);
+						if (parts[3].split("\\+").length > 1) {
+							day += Integer.parseInt(parts[3].split("\\+")[1]);
+						}
 					} else {
 						// Date is formatted MM/dd/yyyy
 						String[] date = parts[3].split("/");
@@ -63,10 +66,13 @@ public class FileRunner {
 
 					int hourOfDay = 0;
 					int minute = 0;
-
-					if (parts[4].equals("now")) {
+					
+					if (parts[4].startsWith("now")) {
 						hourOfDay = now.get(Calendar.HOUR_OF_DAY);
 						minute = now.get(Calendar.MINUTE);
+						if (parts[4].split("\\+").length > 1) {
+							minute += Integer.parseInt(parts[4].split("\\+")[1]);
+						}
 					} else {
 						// Time is formatted hh:mm
 						String[] time = parts[4].split(":");
@@ -88,12 +94,21 @@ public class FileRunner {
 					}
 
 					// Add a new scheduler
-					schedules.add(new ScheduledRunner(minutes, new Date(c.getTimeInMillis()), parts[5]));
+					if (compiled[i].contains("schedule")) {
+						schedules.add(new ScheduledRunner(parts[6], minutes, new Date(c.getTimeInMillis()), parts[5]));
+					} else {
+						new AtRunner(new Date(c.getTimeInMillis()), parts[5]);
+					}
 				} else if (compiled[i].equals("log")) {
 					Log.createLog();
-				} else if (compiled[i].equals("cancel")) {
-					for (ScheduledRunner s : schedules) {
-						s.cancel();
+				} else if (compiled[i].equals("cancelAll")) {
+					cancelAll();
+				} else if (compiled[i].startsWith("cancel-")) {
+					String name = compiled[i].split("-")[1];
+					for (ScheduledRunner r : schedules) {
+						if (r.name.equals(name)) {
+							r.cancel();
+						}
 					}
 				} else {
 					Communicator.sendCommand(compiled[i]);
@@ -101,6 +116,12 @@ public class FileRunner {
 			}
 		} else {
 			JOptionPane.showMessageDialog(null, "No connection");
+		}
+	}
+
+	public static void cancelAll() {
+		for (ScheduledRunner s : schedules) {
+			s.cancel();
 		}
 	}
 }

@@ -76,7 +76,6 @@ public class GUI extends JFrame implements ActionListener {
 
 		new ServerChecker();
 		setVisible(true);
-		
 	}
 	
 	public void addMenu(JMenu m) {

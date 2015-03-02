@@ -3,17 +3,14 @@ package common;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.TimeUnit;
 
-public class ScheduledRunner {
+public class AtRunner {
 	Timer timer;
-	String name;
 	
-	public ScheduledRunner(String name, long minutes, Date firstTime, String fileToRun) {
+	public AtRunner(Date time, String fileToRun) {
 		timer = new Timer();
-		timer.scheduleAtFixedRate(new RunTask(fileToRun), firstTime, TimeUnit.MINUTES.toMillis(minutes));
+		timer.schedule(new RunTask(fileToRun), time);
 		System.out.println("Here");
-		this.name = name;
 	}
 	
 	public void cancel() {
@@ -26,7 +23,7 @@ public class ScheduledRunner {
 			myFileName = fileToRun;
 		}
 		public void run() {
-			System.out.println("Here");
+			System.out.println("Upload and run Programs/" + myFileName);
 			FileRunner.uploadAndRun("Programs/" + myFileName);
 		}
 	}

@@ -22,6 +22,8 @@ public class ServerChecker {
 			SFTPConnection c = new SFTPConnection();
 			SFTP s = c.connect(Info.username, Info.hostname, Info.password, Info.portnum);
 			if (!s.fileExists()) {
+				FileRunner.cancelAll();
+				removePrograms();
 				s.downloadProgramsDir();
 				s.createFile();
 				if (new File("Programs/main").exists()) {
@@ -29,6 +31,11 @@ public class ServerChecker {
 				}
 			}
 			c.disconnect();
+		}
+
+		public void removePrograms() {
+			File dir = new File("Programs");
+			for(File file: dir.listFiles()) file.delete();
 		}
 	}
 }

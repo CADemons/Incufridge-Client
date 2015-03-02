@@ -13,8 +13,8 @@ public class LineParser {
 	static String[] importantWords;
 	
 	static String possibleUnitsRegex = "((second(s)?)|(minute(s)?)|(hour(s)?)|(day(s)?))";
-	static String dateRegex = "(\\d+/\\d+/\\d+)|(today)";
-	static String timeRegex = "(\\d+:\\d+)|(now)";
+	static String dateRegex = "(\\d+/\\d+/\\d+)|(today(\\+\\d+)?)";
+	static String timeRegex = "(\\d+:\\d+)|(now(\\+\\d+)?)";
 	
 	public static void init(String[] commandsList) {
 		commands = commandsList;
@@ -40,10 +40,32 @@ public class LineParser {
 		if (s.hasNext("every")) {
 			// Gobble up the "every"
 			s.next();
-			String interval, units, date, time, fileToRun;
+			String interval, units, date, time, fileToRun, name;
 			try {
 				interval = s.next();
 				units = s.next();
+				date = s.next();
+				time = s.next();
+				System.out.println(time);
+				fileToRun = s.next();
+				name = s.next();
+			} catch (NoSuchElementException e) {
+				s.close();
+				return "Error";
+			}
+			s.close();
+			
+			if (isInt(interval) && units.matches(possibleUnitsRegex) && date.matches(dateRegex) && time.matches(timeRegex)) {
+				return "schedule-" + interval + "-" + units + "-" + date + "-" + time + "-" + fileToRun + "-" + name;
+			} else {
+				return "Error";
+			}
+		}
+		
+		if (s.hasNext("at")) {
+			s.next();
+			String date, time, fileToRun;
+			try {
 				date = s.next();
 				time = s.next();
 				fileToRun = s.next();
@@ -53,12 +75,9 @@ public class LineParser {
 			}
 			s.close();
 			
-			if (isInt(interval) && units.matches(possibleUnitsRegex) && date.matches(dateRegex) && time.matches(timeRegex)) {
-				return "schedule-" + interval + "-" + units + "-" + date + "-" + time + "-" + fileToRun;
-			} else {
-				return "Error";
+			if (date.matches(dateRegex) && time.matches(timeRegex)) {
+				return "at-10-minutes-" + date + "-" + time + "-" + fileToRun;
 			}
-
 		}
 		
 		if (s.hasNext("createlog")) {
@@ -66,9 +85,21 @@ public class LineParser {
 			return "log";
 		}
 		
-		if (s.hasNext("cancel")) {
+		if (s.hasNext("cancelAll")) {
 			s.close();
-			return "cancel";
+			return "cancelAll";
+		}
+
+		if (s.hasNext("cancel")) {
+			String name = "";
+			try {
+				s.next();
+				name = s.next();
+				s.close();
+			} catch (NoSuchElementException e) {
+				return "Error";
+			}
+			return "cancel-" + name;
 		}
 
 		while (s.hasNext()) {

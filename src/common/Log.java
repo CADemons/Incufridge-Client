@@ -8,11 +8,6 @@ import java.util.Date;
 public class Log {
 	/** Creates a log file **/
 	public static void createLog() {
-		File logDir = new File("Logs");
-		if (!logDir.exists()) {
-			logDir.mkdir();
-		}
-		
 		double temp = Communicator.getTemperature();
 		
 		DateFormat dateFormat = new SimpleDateFormat("EEEE' 'MMMM' 'd', 'yyyy' at 'h:mm:ss' 'aa");
@@ -36,6 +31,7 @@ public class Log {
 	}
 	
 	public static void uploadLogFile() {
+		System.out.println("Uploading");
 		File f = new File("log.txt");
 		SFTPConnection c = new SFTPConnection();
 		SFTP s = c.connect(Info.username, Info.hostname, Info.password, Info.portnum);
@@ -43,5 +39,6 @@ public class Log {
 		f = new File("rawLog.txt");
 		s.upload(f.getAbsolutePath(), "cademons/incu/");
 		c.disconnect();
+		System.out.println("Uploaded");
 	}
 }
