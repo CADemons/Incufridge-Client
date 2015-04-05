@@ -33,11 +33,15 @@ public class Log {
 	public static void uploadLogFile() {
 		System.out.println("Uploading");
 		File f = new File("log.txt");
+		// Open a connection to the server
 		SFTPConnection c = new SFTPConnection();
 		SFTP s = c.connect(Info.username, Info.hostname, Info.password, Info.portnum);
+		// Upload log.txt
 		s.upload(f.getAbsolutePath(), "cademons/incu/");
 		f = new File("rawLog.txt");
+		// Upload rawLog.txt
 		s.upload(f.getAbsolutePath(), "cademons/incu/");
+		// Disconnect from the server
 		c.disconnect();
 		System.out.println("Uploaded");
 	}

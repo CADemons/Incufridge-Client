@@ -12,9 +12,8 @@ public class Input {
 	
 	/** Waits for a new input to be received and returns it. Pauses the thread **/
 	public static String getNextInput() {
-		System.out.println("Here");
-
 		while (true) {
+			// Check for new input until some input is received
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {

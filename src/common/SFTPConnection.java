@@ -6,11 +6,13 @@ import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 
+// Provides a connection the a server
 public class SFTPConnection {
 	private Session session;
 	private SFTP sftp;
 	public boolean connected;
 	
+	// Establish a connection using the passed credentials and return an SFTP object to interact with the server
 	public SFTP connect(String username, String hostname, String password, int portNum) {
 		try {
 			JSch jsch = new JSch();
@@ -36,6 +38,7 @@ public class SFTPConnection {
 		}
 	}
 	
+	// Disconnect from the server
 	public void disconnect() {
 		sftp.exit();
 		session.disconnect();

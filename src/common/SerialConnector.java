@@ -10,6 +10,8 @@ public class SerialConnector {
 	public String port = "Could not find port.";
 	private int timeout = 1000;
 
+	// Find the port that the arduino is connected to
+	// This takes some time
 	public String findPort() {
 		if (main == null) {
 			SerialComm portFinder = new SerialComm();
@@ -41,6 +43,7 @@ public class SerialConnector {
 		return !port.equals("Could not find port.");
 	}
 
+	// Try to connect
 	public void tryConnect() {
 		if (canConnect()) {
 			main = new SerialComm();

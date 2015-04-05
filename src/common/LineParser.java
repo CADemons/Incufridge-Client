@@ -17,31 +17,44 @@ public class LineParser {
 	static String timeRegex = "(\\d+:\\d+)|(now(\\+\\d+)?)";
 	
 	public static void init(String[] commandsList) {
+		// A list of all possible commands
+		// Will be split into important words (words that the parser should look for)
+		// All words that are parsed and not in the importantWords array will be ignored by the parser
 		commands = commandsList;
 		
 		ArrayList<String> importantWordsList = new ArrayList<String>();
 		for (int i = 0; i < commands.length; i++) {
+			// Split by '_'
 			String[] words = commands[i].split("_");
 			for (int j = 0; j < words.length; j++) {
+				// Make lowercase and add it to the list
 				importantWordsList.add(words[j].toLowerCase());
 			}
 		}
 		
+		// Turn the arraylist into an array
 		importantWords = importantWordsList.toArray(new String[importantWordsList.size()]);
 	}
 	
+	// Parse a command (1 line in the recipe)
+	// This function is going to be called by the filed runner when it is compiling the commands
 	public static String parseCommand(String str) {
+		// Make it lowercase
 		str = str.toLowerCase();
 		
 		String parsedCommand = "";
 
+		// Create a scanner to parse the string
 		Scanner s = new Scanner(str);
 
+		// Scheduled runner declaration
+		// Syntax: every 1 minute today now fileToRun job1
 		if (s.hasNext("every")) {
 			// Gobble up the "every"
 			s.next();
 			String interval, units, date, time, fileToRun, name;
 			try {
+				// Get all the data needed for a scheduled runner
 				interval = s.next();
 				units = s.next();
 				date = s.next();
@@ -56,12 +69,15 @@ public class LineParser {
 			s.close();
 			
 			if (isInt(interval) && units.matches(possibleUnitsRegex) && date.matches(dateRegex) && time.matches(timeRegex)) {
+				// Append everything together and return it for the filerunner
 				return "schedule-" + interval + "-" + units + "-" + date + "-" + time + "-" + fileToRun + "-" + name;
 			} else {
 				return "Error";
 			}
 		}
 		
+		// At runner declaration
+		// Syntax: at today now+3 fileToRun job1
 		if (s.hasNext("at")) {
 			s.next();
 			String date, time, fileToRun;
@@ -76,6 +92,8 @@ public class LineParser {
 			s.close();
 			
 			if (date.matches(dateRegex) && time.matches(timeRegex)) {
+				// This is a bit of a hack
+				// The '10 minutes' will be ignored by the filerunner because this is an at runner
 				return "at-10-minutes-" + date + "-" + time + "-" + fileToRun;
 			}
 		}
@@ -102,6 +120,8 @@ public class LineParser {
 			return "cancel-" + name;
 		}
 
+		// Compile a simple incufridge command
+		// light on -> LIGHT_ON
 		while (s.hasNext()) {
 			String next = s.next();
 			if (contains(importantWords, next) || isInt(next)) {

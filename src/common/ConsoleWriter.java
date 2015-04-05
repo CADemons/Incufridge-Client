@@ -48,20 +48,4 @@ public class ConsoleWriter extends OutputStream {
 			if (Client.state == 3) Client.app.redraw();
 		}
 	}
-	
-	public static void render() {
-		render(15);
-	}
-	
-	public static void render(int changeyArg) {
-		int x = (int) (15 * (Client.myYSize / 350.0));
-		int y = (int) (210 * (Client.myYSize / 350.0));
-		
-		int changey = changeyArg;
-		Client.app.textSize(10);
-		for(int c=0; c<10; c++){
-			Client.app.text(lines[c], x, y);
-			y += changey;
-		}
-	}
 }

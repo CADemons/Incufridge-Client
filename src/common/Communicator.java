@@ -49,6 +49,7 @@ public class Communicator {
 		return serial.main != null ? serial.main.receivedInput : false;
 	}
 	
+	// Has new input been received? This will be set by the Input class
 	public static void setReceivedInput(boolean b) {
 		if (serial.main != null) {
 			serial.main.receivedInput = b;

@@ -47,11 +47,11 @@ public class FileRunner {
 					int day = 0;
 					Calendar now = new GregorianCalendar();
 				    now.setTimeZone(TimeZone.getTimeZone("EST"));
-				    System.out.println(new Date());
 					if (parts[3].equals("today")) {
 						year = now.get(Calendar.YEAR);
 						month = now.get(Calendar.MONTH) + 1;
 						day = now.get(Calendar.DAY_OF_MONTH);
+						// Allow syntax like today+3 which means 3 days from today
 						if (parts[3].split("\\+").length > 1) {
 							day += Integer.parseInt(parts[3].split("\\+")[1]);
 						}
@@ -70,6 +70,7 @@ public class FileRunner {
 					if (parts[4].startsWith("now")) {
 						hourOfDay = now.get(Calendar.HOUR_OF_DAY);
 						minute = now.get(Calendar.MINUTE);
+						// Allow syntax like now+3 which means 3 minutes from now
 						if (parts[4].split("\\+").length > 1) {
 							minute += Integer.parseInt(parts[4].split("\\+")[1]);
 						}
@@ -100,17 +101,23 @@ public class FileRunner {
 						new AtRunner(new Date(c.getTimeInMillis()), parts[5]);
 					}
 				} else if (compiled[i].equals("log")) {
+					// Create and upload a log file
 					Log.createLog();
 				} else if (compiled[i].equals("cancelAll")) {
+					// Cancel all current jobs. At runners and Scheduled runners will be stopped
 					cancelAll();
 				} else if (compiled[i].startsWith("cancel-")) {
+					// Cancel a certain job (pass in the id, syntax: cancel-job1)
+					// Get the name
 					String name = compiled[i].split("-")[1];
 					for (ScheduledRunner r : schedules) {
+						// Check if the names match
 						if (r.name.equals(name)) {
 							r.cancel();
 						}
 					}
 				} else {
+					// Send the command to the incufridge if it is just a simple arduino command
 					Communicator.sendCommand(compiled[i]);
 				}
 			}

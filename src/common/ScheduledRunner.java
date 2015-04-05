@@ -9,6 +9,7 @@ public class ScheduledRunner {
 	Timer timer;
 	String name;
 	
+	// Run a file every x minutes starting at firstTime
 	public ScheduledRunner(String name, long minutes, Date firstTime, String fileToRun) {
 		timer = new Timer();
 		timer.scheduleAtFixedRate(new RunTask(fileToRun), firstTime, TimeUnit.MINUTES.toMillis(minutes));

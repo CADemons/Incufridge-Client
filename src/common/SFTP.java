@@ -5,6 +5,7 @@ import java.util.Vector;
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.SftpException;
 
+// Class to provide access to the server
 public class SFTP {
 	private ChannelSftp mySftpChannel;
 
@@ -12,6 +13,7 @@ public class SFTP {
 		mySftpChannel = sftpChannel;
 	}
 	
+	// Upload a file to the server
 	public void upload(String filePath, String destination) {
 		try {
 			mySftpChannel.put(filePath, destination);
@@ -20,6 +22,7 @@ public class SFTP {
 		}
 	}
 	
+	// Download a file from the server
 	public void download(String fileToDownload, String destination) {
 		try {
 			mySftpChannel.get(fileToDownload, destination);
@@ -28,6 +31,7 @@ public class SFTP {
 		}
 	}
 	
+	// Download all of the programs stored on the server
 	public void downloadProgramsDir() {
 		try {
 			mySftpChannel.cd("cademons/incu/Programs");
@@ -45,6 +49,7 @@ public class SFTP {
 		}
 	}
 	
+	// Check if the file 'checked' on the server exists
 	public boolean fileExists() {
 		try {
 			mySftpChannel.cd("cademons/incu/");
@@ -58,6 +63,7 @@ public class SFTP {
 		}
 	}
 	
+	// Create a directory on the server called 'checked'
 	public void createFile() {
 		try {
 			mySftpChannel.cd("cademons/incu/");
@@ -68,6 +74,7 @@ public class SFTP {
 		}
 	}
 	
+	// Remove the directory on the server called 'checked'
 	public void removeFile() {
 		try {
 			mySftpChannel.cd("cademons/incu/");
@@ -78,6 +85,7 @@ public class SFTP {
 		}
 	}
 
+	// Disconnect from the server
 	public void exit() {
 		mySftpChannel.exit();
 	}

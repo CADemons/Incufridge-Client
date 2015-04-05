@@ -6,6 +6,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
+// Check the server every 10 minutes to see if new files have been added
 public class ServerChecker {
 	Timer timer;
 
@@ -26,6 +27,8 @@ public class ServerChecker {
 				removePrograms();
 				s.downloadProgramsDir();
 				s.createFile();
+				// If the files that were downloaded contain a main file
+				// Run the main file
 				if (new File("Programs/main").exists()) {
 					FileRunner.uploadAndRun("Programs/main");
 				}
@@ -33,6 +36,7 @@ public class ServerChecker {
 			c.disconnect();
 		}
 
+		// Remove the programs directory
 		public void removePrograms() {
 			File dir = new File("Programs");
 			for(File file: dir.listFiles()) file.delete();
