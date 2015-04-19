@@ -1,0 +1,30 @@
+Created on Sunday April 12, 2015 at 11:15:39 AM
+
+Temperature: 15.0
+Target Temperature: 20
+
+
+Created on Sunday April 12, 2015 at 11:17:04 AM
+
+Temperature: 15.0
+Target Temperature: 20
+
+
+Created on Sunday April 12, 2015 at 11:17:09 AM
+
+Temperature: 15.0
+Target Temperature: 20
+
+
+Created on Wednesday April 15, 2015 at 2:10:48 PM
+
+Temperature: 15.0
+Target Temperature: 20
+
+
+Created on Wednesday April 15, 2015 at 2:30:07 PM
+
+Temperature: 15.0
+Target Temperature: 20
+
+

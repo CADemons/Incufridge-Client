@@ -25,6 +25,7 @@ public class ServerChecker {
 			if (!s.fileExists()) {
 				FileRunner.cancelAll();
 				removePrograms();
+				System.out.println("Downloading new files");
 				s.downloadProgramsDir();
 				s.createFile();
 				// If the files that were downloaded contain a main file

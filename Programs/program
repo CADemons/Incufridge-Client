@@ -1,4 +1,1 @@
-every 2 minute today now+1 log job1
-every 2 minute today now log job2
-at today now+3 cancel
-
+every 10 minutes today now createlog
