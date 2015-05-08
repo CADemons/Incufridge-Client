@@ -10,10 +10,9 @@ public class ScheduledRunner {
 	String name;
 	
 	// Run a file every x minutes starting at firstTime
-	public ScheduledRunner(String name, long minutes, Date firstTime, String fileToRun) {
+	public ScheduledRunner(String name, long minutes, Date firstTime, String commands) {
 		timer = new Timer();
-		timer.scheduleAtFixedRate(new RunTask(fileToRun), firstTime, TimeUnit.MINUTES.toMillis(minutes));
-		System.out.println("Here");
+		timer.scheduleAtFixedRate(new RunTask(commands), firstTime, TimeUnit.MINUTES.toMillis(minutes));
 		this.name = name;
 	}
 	
@@ -22,13 +21,12 @@ public class ScheduledRunner {
 	}
 	
 	class RunTask extends TimerTask {
-		String myFileName;
-		public RunTask(String fileToRun) {
-			myFileName = fileToRun;
+		String myCommands;
+		public RunTask(String commands) {
+			myCommands = commands;
 		}
 		public void run() {
-			System.out.println("Here");
-			FileRunner.uploadAndRun("Programs/" + myFileName);
+			FileRunner.uploadAndRun(myCommands);
 		}
 	}
 }

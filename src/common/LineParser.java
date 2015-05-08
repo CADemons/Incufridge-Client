@@ -52,15 +52,21 @@ public class LineParser {
 		if (s.hasNext("every")) {
 			// Gobble up the "every"
 			s.next();
-			String interval, units, date, time, fileToRun, name;
+			String interval, units, date, time, commands, name;
+			commands = "";
 			try {
 				// Get all the data needed for a scheduled runner
 				interval = s.next();
 				units = s.next();
 				date = s.next();
 				time = s.next();
-				System.out.println(time);
-				fileToRun = s.next();
+				// Left Paren
+				s.next();
+				while (!s.hasNext("\\)")) {
+					commands += s.next();
+				}
+				// Right paren
+				s.next();
 				name = s.next();
 			} catch (NoSuchElementException e) {
 				s.close();
@@ -70,7 +76,7 @@ public class LineParser {
 			
 			if (isInt(interval) && units.matches(possibleUnitsRegex) && date.matches(dateRegex) && time.matches(timeRegex)) {
 				// Append everything together and return it for the filerunner
-				return "schedule-" + interval + "-" + units + "-" + date + "-" + time + "-" + fileToRun + "-" + name;
+				return "schedule-" + interval + "-" + units + "-" + date + "-" + time + "-" + commands.replaceAll(";", "\n") + "-" + name;
 			} else {
 				return "Error";
 			}

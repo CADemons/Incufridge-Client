@@ -1,2 +1,2 @@
-every 10 minutes today now createlog
+every 10 minutes today now ( log; log ) job1
 

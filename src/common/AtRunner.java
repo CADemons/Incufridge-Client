@@ -9,10 +9,10 @@ public class AtRunner {
 	Timer timer;
 	
 	// Pass in the date when to run, and the file to run
-	public AtRunner(Date time, String fileToRun) {
+	public AtRunner(Date time, String commands) {
 		timer = new Timer();
 		// Schedule a new task at the time
-		timer.schedule(new RunTask(fileToRun), time);
+		timer.schedule(new RunTask(commands), time);
 	}
 	
 	public void cancel() {
@@ -20,14 +20,13 @@ public class AtRunner {
 	}
 	
 	class RunTask extends TimerTask {
-		String myFileName;
-		public RunTask(String fileToRun) {
-			myFileName = fileToRun;
+		String myCommands;
+		public RunTask(String commands) {
+			myCommands = commands;
 		}
 		public void run() {
 			// Run the file
-			System.out.println("Upload and run Programs/" + myFileName);
-			FileRunner.uploadAndRun("Programs/" + myFileName);
+			FileRunner.uploadAndRun(myCommands);
 		}
 	}
 }

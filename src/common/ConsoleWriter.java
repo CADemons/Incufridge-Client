@@ -48,4 +48,9 @@ public class ConsoleWriter extends OutputStream {
 			if (Client.state == 3) Client.app.redraw();
 		}
 	}
+
+	public static void render(int mouseWheelChange) {
+		// TODO Auto-generated method stub
+		
+	}
 }

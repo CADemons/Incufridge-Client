@@ -1,5 +1,6 @@
 package common;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -12,8 +13,10 @@ import javax.swing.JOptionPane;
 public class FileRunner {
 	private static ArrayList<ScheduledRunner> schedules = new ArrayList<ScheduledRunner>();
 
-	public static void uploadAndRun(String filename) {
-		String fileText = TextFileReader.readEntireFile(filename);
+	public static void uploadAndRun(String fileText) {
+		if (new File(fileText).exists()) {
+			 fileText = TextFileReader.readEntireFile(fileText);
+		}
 		// Get each line separately
 		String[] lines = fileText.split("\n");
 		String[] compiled = new String[lines.length];
@@ -26,7 +29,6 @@ public class FileRunner {
 			// Send the compiled code to the incufridge
 			for (int i = 0; i < compiled.length; i++) {
 				if (compiled[i].contains("schedule") || compiled[i].contains("at")) {
-
 					// Split everything
 					String[] parts = compiled[i].split("-");
 
@@ -46,7 +48,7 @@ public class FileRunner {
 					int month = 0;
 					int day = 0;
 					Calendar now = new GregorianCalendar();
-				    now.setTimeZone(TimeZone.getTimeZone("EST"));
+					now.setTimeZone(TimeZone.getTimeZone("EST"));
 					if (parts[3].equals("today")) {
 						year = now.get(Calendar.YEAR);
 						month = now.get(Calendar.MONTH) + 1;
@@ -66,7 +68,7 @@ public class FileRunner {
 
 					int hourOfDay = 0;
 					int minute = 0;
-					
+
 					if (parts[4].startsWith("now")) {
 						hourOfDay = now.get(Calendar.HOUR_OF_DAY);
 						minute = now.get(Calendar.MINUTE);
@@ -96,9 +98,17 @@ public class FileRunner {
 
 					// Add a new scheduler
 					if (compiled[i].contains("schedule")) {
-						schedules.add(new ScheduledRunner(parts[6], minutes, new Date(c.getTimeInMillis()), parts[5]));
+						String commands = parts[5];
+						if (new File(parts[5]).exists()) {
+							commands = TextFileReader.readEntireFile(parts[5]);
+						}
+						schedules.add(new ScheduledRunner(parts[6], minutes, new Date(c.getTimeInMillis()), commands));
 					} else {
-						new AtRunner(new Date(c.getTimeInMillis()), parts[5]);
+						String commands = parts[5];
+						if (new File(parts[5]).exists()) {
+							commands = TextFileReader.readEntireFile(parts[5]);
+						}
+						new AtRunner(new Date(c.getTimeInMillis()), commands);
 					}
 				} else if (compiled[i].equals("log")) {
 					// Create and upload a log file
@@ -121,8 +131,8 @@ public class FileRunner {
 					Communicator.sendCommand(compiled[i]);
 				}
 			}
-		} else {
-			JOptionPane.showMessageDialog(null, "No connection");
+		 } else {
+		 	JOptionPane.showMessageDialog(null, "No connection");
 		}
 	}
 

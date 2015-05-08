@@ -1,6 +1,6 @@
 *.class
 *.txt
-Programs/*
+Programs/
 
 # Package Files #
 *.war
