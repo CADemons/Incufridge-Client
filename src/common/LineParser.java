@@ -48,7 +48,7 @@ public class LineParser {
 		Scanner s = new Scanner(str);
 
 		// Scheduled runner declaration
-		// Syntax: every 1 minute today now fileToRun job1
+		// Syntax: every 1 minute today now ( fileToRun/command ) job1
 		if (s.hasNext("every")) {
 			// Gobble up the "every"
 			s.next();
@@ -63,8 +63,9 @@ public class LineParser {
 				// Left Paren
 				s.next();
 				while (!s.hasNext("\\)")) {
-					commands += s.next();
+					commands += s.next() + " ";
 				}
+				commands = commands.trim();
 				// Right paren
 				s.next();
 				name = s.next();
@@ -83,14 +84,21 @@ public class LineParser {
 		}
 		
 		// At runner declaration
-		// Syntax: at today now+3 fileToRun job1
+		// Syntax: at today now+3 ( fileToRun/command ) job1
 		if (s.hasNext("at")) {
 			s.next();
-			String date, time, fileToRun;
+			String date, time, commands;
+			commands = "";
 			try {
 				date = s.next();
 				time = s.next();
-				fileToRun = s.next();
+				s.next();
+				while (!s.hasNext("\\)")) {
+					commands += s.next() + " ";
+				}
+				commands = commands.trim();
+				// Right paren
+				s.next();
 			} catch (NoSuchElementException e) {
 				s.close();
 				return "Error";
@@ -100,7 +108,7 @@ public class LineParser {
 			if (date.matches(dateRegex) && time.matches(timeRegex)) {
 				// This is a bit of a hack
 				// The '10 minutes' will be ignored by the filerunner because this is an at runner
-				return "at-10-minutes-" + date + "-" + time + "-" + fileToRun;
+				return "at-10-minutes-" + date + "-" + time + "-" + commands.replaceAll("\n", ";");
 			}
 		}
 		
@@ -109,9 +117,9 @@ public class LineParser {
 			return "log";
 		}
 		
-		if (s.hasNext("cancelAll")) {
+		if (s.hasNext("cancelall")) {
 			s.close();
-			return "cancelAll";
+			return "cancelall";
 		}
 
 		if (s.hasNext("cancel")) {

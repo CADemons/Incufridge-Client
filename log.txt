@@ -1,42 +1,18 @@
-Created on Sunday April 12, 2015 at 11:15:39 AM
+Created on Sunday May 10, 2015 at 11:21:43 AM
 
-Temperature: 15.0
+Temperature: 10.0
+Target Temperature: 10
+
+
+Created on Sunday May 10, 2015 at 11:23:43 AM
+
+Temperature: 20.0
 Target Temperature: 20
 
 
-Created on Sunday April 12, 2015 at 11:17:04 AM
+Created on Sunday May 10, 2015 at 11:25:43 AM
 
-Temperature: 15.0
-Target Temperature: 20
-
-
-Created on Sunday April 12, 2015 at 11:17:09 AM
-
-Temperature: 15.0
-Target Temperature: 20
-
-
-Created on Wednesday April 15, 2015 at 2:10:48 PM
-
-Temperature: 15.0
-Target Temperature: 20
-
-
-Created on Wednesday April 15, 2015 at 2:30:07 PM
-
-Temperature: 15.0
-Target Temperature: 20
-
-
-Created on Sunday May 3, 2015 at 10:30:35 AM
-
-Temperature: 30.0
-Target Temperature: 20
-
-
-Created on Wednesday May 6, 2015 at 2:52:35 PM
-
-Temperature: 15.0
+Temperature: 27.8
 Target Temperature: 20
 
 

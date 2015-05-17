@@ -25,6 +25,8 @@ public class ServerChecker {
 			if (!s.fileExists()) {
 				FileRunner.cancelAll();
 				removePrograms();
+				TextFileWriter.deleteFile("rawLog.txt");
+				TextFileWriter.deleteFile("log.txt");
 				System.out.println("Downloading new files");
 				s.downloadProgramsDir();
 				s.createFile();
