@@ -8,12 +8,10 @@ class TCPClient {
         DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
         BufferedReader inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
         outToServer.writeBytes("incufridge\n");
-        boolean run = true;
-        while(run) {
+        while(true) {
             String msg = inFromServer.readLine();
             System.out.println(msg);
             if (msg.equalsIgnoreCase("quit")) {
-                run = false;
                 break;
             }
         }
