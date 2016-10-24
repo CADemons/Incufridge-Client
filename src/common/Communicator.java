@@ -28,6 +28,9 @@ public class Communicator {
 	}
 	
 	public static double getTemperature() {
+		if (!Communicator.isConnected()) {
+			return -1;
+		}
 		// Send the read display command and then get the next input
 		sendCommand("READ_DISPLAY;");
 		double temp = -1;

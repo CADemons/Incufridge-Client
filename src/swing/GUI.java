@@ -3,6 +3,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -16,7 +17,7 @@ import common.ConsoleWriter;
 import common.Info;
 import common.LineParser;
 import common.SerialConnector;
-import common.ServerChecker;
+import common.TCPClient;
 
 /* This class runs the GUI of the incu-fridge */
 @SuppressWarnings("serial")
@@ -74,7 +75,16 @@ public class GUI extends JFrame implements ActionListener {
 		// The commands for the line parser
 		LineParser.init(new String[] {"PWM", "FAN_ON", "FAN_OFF", "LIGHT_ON", "LIGHT_OFF", "READ_DISPLAY", "SET_TEMP", "PRESS_BUTTON"});
 
-		new ServerChecker();
+		// new ServerChecker();
+        new Thread(new Runnable() {
+            public void run() {
+                try {
+					TCPClient.connect();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+            }
+        }).start();
 		setVisible(true);
 	}
 	

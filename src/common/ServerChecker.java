@@ -13,7 +13,8 @@ public class ServerChecker {
 	public ServerChecker() {
 		timer = new Timer();
 
-		timer.scheduleAtFixedRate(new CheckTask(), new Date(), TimeUnit.MINUTES.toMillis(10));
+		// timer.scheduleAtFixedRate(new CheckTask(), new Date(), TimeUnit.MINUTES.toMillis(10));
+        timer.scheduleAtFixedRate(new CheckTask(), new Date(), 5000);
 	}
 
 	class CheckTask extends TimerTask {
