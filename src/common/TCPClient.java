@@ -25,7 +25,7 @@ public class TCPClient {
 				outToServer.writeBytes(temp + "\n");
 			} else if (msg.startsWith("run_command ")) {
 				String command = msg.substring(11);
-				Communicator.sendCommand(command);
+				Communicator.sendCommand(LineParser.parseCommand(command));
 				outToServer.writeBytes("done\n");
 			} else if (msg.startsWith("send_file ")) {
 				String txt = msg.substring(10).replaceAll("_newline_", "\n");
@@ -33,6 +33,7 @@ public class TCPClient {
 				TextFileWriter.writeToFile("Programs/main.incu", txt);
 				System.out.println("Wrote file to disk");
 				outToServer.writeBytes("0\n");
+				System.out.println("Uploading file");
 				FileRunner.uploadAndRun("Programs/main.incu");
 			} else if (msg.startsWith("get_file ")) {
 				String filename = msg.substring(9);
