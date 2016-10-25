@@ -7,8 +7,11 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 
 public class TCPClient {
+	public static void sendFile(DataOutputStream outToServer, String fileText) throws IOException {
+		outToServer.writeBytes(fileText.replaceAll("\n", "_newline_") + "\n");
+	}
+	
 	public static void connect() throws IOException {
-		BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
 		Socket clientSocket = new Socket("108.168.213.183", 26517);
 		DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
 		BufferedReader inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
@@ -20,6 +23,22 @@ public class TCPClient {
 				double temp = Communicator.getTemperature();
 				System.out.println(temp);
 				outToServer.writeBytes(temp + "\n");
+			} else if (msg.startsWith("run_command ")) {
+				String command = msg.substring(11);
+				Communicator.sendCommand(command);
+				outToServer.writeBytes("done\n");
+			} else if (msg.startsWith("send_file ")) {
+				String txt = msg.substring(10).replaceAll("_newline_", "\n");
+				TextFileWriter.deleteFile("Programs/main.incu");
+				TextFileWriter.writeToFile("Programs/main.incu", txt);
+				System.out.println("Wrote file to disk");
+				outToServer.writeBytes("0\n");
+				FileRunner.uploadAndRun("Programs/main.incu");
+			} else if (msg.startsWith("get_file ")) {
+				String filename = msg.substring(9);
+				String txt = TextFileReader.readEntireFile("Programs/"+filename);
+				System.out.println("Read file.");
+				sendFile(outToServer, txt);
 			}
 		}
 	}
