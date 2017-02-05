@@ -40,6 +40,10 @@ public class TCPClient {
 				String txt = TextFileReader.readEntireFile("Programs/"+filename);
 				System.out.println("Read file.");
 				sendFile(outToServer, txt);
+			} else if (msg.startsWith("get_log")) {
+				Log.createLog();
+				String txt = TextFileReader.readEntireFile("log.txt");
+				outToServer.writeBytes(txt.replaceAll("\n", "_newline_") + "\n");
 			}
 		}
 	}

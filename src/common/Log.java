@@ -27,7 +27,7 @@ public class Log {
 		
 		System.out.println("Created log");
 		
-		uploadLogFile();
+//		uploadLogFile();
 	}
 	
 	public static void uploadLogFile() {
