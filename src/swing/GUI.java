@@ -55,7 +55,6 @@ public class GUI extends JFrame implements ActionListener {
 	
 	public void init() {
 		Communicator.setSerial(serial);
-		Info.init();
 
 		// Add all the various tabs
 		addTab("Data", new DataDisplayPanel());
