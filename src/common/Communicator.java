@@ -1,6 +1,9 @@
 package common;
 
 import javax.swing.JOptionPane;
+import javax.swing.Timer;
+import java.awt.*;
+import java.awt.event.*;
 
 // Provides easy means to communicate with the Arduino
 public class Communicator {
@@ -18,6 +21,19 @@ public class Communicator {
 				String targetTemp = comm.split(" ")[1];
 				TextFileWriter.deleteFile("lastTargetTemp.txt");
 				TextFileWriter.writeToFile("lastTargetTemp.txt", targetTemp.substring(0, targetTemp.length() - 1));
+				Timer timer = new Timer(15000, new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent arg0) {
+						System.out.println("Clearing temp cache");
+						// Read the temperature and throw the info away 
+						// because the arduino will return incorrect 
+						// information the first time you read after setting 
+						// the temp
+						getTemperature();
+					}
+				});
+				timer.setRepeats(false); // Only execute once
+				timer.start();
 			}
 			
 			serial.main.writeBytes(comm.getBytes());
