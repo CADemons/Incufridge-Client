@@ -50,14 +50,14 @@ public class ConnectionPanel extends JPanel {
 	public void connect(boolean isRetry) {
 		// Attempt to connect
 		int code = 0;
-		if (!isRetry) {
-			int messageType = JOptionPane.QUESTION_MESSAGE;
-			String[] options = {"Yes", "No"};
-			code = JOptionPane.showOptionDialog(null, 
-					"Are you connected to the Incufridge?", 
-					"Connected?", 0, messageType, 
-					null, options, "Yes");
-		}
+		// if (!isRetry) {
+		// 	int messageType = JOptionPane.QUESTION_MESSAGE;
+		// 	String[] options = {"Yes", "No"};
+		// 	code = JOptionPane.showOptionDialog(null, 
+		// 			"Are you connected to the Incufridge?", 
+		// 			"Connected?", 0, messageType, 
+		// 			null, options, "Yes");
+		// }
 
 		if (code == 0) {
 			serial.tryConnect();
