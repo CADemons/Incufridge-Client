@@ -6,6 +6,10 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
+/*
+ * This file is no longer being used now the TCP is used to communicate with the server
+ */
+
 // Check the server every 10 minutes to see if new files have been added
 public class ServerChecker {
 	Timer timer;

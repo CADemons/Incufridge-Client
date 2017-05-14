@@ -17,11 +17,16 @@ public class SerialConnector {
 			SerialComm portFinder = new SerialComm();
 			port = "Could not find port.";
 
+			// Get the ports that exist
 			String[] portTest = Serial.list();
+			// Go through each port
 			for(int i = 0; i < portTest.length; i++) {
 				System.out.println(portTest[i]);
 				portFinder.initialize(portTest[i]);
 				long startTime = System.currentTimeMillis();
+				// The arduino should send 'A' when we initially connect so we wait a timout length (1000 ms)
+				// for an 'A' to be read. If no 'A' arrives then that port was the wrong port and we look
+				// for the next one.
 				while (true) {
 					if (portFinder.receivedA) {
 						portFinder.close();
@@ -37,6 +42,7 @@ public class SerialConnector {
 		return port;
 	}
 
+	// Is there a valid port that we can use?
 	public boolean canConnect() {
 		port = findPort();
 

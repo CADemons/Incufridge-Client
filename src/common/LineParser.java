@@ -12,8 +12,11 @@ public class LineParser {
 	// Only pay attention to these words
 	static String[] importantWords;
 	
+	// Regex to match units
 	static String possibleUnitsRegex = "((second(s)?)|(minute(s)?)|(hour(s)?)|(day(s)?))";
+	// Regex to match dates (this could be either 10/4/17 or today+3)
 	static String dateRegex = "(\\d+/\\d+/\\d+)|(today(\\+\\d+)?)";
+	// Regex to match times (this could be either 10:00, or now+2)
 	static String timeRegex = "(\\d+:\\d+)|(now(\\+\\d+)?)";
 	
 	public static void init(String[] commandsList) {

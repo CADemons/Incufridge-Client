@@ -1,5 +1,11 @@
 package common;
 
+/* 
+ * NOTE:
+ * This file is no longer used because the incufridge now connects
+ * directly to the server via TCP instead of using SFTP
+ */
+
 // Provides a small amount of info for the SFTP to connect to the server
 public class Info {
 	public static String username = "";
