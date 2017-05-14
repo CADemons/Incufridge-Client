@@ -17,6 +17,9 @@ public class TCPClient {
 		Socket clientSocket = new Socket("108.168.213.183", 26517);
 		DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
 		BufferedReader inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+		String password = TextFileReader.readEntireFile("auth").trim();
+		outToServer.writeBytes(password + "\n");
+
 		// Tell the server that this is the incufridge
 		outToServer.writeBytes("incufridge\n");
 		while (true) {
